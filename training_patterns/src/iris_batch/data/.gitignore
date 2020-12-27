@@ -1,0 +1,9 @@
+/x_test.npy
+/x_train.npy
+/y_test.npy
+/y_train.npy
+/prepared
+/trained
+/evaluated
+/iris_data.csv
+/iris_label.csv

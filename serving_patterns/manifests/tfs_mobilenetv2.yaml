@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tfs-mobilenetv2
+  labels:
+    app: tfs-mobilenetv2
+  namespace: serving-pattern
+spec:
+  selector:
+    matchLabels:
+      app: tfs-mobilenetv2
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: tfs-mobilenetv2
+      name: tfs-mobilenetv2
+    spec:
+      containers:
+        - name: tfs-mobilenetv2
+          image: shibui/ml-system-in-action:serving_patterns_tfs_mobilenetv2
+          command: ["/usr/bin/tf_serving_entrypoint.sh"]
+          env:
+            - name: PORT
+              value: "8512"
+            - name: REST_API_PORT
+              value: "8513"
+            - name: MODEL_NAME
+              value: mobilenetv2
+            - name: MODEL_BASE_PATH
+              value: /serving_patterns/src/app/ml/mobilenetv2/model/savedmodel/mobilenetv2
+          ports:
+            - containerPort: 8512
+          resources:
+            limits:
+              cpu: "4"
+              memory: "4000Mi"
+            requests:
+              cpu: "4"
+              memory: "4000Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tfs-mobilenetv2
+  labels:
+    app: tfs-mobilenetv2
+  namespace: serving-pattern
+spec:
+  ports:
+    - port: 8512
+      protocol: TCP
+  selector:
+    app: tfs-mobilenetv2

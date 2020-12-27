@@ -1,0 +1,17 @@
+FROM python:3.8.5-slim as builder
+
+ENV PROJECT_DIR training_patterns
+WORKDIR /${PROJECT_DIR}
+ADD requirements/requirements_train.txt /${PROJECT_DIR}/
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc curl && \
+    pip install  --no-cache-dir -r requirements_train.txt
+
+WORKDIR /${PROJECT_DIR}/src/iris_batch/data/
+COPY ./src/*.py /${PROJECT_DIR}/src/
+COPY ./src/iris_batch/*.py /${PROJECT_DIR}/src/iris_batch/
+COPY ./src/iris_batch/data/*.csv /${PROJECT_DIR}/src/iris_batch/data/
+
+WORKDIR /${PROJECT_DIR}/src/iris_batch/
+
+CMD ["python", "iris_trainer.py"]

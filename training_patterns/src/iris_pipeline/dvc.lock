@@ -1,0 +1,62 @@
+prepare_data:
+  cmd: docker run --rm --name prepare_data -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/models:/training_patterns/src/iris_pipeline/models
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data:/training_patterns/src/iris_pipeline/data
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data/prepared:/training_patterns/src/iris_pipeline/data/prepared
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data/trained:/training_patterns/src/iris_pipeline/data/trained
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data/evaluated:/training_patterns/src/iris_pipeline/data/evaluated
+    training_patterns_train_iris_pipeline:latest python iris_prepare_data.py
+  deps:
+  - path: ./data/iris_data.csv
+    md5: e600ea704f4b6d06480393650bfa2978
+  - path: ./data/iris_label.csv
+    md5: 341afd7c40a9f2e0dc1fcd77ba97cd96
+  - path: ./iris_prepare_data.py
+    md5: 66b4a4c3efef2e4519cb3d2d853b2af0
+  params:
+    params.yaml:
+      prepare.test_rate: 0.3
+  outs:
+  - path: ./data/prepared
+    md5: 808a82367460377a2b39d957826424c4.dir
+train:
+  cmd: docker run --rm --name train -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/models:/training_patterns/src/iris_pipeline/models
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data:/training_patterns/src/iris_pipeline/data
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data/prepared:/training_patterns/src/iris_pipeline/data/prepared
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data/trained:/training_patterns/src/iris_pipeline/data/trained
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data/evaluated:/training_patterns/src/iris_pipeline/data/evaluated
+    training_patterns_train_iris_pipeline:latest python iris_train.py
+  deps:
+  - path: ./data/iris_label.csv
+    md5: 341afd7c40a9f2e0dc1fcd77ba97cd96
+  - path: ./data/prepared/x_train.npy
+    md5: 52a48856e2a6086c67152ae1b8580fef
+  - path: ./data/prepared/y_train.npy
+    md5: 4ad5132a186e2e782d15794785f751a2
+  params:
+    params.yaml:
+      train.ml_model: svc
+      train.save_format: onnx
+      train.save_model_name: iris_svc
+  outs:
+  - path: ./data/trained
+    md5: 269882ebacbb291db3f5a1be9066f4ab.dir
+evaluate:
+  cmd: docker run --rm --name evaluate -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/models:/training_patterns/src/iris_pipeline/models
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data:/training_patterns/src/iris_pipeline/data
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data/prepared:/training_patterns/src/iris_pipeline/data/prepared
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data/trained:/training_patterns/src/iris_pipeline/data/trained
+    -v /Users/shibuiyuusuke/ml-system-in-action/training_patterns/src/iris_pipeline/data/evaluated:/training_patterns/src/iris_pipeline/data/evaluated
+    training_patterns_train_iris_pipeline:latest python iris_evaluate.py
+  deps:
+  - path: ./data/prepared/x_test.npy
+    md5: 25a9cc08e8ba8433148c768692b85326
+  - path: ./data/prepared/y_test.npy
+    md5: 5ed8930880e2d776e14b97fb764f27e3
+  - path: ./data/trained
+    md5: 269882ebacbb291db3f5a1be9066f4ab.dir
+  params:
+    params.yaml:
+      evaluate.evaluation_model_filename: iris_svc.onnx
+  outs:
+  - path: ./data/evaluated/score.json
+    md5: e4b20e715282a24d74d1355ec6ee4cef

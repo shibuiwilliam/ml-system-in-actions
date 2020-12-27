@@ -1,0 +1,150 @@
+version: "3"
+
+services:
+  api_resnet50_onnx:
+    container_name: api_resnet50_onnx
+    build:
+      context: ..
+      dockerfile: src/app/ml/resnet50_onnx/Dockerfile_api_resnet50_onnx
+    environment:
+      - PLATFORM=docker_compose
+      - MODEL_INTERFACE=/serving_patterns/src/app/ml/resnet50_onnx/model/resnet50_onnx.yaml
+      - RUNNER=GUNICORN
+      - WORKERS=2
+      - BACKLOG=16
+      - LIMIT_MAX_REQUESTS=128
+      - MAX_REQUESTS_JITTER=32
+      - APP_NAME=src.app.apps.app_image:app
+      - PORT=8891
+      - PROFILE=1
+      - QUEUE_NAME=image_queue
+    ports:
+      - "8891:8891"
+    command: ./run_api.sh
+    depends_on:
+      - redis
+
+  api_resnet50_flask_onnx:
+    container_name: api_resnet50_flask_onnx
+    build:
+      context: ..
+      dockerfile: src/app/ml/resnet50_onnx/Dockerfile_api_resnet50_flask_onnx
+    environment:
+      - PLATFORM=docker_compose
+      - MODEL_INTERFACE=/serving_patterns/src/app/ml/resnet50_onnx/model/resnet50_onnx.yaml
+      - RUNNER=FLASK
+      - WORKERS=4
+      - BACKLOG=16
+      - LIMIT_MAX_REQUESTS=128
+      - MAX_REQUESTS_JITTER=32
+      - APP_NAME=src.app.apps.app_flask:app
+      - PORT=8895
+      - PROFILE=1
+      - QUEUE_NAME=image_queue
+    ports:
+      - "8895:8895"
+    command: ./run_api.sh
+    depends_on:
+      - redis
+
+  api_resnet50_onnx_server:
+    container_name: api_resnet50_onnx_server
+    build:
+      context: ..
+      dockerfile: src/app/ml/resnet50_onnx_server/Dockerfile_api_resnet50_onnx_server
+    environment:
+      - PLATFORM=docker_compose
+      - MODEL_INTERFACE=/serving_patterns/src/app/ml/resnet50_onnx_server/model/resnet50_onnx_server.yaml
+      - RUNNER=GUNICORN
+      - WORKERS=4
+      - BACKLOG=64
+      - LIMIT_MAX_REQUESTS=1024
+      - MAX_REQUESTS_JITTER=128
+      - APP_NAME=src.app.apps.app_image:app
+      - ONNX_RUNTIME_SERVER_HTTP=server_resnet50_onnx_server:8001
+      - MODEL_NAME=default
+      - VERSION=1
+      - PORT=8896
+      - PROFILE=0
+      - QUEUE_NAME=image_queue
+    ports:
+      - "8896:8896"
+    command: ./run_api.sh
+    depends_on:
+      - server_resnet50_onnx_server
+      - redis
+
+  server_resnet50_onnx_server:
+    container_name: server_resnet50_onnx_server
+    build:
+      context: ..
+      dockerfile: src/app/ml/resnet50_onnx_server/Dockerfile_server_resnet50_onnx_server
+    environment:
+      - HTTP_PORT=8001
+      - GRPC_PORT=50051
+      - LOGLEVEL=debug
+      - NUM_HTTP_THREADS=4
+      - MODEL_PATH=/serving_patterns/src/app/ml/resnet50_onnx_server/model/resnet50v2.onnx
+    ports:
+      - "8001:8001"
+      - "50051:50051"
+    entrypoint: ["./onnx_runtime_server_entrypoint.sh"]
+
+  api_resnet50_tfs:
+    container_name: api_resnet50_tfs
+    build:
+      context: ..
+      dockerfile: src/app/ml/resnet50_tfs/Dockerfile_api_resnet50_tfs
+    environment:
+      - PLATFORM=docker_compose
+      - MODEL_INTERFACE=/serving_patterns/src/app/ml/resnet50_tfs/model/resnet50_tfs.yaml
+      - RUNNER=GUNICORN
+      - WORKERS=2
+      - BACKLOG=16
+      - LIMIT_MAX_REQUESTS=128
+      - MAX_REQUESTS_JITTER=32
+      - APP_NAME=src.app.apps.app_image:app
+      - PORT=8894
+      - TFS_GRPC=tf_resnet50_tfs:8514
+      - PROFILE=1
+      - QUEUE_NAME=tfs_queue
+    ports:
+      - "8894:8894"
+    command: ./run_api.sh
+    depends_on:
+      - redis
+      - tf_resnet50_tfs
+
+  tf_resnet50_tfs:
+    container_name: tf_resnet50_tfs
+    build:
+      context: ..
+      dockerfile: src/app/ml/resnet50_tfs/Dockerfile_tfserving_resnet50
+    environment:
+      - PORT=8514
+      - REST_API_PORT=8515
+      - MODEL_NAME=resnet_v2_50
+      - MODEL_BASE_PATH=/serving_patterns/src/app/ml/resnet50_tfs/model/savedmodel/resnet_v2_50
+    ports:
+      - "8514:8514"
+      - "8515:8515"
+    entrypoint: ["/usr/bin/tf_serving_entrypoint.sh"]
+
+  load-test-locust:
+    container_name: load-test-locust
+    build:
+      context: ..
+      dockerfile: locust_targets/Dockerfile_locust
+    environment:
+      - PLATFORM=docker_compose
+      - TARGET_FILE=image_classification_all.py
+      - POST_PREDICT_LABEL_RATIO=1
+    ports:
+      - "8089:8089"
+    command: ["locust", "-f", "image_classification_all.py"]
+
+  redis:
+    container_name: serving_patterns_redis
+    image: "redis:latest"
+    ports:
+      - "6379:6379"

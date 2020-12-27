@@ -1,0 +1,8 @@
+prepare:
+  test_rate: 0.30
+train:
+  save_model_name: iris_svc
+  save_format: onnx
+  ml_model: svc
+evaluate:
+  evaluation_model_filename: iris_svc.onnx

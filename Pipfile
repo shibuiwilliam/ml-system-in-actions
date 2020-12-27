@@ -1,0 +1,44 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+mlflow = "*"
+numpy = "*"
+scikit-learn = "*"
+torch = "*"
+torchvision = "*"
+torchaudio = "*"
+tensorflow = "*"
+onnx = "*"
+onnxruntime = "*"
+skl2onnx = "*"
+joblib = "*"
+pyyaml = "*"
+streamlit = "*"
+bokeh = "*"
+pillow = "*"
+fastapi = "*"
+gunicorn = "*"
+redis = "*"
+typing = "*"
+pydantic = "*"
+pytorch-lightning = "*"
+click = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-mock = "*"
+pytest-asyncio = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+lint = "black --check --diff --line-length 160 ."
+fmt = "sh -c 'isort . && black --line-length 160 .'"
+vet = "mypy src/"
+
+[pipenv]
+allow_prereleases = true

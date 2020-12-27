@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-resnet50-tfs
+  labels:
+    app: api-resnet50-tfs
+  namespace: serving-pattern
+spec:
+  selector:
+    matchLabels:
+      app: api-resnet50-tfs
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: api-resnet50-tfs
+      name: api-resnet50-tfs
+    spec:
+      containers:
+        - name: api-resnet50-tfs
+          image: shibui/ml-system-in-action:serving_patterns_api_resnet50_tfs
+          command: ["./run_api.sh"]
+          env:
+            - name: PLATFORM
+              value: kubernetes
+            - name: CACHE_HOST
+              value: redis.serving-pattern.svc.cluster.local
+            - name: MODEL_INTERFACE
+              value: /serving_patterns/src/app/ml/resnet50_tfs/model/resnet50_tfs.yaml
+            - name: RUNNER
+              value: GUNICORN
+            - name: WORKERS
+              value: "4"
+            - name: BACKLOG
+              value: "64"
+            - name: LIMIT_MAX_REQUESTS
+              value: "1024"
+            - name: MAX_REQUESTS_JITTER
+              value: "128"
+            - name: APP_NAME
+              value: "src.app.apps.app_image:app"
+            - name: PORT
+              value: "8894"
+            - name: PROFILE
+              value: "0"
+            - name: TFS_GRPC
+              value: tfs-resnet50.serving-pattern.svc.cluster.local:8514
+            - name: QUEUE_NAME
+              value: resnet50_api_queue
+          ports:
+            - containerPort: 8894
+          livenessProbe:
+            httpGet:
+              port: 8894
+              path: /health
+            failureThreshold: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              port: 8894
+              path: /health
+            failureThreshold: 2
+            periodSeconds: 1
+          resources:
+            limits:
+              cpu: "2"
+              memory: "8000Mi"
+            requests:
+              cpu: "2"
+              memory: "8000Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-resnet50-tfs
+  labels:
+    app: api-resnet50-tfs
+  namespace: serving-pattern
+spec:
+  ports:
+    - port: 8894
+      protocol: TCP
+  selector:
+    app: api-resnet50-tfs

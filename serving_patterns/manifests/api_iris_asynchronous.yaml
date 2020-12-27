@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-iris-asynchronous
+  labels:
+    app: api-iris-asynchronous
+  namespace: serving-pattern
+spec:
+  selector:
+    matchLabels:
+      app: api-iris-asynchronous
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: api-iris-asynchronous
+      name: api-iris-asynchronous
+    spec:
+      containers:
+        - name: api-iris-asynchronous
+          image: shibui/ml-system-in-action:serving_patterns_api_iris
+          command: ["./run_api.sh"]
+          env:
+            - name: PLATFORM
+              value: kubernetes
+            - name: CACHE_HOST
+              value: redis.serving-pattern.svc.cluster.local
+            - name: MODEL_INTERFACE
+              value: /serving_patterns/src/app/ml/iris/model/iris_tree_onnx_runtime.yaml
+            - name: RUNNER
+              value: GUNICORN
+            - name: WORKERS
+              value: "8"
+            - name: BACKLOG
+              value: "128"
+            - name: LIMIT_MAX_REQUESTS
+              value: "1024"
+            - name: MAX_REQUESTS_JITTER
+              value: "512"
+            - name: APP_NAME
+              value: "src.app.apps.app_asynchronous:app"
+            - name: PORT
+              value: "8890"
+            - name: PROFILE
+              value: "0"
+            - name: QUEUE_NAME
+              value: tree_api_queue
+          ports:
+            - containerPort: 8890
+          livenessProbe:
+            httpGet:
+              port: 8890
+              path: /health
+            failureThreshold: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              port: 8890
+              path: /health
+            failureThreshold: 2
+            periodSeconds: 1
+          resources:
+            limits:
+              cpu: "2"
+              memory: "1000Mi"
+            requests:
+              cpu: "2"
+              memory: "1000Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-iris-asynchronous
+  labels:
+    app: api-iris-asynchronous
+  namespace: serving-pattern
+spec:
+  ports:
+    - port: 8890
+      protocol: TCP
+  selector:
+    app: api-iris-asynchronous

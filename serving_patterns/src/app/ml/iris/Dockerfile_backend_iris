@@ -1,0 +1,17 @@
+FROM python:3.8.5-slim
+
+ENV PROJECT_DIR serving_patterns
+WORKDIR /${PROJECT_DIR}
+ADD requirements/requirements_api.txt /${PROJECT_DIR}/
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc && \
+    pip install --no-cache-dir -r requirements_api.txt
+
+COPY ./src/ /${PROJECT_DIR}/src/
+COPY ./logging/ /${PROJECT_DIR}/logging/
+COPY ./src/app/ml/iris/model/* /${PROJECT_DIR}/src/app/ml/iris/model/
+COPY ./src/app/ml/iris/data/* /${PROJECT_DIR}/src/app/ml/iris/data/
+
+COPY ./scripts/run_backend.sh /${PROJECT_DIR}/run_backend.sh
+RUN chmod +x run_backend.sh
+CMD ./run_backend.sh

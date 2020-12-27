@@ -1,0 +1,11 @@
+FROM python:3.8.5-slim
+
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc python3-dev libev-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    pip install locust sklearn
+
+COPY ./locust_targets/ ./locust_targets/
+COPY ./src/app/ml/iris/data/ ./locust_targets/
+WORKDIR locust_targets

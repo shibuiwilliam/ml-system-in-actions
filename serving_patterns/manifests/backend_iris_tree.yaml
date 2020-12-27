@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-iris-tree
+  labels:
+    app: backend-iris-tree
+  namespace: serving-pattern
+spec:
+  selector:
+    matchLabels:
+      app: backend-iris-tree
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: backend-iris-tree
+      name: backend-iris-tree
+    spec:
+      containers:
+        - name: backend-iris-tree
+          image: shibui/ml-system-in-action:serving_patterns_backend_iris
+          command: ["./run_backend.sh"]
+          env:
+            - name: PLATFORM
+              value: kubernetes
+            - name: CACHE_HOST
+              value: redis.serving-pattern.svc.cluster.local
+            - name: MODEL_INTERFACE
+              value: /serving_patterns/src/app/ml/iris/model/iris_tree_onnx_runtime.yaml
+            - name: NUM_PROCS
+              value: "8"
+            - name: APP_NAME
+              value: "src.app.backend.prediction_batch"
+            - name: PROFILE
+              value: "0"
+            - name: QUEUE_NAME
+              value: tree_api_queue
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "500Mi"
+            requests:
+              cpu: "0.5"
+              memory: "500Mi"

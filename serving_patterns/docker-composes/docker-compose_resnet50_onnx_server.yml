@@ -1,0 +1,69 @@
+version: "3"
+
+services:
+  prep_pred_api_resnet50:
+    container_name: prep_pred_api_resnet50
+    build:
+      context: ..
+      dockerfile: src/app/ml/resnet50_onnx_server/Dockerfile_api_resnet50_onnx_server
+    environment:
+      - PLATFORM=docker_compose
+      - MODEL_INTERFACE=/serving_patterns/src/app/ml/resnet50_onnx_server/model/resnet50_onnx_server.yaml
+      - RUNNER=GUNICORN
+      - WORKERS=4
+      - BACKLOG=64
+      - LIMIT_MAX_REQUESTS=1024
+      - MAX_REQUESTS_JITTER=128
+      - APP_NAME=src.app.apps.app_image:app
+      - ONNX_RUNTIME_SERVER_HTTP=prep_pred_onnx_resnet50:8001
+      - MODEL_NAME=default
+      - VERSION=1
+      - PORT=8896
+      - PROFILE=0
+      - QUEUE_NAME=image_queue
+    ports:
+      - "8896:8896"
+    command: ./run_api.sh
+    depends_on:
+      - prep_pred_backend_resnet50
+      - prep_pred_onnx_resnet50
+      - redis
+
+  prep_pred_onnx_resnet50:
+    container_name: prep_pred_onnx_resnet50
+    build:
+      context: ..
+      dockerfile: src/app/ml/resnet50_onnx_server/Dockerfile_server_resnet50_onnx_server
+    environment:
+      - HTTP_PORT=8001
+      - GRPC_PORT=50051
+      - LOGLEVEL=debug
+      - NUM_HTTP_THREADS=4
+      - MODEL_PATH=/serving_patterns/src/app/ml/resnet50_onnx_server/model/resnet50v2.onnx
+    ports:
+      - "8001:8001"
+      - "50051:50051"
+    entrypoint: ["./onnx_runtime_server_entrypoint.sh"]
+
+  prep_pred_backend_resnet50:
+    container_name: prep_pred_backend_resnet50
+    build:
+      context: ..
+      dockerfile: src/app/ml/resnet50_onnx_server/Dockerfile_backend_resnet50_onnx_server
+    environment:
+      - PLATFORM=docker_compose
+      - MODEL_INTERFACE=/serving_patterns/src/app/ml/resnet50_onnx_server/model/resnet50_onnx_server.yaml
+      - NUM_PROCS=4
+      - BATCH_CODE=src.app.backend.prediction_batch
+      - PROFILE=0
+      - PREDICTOR=src.app.api._predict_image
+      - QUEUE_NAME=image_queue
+    command: ./run_backend.sh
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis
+    image: "redis:latest"
+    ports:
+      - "6379:6379"

@@ -1,0 +1,15 @@
+dockerfile
+Dockerfile
+.dockerignore
+log
+tmp
+*.sqlite3
+*.sqlite3-journal
+__pycache__
+.pytest_cache
+*.dvc
+dvc.yaml
+dvc.lock
+model
+data
+models

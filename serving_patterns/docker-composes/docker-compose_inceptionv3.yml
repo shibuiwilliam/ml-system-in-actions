@@ -1,0 +1,67 @@
+version: "3"
+
+services:
+  prep_pred_api_inceptionv3:
+    container_name: serving_patterns_prep_pred_api_inceptionv3
+    build:
+      context: ..
+      dockerfile: src/app/ml/inceptionv3/Dockerfile_api_inceptionv3
+    environment:
+      - PLATFORM=docker_compose
+      - MODEL_INTERFACE=/serving_patterns/src/app/ml/inceptionv3/model/inceptionv3.yaml
+      - RUNNER=GUNICORN
+      - WORKERS=4
+      - BACKLOG=64
+      - LIMIT_MAX_REQUESTS=1024
+      - MAX_REQUESTS_JITTER=128
+      - APP_NAME=src.app.apps.app_image:app
+      - PORT=8892
+      - TFS_GRPC=prep_pred_tfs_inceptionv3:8500
+      - PROFILE=0
+      - QUEUE_NAME=tfs_queue
+    ports:
+      - "8892:8892"
+    command: ./run_api.sh
+    depends_on:
+      - redis
+      - prep_pred_tfs_inceptionv3
+      - prep_pred_backend_inceptionv3
+
+  prep_pred_tfs_inceptionv3:
+    container_name: serving_patterns_prep_pred_tfs_inceptionv3
+    build:
+      context: ..
+      dockerfile: src/app/ml/inceptionv3/Dockerfile_tfserving_inceptionv3
+    environment:
+      - PORT=8500
+      - REST_API_PORT=8501
+      - MODEL_NAME=inceptionv3
+      - MODEL_BASE_PATH=/serving_patterns/src/app/ml/inceptionv3/model/savedmodel/inceptionv3
+    ports:
+      - "8500:8500"
+      - "8501:8501"
+    entrypoint: ["/usr/bin/tf_serving_entrypoint.sh"]
+
+  prep_pred_backend_inceptionv3:
+    container_name: serving_patterns_prep_pred_backend_inceptionv3
+    build:
+      context: ..
+      dockerfile: src/app/ml/inceptionv3/Dockerfile_backend_inceptionv3
+    environment:
+      - PLATFORM=docker_compose
+      - MODEL_INTERFACE=/serving_patterns/src/app/ml/inceptionv3/model/inceptionv3.yaml
+      - NUM_PROCS=4
+      - BATCH_CODE=src.app.backend.prediction_batch
+      - TFS_GRPC=prep_pred_tfs_inceptionv3:8500
+      - PROFILE=0
+      - PREDICTOR=src.app.api._predict_image
+      - QUEUE_NAME=tfs_queue
+    command: ./run_backend.sh
+    depends_on:
+      - redis
+
+  redis:
+    container_name: serving_patterns_redis
+    image: "redis:latest"
+    ports:
+      - "6379:6379"

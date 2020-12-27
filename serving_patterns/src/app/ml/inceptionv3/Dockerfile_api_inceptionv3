@@ -1,0 +1,32 @@
+FROM tensorflow/tensorflow:2.2.0 as builder
+
+ENV PROJECT_DIR serving_patterns
+WORKDIR /${PROJECT_DIR}
+ADD requirements/requirements_api_tf2.txt /${PROJECT_DIR}/
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc curl && \
+    pip install  --no-cache-dir -r requirements_api_tf2.txt
+
+COPY ./src/ /${PROJECT_DIR}/src/
+COPY ./src/app/ml/inceptionv3/run_extract_inceptionv3.sh /${PROJECT_DIR}/run_extract_inceptionv3.sh
+
+RUN chmod +x run_extract_inceptionv3.sh && \
+    ./run_extract_inceptionv3.sh
+
+
+FROM tensorflow/tensorflow:2.2.0
+
+ENV PROJECT_DIR serving_patterns
+WORKDIR /${PROJECT_DIR}
+ADD requirements/requirements_api_tf2_serving.txt /${PROJECT_DIR}/
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc && \
+    pip install  --no-cache-dir -r requirements_api_tf2_serving.txt
+
+COPY ./src/ /${PROJECT_DIR}/src/
+COPY ./logging/ /${PROJECT_DIR}/logging/
+COPY --from=builder /${PROJECT_DIR}/src/app/ml/inceptionv3/ /${PROJECT_DIR}/src/app/ml/inceptionv3/
+
+COPY ./scripts/run_api.sh /${PROJECT_DIR}/run_api.sh
+RUN chmod +x run_api.sh
+CMD ./run_api.sh

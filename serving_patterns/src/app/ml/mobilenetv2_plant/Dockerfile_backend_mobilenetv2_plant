@@ -1,0 +1,32 @@
+FROM tensorflow/tensorflow:latest as builder
+
+ENV PROJECT_DIR serving_patterns
+WORKDIR /${PROJECT_DIR}
+ADD requirements/requirements_api_tf2.txt /${PROJECT_DIR}/
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc curl && \
+    pip install  --no-cache-dir -r requirements_api_tf2.txt
+
+COPY ./src/ /${PROJECT_DIR}/src/
+COPY ./src/app/ml/mobilenetv2_plant/run_extract_mobilenetv2_plant.sh /${PROJECT_DIR}/run_extract_mobilenetv2_plant.sh
+
+RUN chmod +x run_extract_mobilenetv2_plant.sh && \
+    ./run_extract_mobilenetv2_plant.sh
+
+
+FROM tensorflow/tensorflow:latest
+
+ENV PROJECT_DIR serving_patterns
+WORKDIR /${PROJECT_DIR}
+ADD requirements/requirements_api_tf2_serving.txt /${PROJECT_DIR}/
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc && \
+    pip install  --no-cache-dir -r requirements_api_tf2_serving.txt
+
+COPY ./src/ /${PROJECT_DIR}/src/
+COPY ./logging/ /${PROJECT_DIR}/logging/
+COPY --from=builder /${PROJECT_DIR}/src/app/ml/mobilenetv2_plant/ /${PROJECT_DIR}/src/app/ml/mobilenetv2_plant/
+
+COPY ./scripts/run_backend.sh /${PROJECT_DIR}/run_backend.sh
+RUN chmod +x run_backend.sh
+CMD ./run_backend.sh

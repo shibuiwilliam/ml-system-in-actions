@@ -1,0 +1,15 @@
+FROM tensorflow/tensorflow:2.2.0
+
+ENV PROJECT_DIR serving_patterns
+WORKDIR /${PROJECT_DIR}
+ADD requirements/requirements_api_tf2.txt /${PROJECT_DIR}/
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc curl && \
+    pip install  --no-cache-dir -r requirements_api_tf2.txt
+
+COPY ./src/ /${PROJECT_DIR}/src/
+COPY ./src/app/ml/inceptionv3/run_extract_inceptionv3.sh /${PROJECT_DIR}/run_extract_inceptionv3.sh
+
+RUN chmod +x run_extract_inceptionv3.sh
+
+CMD ./run_extract_inceptionv3.sh
