@@ -3,7 +3,6 @@ from src.app.api import api
 from src.ml.prediction import Data
 from logging import getLogger
 
-
 logger = getLogger(__name__)
 router = APIRouter()
 

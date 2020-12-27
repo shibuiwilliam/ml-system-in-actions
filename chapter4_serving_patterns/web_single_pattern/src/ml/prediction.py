@@ -4,9 +4,9 @@ import json
 import onnxruntime as rt
 from pydantic import BaseModel
 from src.configurations import ModelConfigurations
-from src.utils.logger import configure_logger
+from logging import getLogger
 
-logger = configure_logger()
+logger = getLogger(__name__)
 
 
 class Data(BaseModel):
@@ -43,11 +43,8 @@ class Classifier(object):
         logger.info(f"label: {self.label}")
 
     async def predict(self, data: List[List[int]]) -> np.ndarray:
-        logger.info(f"predict proba")
         np_data = np.array(data).astype(np.float32)
-        logger.info(f"predict proba {np_data}")
         prediction = self.classifier.run(None, {self.input_name: np_data})
-        logger.info(f"predict proba {prediction}")
         output = np.array(list(prediction[1][0].values()))
         logger.info(f"predict proba {output}")
         return output

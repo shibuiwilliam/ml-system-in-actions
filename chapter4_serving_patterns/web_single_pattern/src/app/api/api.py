@@ -1,7 +1,8 @@
 from typing import Dict, List
-from logging import getLogger
-from src.utils.profiler import do_cprofile
+from utils.profiler import do_cprofile
 from src.ml.prediction import classifier, Data
+
+from logging import getLogger
 
 logger = getLogger(__name__)
 
@@ -34,7 +35,7 @@ async def predict_test_label() -> Dict[str, str]:
 
 
 async def predict(data: Data) -> Dict[str, List[float]]:
-    prediction = await classifier.predict_label(data.data)
+    prediction = await classifier.predict(data.data)
     return {"prediction": list(prediction)}
 
 

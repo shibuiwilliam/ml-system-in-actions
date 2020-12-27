@@ -1,19 +1,15 @@
 import os
-from logging import getLogger
 
 from src.constants import CONSTANTS, PLATFORM_ENUM
+from logging import getLogger
 
 logger = getLogger(__name__)
 
 
 class PlatformConfigurations:
-    platform = os.getenv("PLATFORM", PLATFORM_ENUM.DOCKER_COMPOSE.value)
-    if platform == PLATFORM_ENUM.DOCKER_COMPOSE.value:
-        platform = platform
-    elif platform == PLATFORM_ENUM.KUBERNETES.value:
-        platform = platform
-    else:
-        platform = PLATFORM_ENUM.TEST.value
+    platform = os.getenv("PLATFORM", PLATFORM_ENUM.DOCKER.value)
+    if not PLATFORM_ENUM.has_value(platform):
+        raise ValueError(f"PLATFORM must be one of {[v.value for v in PLATFORM_ENUM.__members__.values()]}")
 
 
 class CacheConfigurations:
@@ -38,8 +34,8 @@ class ModelConfigurations:
     label_filepath = os.getenv("LABEL_FILEPATH")
 
 
-logger.info(f"{PlatformConfigurations.__class__.__name__}: {PlatformConfigurations.__dict__}")
-logger.info(f"{CacheConfigurations.__class__.__name__}: {CacheConfigurations.__dict__}")
-logger.info(f"{RedisCacheConfigurations.__class__.__name__}: {RedisCacheConfigurations.__dict__}")
-logger.info(f"{APIConfigurations.__class__.__name__}: {APIConfigurations.__dict__}")
-logger.info(f"{ModelConfigurations.__class__.__name__}: {ModelConfigurations.__dict__}")
+logger.info(f"{PlatformConfigurations.__name__}: {PlatformConfigurations.__dict__}")
+logger.info(f"{CacheConfigurations.__name__}: {CacheConfigurations.__dict__}")
+logger.info(f"{RedisCacheConfigurations.__name__}: {RedisCacheConfigurations.__dict__}")
+logger.info(f"{APIConfigurations.__name__}: {APIConfigurations.__dict__}")
+logger.info(f"{ModelConfigurations.__name__}: {ModelConfigurations.__dict__}")
