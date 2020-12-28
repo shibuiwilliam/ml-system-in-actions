@@ -26,6 +26,7 @@ pytorch-lightning = "*"
 click = "*"
 PyYAML = "*"
 Pillow = "*"
+tensorflow-serving-api = "*"
 
 [dev-packages]
 pytest = "*"
@@ -51,6 +52,7 @@ uvloop = ">=0.14.0"
 httptools = "*"
 Pillow = ">=7.2.0"
 PyYAML = ">=5.3.1"
+tensorflow-serving-api = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,6 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, BackgroundTasks
 from src.app.api import api
-from src.ml.prediction import Data
+from src.app.backend.data import Data
 from logging import getLogger
 
 logger = getLogger(__name__)
@@ -34,20 +34,15 @@ def label():
 
 
 @router.get("/predict/test")
-async def predict_test():
-    return await api.predict_test()
-
-
-@router.get("/predict/test/label")
-async def predict_test_label():
-    return await api.predict_test_label()
+async def predict_test(background_tasks: BackgroundTasks):
+    return await api.predict_test(background_tasks=background_tasks)
 
 
 @router.post("/predict")
-async def predict(data: Data):
-    return await api.predict(data=data)
+async def predict(data: Data, background_tasks: BackgroundTasks):
+    return await api.predict(data=data, background_tasks=background_tasks)
 
 
-@router.post("/predict/label")
-async def predict_label(data: Data):
-    return await api.predict_label(data=data)
+@router.get("/job/{job_id}")
+def prediction_result(job_id: str):
+    return api.prediction_result(job_id)
