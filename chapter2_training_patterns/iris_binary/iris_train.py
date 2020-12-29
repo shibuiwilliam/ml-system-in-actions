@@ -1,9 +1,10 @@
 from typing import Tuple
 import numpy as np
 import os
+from enum import Enum
 from argparse import ArgumentParser
-from sklearn import metrics
 from sklearn.svm import SVC
+from sklearn import metrics
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -15,10 +16,22 @@ import mlflow
 import mlflow.sklearn
 
 
-def get_data(test_size: float = 0.3) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+class IRIS(Enum):
+    SETOSA = 0
+    VERSICOLOR = 1
+    VIRGINICA = 2
+
+
+def get_data(test_size: float = 0.3, target_iris: IRIS = IRIS.SETOSA) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     iris = load_iris()
     data = iris.data
     target = iris.target
+
+    pos_index = np.where(target == target_iris.value)
+    neg_index = np.where(target != target_iris.value)
+    target[pos_index] = 0
+    target[neg_index] = 1
+
     x_train, x_test, y_train, y_test = train_test_split(data, target, shuffle=True, test_size=test_size)
     x_train = np.array(x_train).astype("float32")
     y_train = np.array(y_train).astype("float32")
@@ -60,12 +73,25 @@ def main():
         default=0.3,
         help="test data rate",
     )
+    parser.add_argument(
+        "--target_iris",
+        type=str,
+        choices=["setosa", "versicolor", "virginica"],
+        default="setosa",
+        help="target iris",
+    )
     args = parser.parse_args()
-    mlflow.sklearn.autolog()
+
+    if args.target_iris == "setosa":
+        target_iris = IRIS.SETOSA
+    elif args.target_iris == "versicolor":
+        target_iris = IRIS.VERSICOLOR
+    elif args.target_iris == "virginica":
+        target_iris = IRIS.VIRGINICA
 
     mlflow_experiment_id = int(os.getenv("MLFLOW_EXPERIMENT_ID", 0))
 
-    x_train, x_test, y_train, y_test = get_data(test_size=args.test_size)
+    x_train, x_test, y_train, y_test = get_data(test_size=args.test_size, target_iris=target_iris)
 
     model = define_svc_pipeline()
 
@@ -80,7 +106,7 @@ def main():
     mlflow.log_metric("recall", recall)
     mlflow.sklearn.log_model(model, "model")
 
-    onnx_name = f"iris_svc_{mlflow_experiment_id}.onnx"
+    onnx_name = f"iris_svc_{mlflow_experiment_id}_{args.target_iris}.onnx"
     onnx_path = os.path.join("/tmp/", onnx_name)
     save_onnx(model, onnx_path)
     mlflow.log_artifact(onnx_path)

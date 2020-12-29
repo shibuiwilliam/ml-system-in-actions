@@ -1,0 +1,25 @@
+FROM python:3.8-slim
+
+ARG PATTERN=horizontal_microservice_pattern
+ENV PROJECT_DIR horizontal_microservice_pattern
+ENV PROXY_DIR api_composition_proxy
+
+WORKDIR /${PROJECT_DIR}
+ADD ${PATTERN}/requirements_proxy.txt /${PROJECT_DIR}/
+
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc curl && \
+    pip install --no-cache-dir -r requirements_proxy.txt
+
+COPY ${PATTERN}/src/ /${PROJECT_DIR}/src/
+COPY utils/ /${PROJECT_DIR}/utils/
+COPY ${PATTERN}/models/ /${PROJECT_DIR}/models/
+
+ENV LOG_LEVEL DEBUG
+ENV LOG_FORMAT TEXT
+ENV PORT 9000
+ENV APP_NAME src.api_composition_proxy.app.proxy:app
+
+COPY ${PATTERN}/run.sh /${PROJECT_DIR}/run.sh
+RUN chmod +x /${PROJECT_DIR}/run.sh
+CMD [ "./run.sh" ]

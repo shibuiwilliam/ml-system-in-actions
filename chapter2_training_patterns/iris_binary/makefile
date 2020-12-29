@@ -1,7 +1,7 @@
 ABSOLUTE_PATH := $(shell pwd)
 BASE_IMAGE_NAME := shibui/ml-system-in-action
 TRAINING_PATTERN := training_pattern
-TRAINING_PROJECT := iris
+TRAINING_PROJECT := iris_binary
 IMAGE_VERSION := 0.0.1
 
 DOCKERFILE := Dockerfile
@@ -14,7 +14,7 @@ d_build:
 
 .PHONY: train
 train:
-	mlflow run .  --no-conda
+	mlflow run . --no-conda
 
 .PHONY: ui
 ui:

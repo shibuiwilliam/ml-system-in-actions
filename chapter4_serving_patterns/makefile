@@ -6,33 +6,33 @@ DOCKERFILE := Dockerfile
 DOCKER_COMPOSE := dockercompose.yaml
 IMAGE_VERSION := 0.0.1
 
-WEB_SERVING_PATTERN := web_single_pattern
-WEB_SERVING_PATTERN_PATH := $(ABSOLUTE_PATH)/$(WEB_SERVING_PATTERN)
-WEB_SERVING_PATTERN_PORT := 8000
+WEB_SINGLE_PATTERN := web_single_pattern
+WEB_SINGLE_PATTERN_PATH := $(ABSOLUTE_PATH)/$(WEB_SINGLE_PATTERN)
+WEB_SINGLE_PATTERN_PORT := 8000
 
 
-.PHONY: build_web_serving_pattern
-build_web_serving_pattern:
+.PHONY: build_web_single_pattern
+build_web_single_pattern:
 	docker build \
-		-t $(DOCKER_REPOSITORY):$(WEB_SERVING_PATTERN)_$(IMAGE_VERSION) \
-		-f $(WEB_SERVING_PATTERN_PATH)/$(DOCKERFILE) \
+		-t $(DOCKER_REPOSITORY):$(WEB_SINGLE_PATTERN)_$(IMAGE_VERSION) \
+		-f $(WEB_SINGLE_PATTERN_PATH)/$(DOCKERFILE) \
 		.
-	
-.PHONY: run_web_serving_pattern
-run_web_serving_pattern:
+	 
+.PHONY: run_web_single_pattern
+run_web_single_pattern:
 	docker run \
 		-d \
-		--name $(WEB_SERVING_PATTERN) \
-		-p $(WEB_SERVING_PATTERN_PORT):$(WEB_SERVING_PATTERN_PORT) \
-		$(DOCKER_REPOSITORY):$(WEB_SERVING_PATTERN)_$(IMAGE_VERSION)
+		--name $(WEB_SINGLE_PATTERN) \
+		-p $(WEB_SINGLE_PATTERN_PORT):$(WEB_SINGLE_PATTERN_PORT) \
+		$(DOCKER_REPOSITORY):$(WEB_SINGLE_PATTERN)_$(IMAGE_VERSION)
 
-.PHONY: stop_web_serving_pattern
-stop_web_serving_pattern:
-	docker rm -f $(WEB_SERVING_PATTERN)
+.PHONY: stop_web_single_pattern
+stop_web_single_pattern:
+	docker rm -f $(WEB_SINGLE_PATTERN)
 
-.PHONY: push_web_serving_pattern
-push_web_serving_pattern:
-	docker push $(DOCKER_REPOSITORY):$(WEB_SERVING_PATTERN)_$(IMAGE_VERSION)
+.PHONY: push_web_single_pattern
+push_web_single_pattern:
+	docker push $(DOCKER_REPOSITORY):$(WEB_SINGLE_PATTERN)_$(IMAGE_VERSION)
 
 
 SYNCHRONOUS_PATTERN := synchronous_pattern
@@ -178,4 +178,116 @@ up_prep_pred_pattern:
 down_prep_pred_pattern:
 	docker-compose \
 		-f $(PREP_PRED_PATTERN)/$(DOCKER_COMPOSE) \
+		down
+
+HORIZONTAL_MICROSERVICE_PATTERN := horizontal_microservice_pattern
+HORIZONTAL_MICROSERVICE_PATTERN_PATH := $(ABSOLUTE_PATH)/$(HORIZONTAL_MICROSERVICE_PATTERN)
+HORIZONTAL_MICROSERVICE_PATTERN_SETOSA_PORT := 8000
+HORIZONTAL_MICROSERVICE_PATTERN_VERSICOLOR_PORT := 8001
+HORIZONTAL_MICROSERVICE_PATTERN_VIRGINICA_PORT := 8002
+
+HORIZONTAL_MICROSERVICE_PATTERN_PROXY_PORT := 9000
+
+.PHONY: build_horizontal_microservice_pattern_setosa
+build_horizontal_microservice_pattern_setosa:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_setosa_$(IMAGE_VERSION) \
+		-f $(HORIZONTAL_MICROSERVICE_PATTERN_PATH)/$(DOCKERFILE).service.setosa \
+		.
+	
+.PHONY: run_horizontal_microservice_pattern_setosa
+run_horizontal_microservice_pattern_setosa:
+	docker run \
+		-d \
+		--name $(HORIZONTAL_MICROSERVICE_PATTERN)_setosa \
+		-e MODE:setosa \
+		-e PORT:$(HORIZONTAL_MICROSERVICE_PATTERN_SETOSA_PORT) \
+		-p $(HORIZONTAL_MICROSERVICE_PATTERN_SETOSA_PORT):$(HORIZONTAL_MICROSERVICE_PATTERN_SETOSA_PORT) \
+		$(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_setosa_$(IMAGE_VERSION)
+
+.PHONY: stop_horizontal_microservice_pattern_setosa
+stop_horizontal_microservice_pattern_setosa:
+	docker rm -f $(HORIZONTAL_MICROSERVICE_PATTERN)_setosa
+
+
+.PHONY: build_horizontal_microservice_pattern_versicolor
+build_horizontal_microservice_pattern_versicolor:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_versicolor_$(IMAGE_VERSION) \
+		-f $(HORIZONTAL_MICROSERVICE_PATTERN_PATH)/$(DOCKERFILE).service.versicolor \
+		.
+	
+.PHONY: run_horizontal_microservice_pattern_versicolor
+run_horizontal_microservice_pattern_versicolor:
+	docker run \
+		-d \
+		--name $(HORIZONTAL_MICROSERVICE_PATTERN)_versicolor \
+		-e MODE:versicolor \
+		-e PORT:$(HORIZONTAL_MICROSERVICE_PATTERN_VERSICOLOR_PORT) \
+		-p $(HORIZONTAL_MICROSERVICE_PATTERN_VERSICOLOR_PORT):$(HORIZONTAL_MICROSERVICE_PATTERN_VERSICOLOR_PORT) \
+		$(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_versicolor_$(IMAGE_VERSION)
+
+.PHONY: stop_horizontal_microservice_pattern_versicolor
+stop_horizontal_microservice_pattern_versicolor:
+	docker rm -f $(HORIZONTAL_MICROSERVICE_PATTERN)_versicolor
+
+.PHONY: build_horizontal_microservice_pattern_virginica
+build_horizontal_microservice_pattern_virginica:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_virginica_$(IMAGE_VERSION) \
+		-f $(HORIZONTAL_MICROSERVICE_PATTERN_PATH)/$(DOCKERFILE).service.virginica \
+		.
+	
+.PHONY: run_horizontal_microservice_pattern_virginica
+run_horizontal_microservice_pattern_virginica:
+	docker run \
+		-d \
+		--name $(HORIZONTAL_MICROSERVICE_PATTERN)_virginica \
+		-e MODE:virginica \
+		-e PORT:$(HORIZONTAL_MICROSERVICE_PATTERN_VIRGINICA_PORT) \
+		-p $(HORIZONTAL_MICROSERVICE_PATTERN_VIRGINICA_PORT):$(HORIZONTAL_MICROSERVICE_PATTERN_VIRGINICA_PORT) \
+		$(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_virginica_$(IMAGE_VERSION)
+
+.PHONY: stop_horizontal_microservice_pattern_virginica
+stop_horizontal_microservice_pattern_virginica:
+	docker rm -f $(HORIZONTAL_MICROSERVICE_PATTERN)_virginica
+
+
+.PHONY: build_horizontal_microservice_pattern_proxy
+build_horizontal_microservice_pattern_proxy:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_proxy_$(IMAGE_VERSION) \
+		-f $(HORIZONTAL_MICROSERVICE_PATTERN_PATH)/$(DOCKERFILE).proxy \
+		.
+	
+.PHONY: run_horizontal_microservice_pattern_proxy
+run_horizontal_microservice_pattern_proxy:
+	docker run \
+		-d \
+		--name $(HORIZONTAL_MICROSERVICE_PATTERN)_proxy \
+		-e MODE:proxy \
+		-e PORT:$(HORIZONTAL_MICROSERVICE_PATTERN_PROXY_PORT) \
+		-p $(HORIZONTAL_MICROSERVICE_PATTERN_PROXY_PORT):$(HORIZONTAL_MICROSERVICE_PATTERN_PROXY_PORT) \
+		$(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_proxy_$(IMAGE_VERSION)
+
+.PHONY: stop_horizontal_microservice_pattern_proxy
+stop_horizontal_microservice_pattern_proxy:
+	docker rm -f $(HORIZONTAL_MICROSERVICE_PATTERN)_proxy
+
+.PHONY: build_horizontal_microservice_pattern
+build_horizontal_microservice_pattern:
+	docker-compose \
+		-f $(HORIZONTAL_MICROSERVICE_PATTERN)/$(DOCKER_COMPOSE) \
+		build
+
+.PHONY: up_horizontal_microservice_pattern
+up_horizontal_microservice_pattern:
+	docker-compose \
+		-f $(HORIZONTAL_MICROSERVICE_PATTERN)/$(DOCKER_COMPOSE) \
+		up -d
+
+.PHONY: down_horizontal_microservice_pattern
+down_horizontal_microservice_pattern:
+	docker-compose \
+		-f $(HORIZONTAL_MICROSERVICE_PATTERN)/$(DOCKER_COMPOSE) \
 		down

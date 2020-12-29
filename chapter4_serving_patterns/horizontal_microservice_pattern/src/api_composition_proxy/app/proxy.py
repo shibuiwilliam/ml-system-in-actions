@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import logging
 
-from src.api_composition_proxy.routers import health, proxy, abtest
+from src.api_composition_proxy.routers import routers
 from src.api_composition_proxy.configurations import APIConfigurations
 from src.configurations import PlatformConfigurations
 
@@ -16,8 +16,4 @@ app = FastAPI(
     version=APIConfigurations.version,
 )
 
-app.include_router(health.router, prefix="/health", tags=["health"])
-
-app.include_router(proxy.router, prefix="/redirect", tags=["redirect"])
-
-app.include_router(abtest.router, prefix="/abtest", tags=["abtest"])
+app.include_router(routers.router, prefix="", tags=[""])

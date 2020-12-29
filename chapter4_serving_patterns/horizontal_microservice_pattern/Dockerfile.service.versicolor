@@ -1,0 +1,23 @@
+FROM python:3.8-slim
+
+ARG PATTERN=horizontal_microservice_pattern
+ENV PROJECT_DIR horizontal_microservice_pattern
+WORKDIR /${PROJECT_DIR}
+ADD ${PATTERN}/requirements.txt /${PROJECT_DIR}/
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc curl && \
+    pip install --no-cache-dir -r requirements.txt
+
+COPY ${PATTERN}/src/ /${PROJECT_DIR}/src/
+COPY utils/ /${PROJECT_DIR}/utils/
+COPY ${PATTERN}/models/ /${PROJECT_DIR}/models/
+
+ENV MODEL_FILEPATH /${PROJECT_DIR}/models/iris_svc_0_versicolor.onnx
+ENV LABEL_FILEPATH /${PROJECT_DIR}/models/label.json
+
+ENV LOG_LEVEL DEBUG
+ENV LOG_FORMAT TEXT
+
+COPY ${PATTERN}/run.sh /${PROJECT_DIR}/run.sh
+RUN chmod +x /${PROJECT_DIR}/run.sh
+CMD [ "./run.sh" ]

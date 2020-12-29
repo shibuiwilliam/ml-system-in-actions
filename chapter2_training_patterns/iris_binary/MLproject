@@ -1,0 +1,15 @@
+name: iris_binary
+
+docker_env:
+  image: shibui/ml-system-in-action:training_pattern_iris_binary_0.0.1
+
+entry_points:
+  main:
+    parameters:
+      test_size: {type: float, default: 0.3}
+      target_iris: {type: string, default: versicolor}
+
+    command: |
+          python -m iris_train \
+            --test_size {test_size} \
+            --target_iris {target_iris}
