@@ -1,0 +1,33 @@
+FROM tensorflow/tensorflow:2.4.0 as builder
+
+ARG PATTERN=sync_async_pattern
+ARG SERVER_DIR=imagenet_mobilenet_v2
+ENV PROJECT_DIR sync_async_pattern
+WORKDIR /${PROJECT_DIR}
+ADD ${PATTERN}/${SERVER_DIR}/requirements.txt /${PROJECT_DIR}/
+
+COPY ${PATTERN}/${SERVER_DIR}/extract_mobilenet_v2.py /${PROJECT_DIR}/extract_mobilenet_v2.py
+COPY ${PATTERN}/${SERVER_DIR}/data/image_net_labels.json /${PROJECT_DIR}/data/image_net_labels.json
+
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc && \
+    pip install  --no-cache-dir -r requirements.txt && \
+    touch __init__.py && \
+    python -m extract_mobilenet_v2
+
+
+FROM tensorflow/serving:2.4.0
+
+ARG PATTERN=sync_async_pattern
+ARG SERVER_DIR=imagenet_mobilenet_v2
+ENV PROJECT_DIR sync_async_pattern
+ENV MODEL_BASE_PATH /${PROJECT_DIR}/saved_model/mobilenet_v2
+ENV MODEL_NAME mobilenet_v2
+
+COPY --from=builder /${PROJECT_DIR}/saved_model/mobilenet_v2 ${MODEL_BASE_PATH}
+EXPOSE 8500
+EXPOSE 8501
+
+COPY ${PATTERN}/${SERVER_DIR}/tf_serving_entrypoint.sh /usr/bin/tf_serving_entrypoint.sh
+RUN chmod +x /usr/bin/tf_serving_entrypoint.sh
+ENTRYPOINT ["/usr/bin/tf_serving_entrypoint.sh"]

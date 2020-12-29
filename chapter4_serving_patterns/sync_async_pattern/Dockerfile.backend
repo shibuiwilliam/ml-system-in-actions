@@ -1,0 +1,18 @@
+FROM python:3.8-slim
+
+ARG PATTERN=sync_async_pattern
+ENV PROJECT_DIR sync_async_pattern
+WORKDIR /${PROJECT_DIR}
+ADD ${PATTERN}/requirements_backend.txt /${PROJECT_DIR}/
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc curl && \
+    pip install --no-cache-dir -r requirements_backend.txt
+
+COPY ${PATTERN}/src/ /${PROJECT_DIR}/src/
+COPY utils/ /${PROJECT_DIR}/utils/
+COPY ${PATTERN}/data/ /${PROJECT_DIR}/data/
+
+ENV LOG_LEVEL DEBUG
+ENV LOG_FORMAT TEXT
+
+CMD [ "python", "-m", "src.api_composition_proxy.backend.prediction_batch" ]

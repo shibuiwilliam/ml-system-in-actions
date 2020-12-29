@@ -103,7 +103,7 @@ build_asynchronous_pattern_backend:
 run_asynchronous_pattern_backend:
 	docker run \
 		-d \
-		--name $(ASYNCHRONOUS_PATTERN_PROXY) \
+		--name $(ASYNCHRONOUS_PATTERN_BACKEND) \
 		$(DOCKER_REPOSITORY):$(ASYNCHRONOUS_PATTERN)_$(ASYNCHRONOUS_PATTERN_BACKEND)_$(IMAGE_VERSION)
 
 .PHONY: build_asynchronous_pattern
@@ -290,4 +290,91 @@ up_horizontal_microservice_pattern:
 down_horizontal_microservice_pattern:
 	docker-compose \
 		-f $(HORIZONTAL_MICROSERVICE_PATTERN)/$(DOCKER_COMPOSE) \
+		down
+
+
+SYNC_ASYNC_PATTERN := sync_async_pattern
+SYNC_ASYNC_PATTERN_PROXY := sync_async_proxy
+SYNC_ASYNC_PATTERN_PROXY_PORT := 8000
+SYNC_ASYNC_PATTERN_SYNC_MODEL := imagenet_mobilenet_v2
+SYNC_ASYNC_PATTERN_SYNC_GRPC_PORT := 8500
+SYNC_ASYNC_PATTERN_SYNC_REST_PORT := 8501
+SYNC_ASYNC_PATTERN_ASYNC_MODEL := imagenet_inception_v3
+SYNC_ASYNC_PATTERN_ASYNC_GRPC_PORT := 8600
+SYNC_ASYNC_PATTERN_ASYNC_REST_PORT := 8601
+SYNC_ASYNC_PATTERN_BACKEND := sync_async_backend
+
+.PHONY: build_sync_async_pattern_proxy
+build_sync_async_pattern_proxy:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_PROXY)_$(IMAGE_VERSION) \
+		-f $(SYNC_ASYNC_PATTERN)/$(DOCKERFILE).proxy .
+
+.PHONY: run_sync_async_pattern_proxy
+run_sync_async_pattern_proxy:
+	docker run \
+		-d \
+		--name $(SYNC_ASYNC_PATTERN_PROXY) \
+		-p $(SYNC_ASYNC_PATTERN_PROXY_PORT):$(SYNC_ASYNC_PATTERN_PROXY_PORT) \
+		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_PROXY)_$(IMAGE_VERSION)
+
+.PHONY: build_sync_async_pattern_sync
+build_sync_async_pattern_sync:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_SYNC_MODEL)_$(IMAGE_VERSION) \
+		-f $(SYNC_ASYNC_PATTERN)/$(SYNC_ASYNC_PATTERN_SYNC_MODEL)/$(DOCKERFILE) .
+
+.PHONY: run_sync_async_pattern_sync
+run_sync_async_pattern_sync:
+	docker run \
+		-d \
+		--name $(SYNC_ASYNC_PATTERN_SYNC_MODEL) \
+		-p $(SYNC_ASYNC_PATTERN_SYNC_GRPC_PORT):$(SYNC_ASYNC_PATTERN_SYNC_GRPC_PORT) \
+		-p $(SYNC_ASYNC_PATTERN_SYNC_REST_PORT):$(SYNC_ASYNC_PATTERN_SYNC_REST_PORT) \
+		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_SYNC_MODEL)_$(IMAGE_VERSION)
+
+.PHONY: build_sync_async_pattern_async
+build_sync_async_pattern_async:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_ASYNC_MODEL)_$(IMAGE_VERSION) \
+		-f $(SYNC_ASYNC_PATTERN)/$(SYNC_ASYNC_PATTERN_ASYNC_MODEL)/$(DOCKERFILE) .
+
+.PHONY: run_sync_async_pattern_async
+run_sync_async_pattern_async:
+	docker run \
+		-d \
+		--name $(SYNC_ASYNC_PATTERN_ASYNC_MODEL) \
+		-p $(SYNC_ASYNC_PATTERN_ASYNC_GRPC_PORT):$(SYNC_ASYNC_PATTERN_ASYNC_GRPC_PORT) \
+		-p $(SYNC_ASYNC_PATTERN_ASYNC_REST_PORT):$(SYNC_ASYNC_PATTERN_ASYNC_REST_PORT) \
+		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_ASYNC_MODEL)_$(IMAGE_VERSION)
+
+.PHONY: build_sync_async_pattern_backend
+build_sync_async_pattern_backend:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_BACKEND)_$(IMAGE_VERSION) \
+		-f $(SYNC_ASYNC_PATTERN)/$(DOCKERFILE).backend .
+
+.PHONY: run_sync_async_pattern_backend
+run_sync_async_pattern_backend:
+	docker run \
+		-d \
+		--name $(SYNC_ASYNC_PATTERN_BACKEND) \
+		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_BACKEND)_$(IMAGE_VERSION)
+
+.PHONY: build_sync_async_pattern
+build_sync_async_pattern:
+	docker-compose \
+		-f $(SYNC_ASYNC_PATTERN)/$(DOCKER_COMPOSE) \
+		build
+
+.PHONY: up_sync_async_pattern
+up_sync_async_pattern:
+	docker-compose \
+		-f $(SYNC_ASYNC_PATTERN)/$(DOCKER_COMPOSE) \
+		up -d
+
+.PHONY: down_sync_async_pattern
+down_sync_async_pattern:
+	docker-compose \
+		-f $(SYNC_ASYNC_PATTERN)/$(DOCKER_COMPOSE) \
 		down

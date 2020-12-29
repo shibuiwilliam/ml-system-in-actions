@@ -1,0 +1,72 @@
+version: "3"
+
+services:
+  sync_async_proxy:
+    container_name: sync_async_proxy
+    build:
+      context: ..
+      dockerfile: sync_async_pattern/Dockerfile.proxy
+    environment:
+      - PLATFORM=docker_compose
+      - QUEUE_NAME=tfs_queue
+      - SERVICE_MOBILENET_V2=sync:8501
+      - SERVICE_INCEPTION_V3=async:8601
+      - GRPC_MOBILENET_V2=sync:8500
+      - GRPC_INCEPTION_V3=async:8600
+    ports:
+      - "8000:8000"
+    command: ./run.sh
+    depends_on:
+      - redis
+      - sync
+      - async
+      - sync_async_backend
+
+  sync:
+    container_name: sync
+    build:
+      context: ..
+      dockerfile: sync_async_pattern/imagenet_mobilenet_v2/Dockerfile
+    environment:
+      - PORT=8500
+      - REST_API_PORT=8501
+    ports:
+      - "8500:8500"
+      - "8501:8501"
+    entrypoint: ["/usr/bin/tf_serving_entrypoint.sh"]
+
+  async:
+    container_name: async
+    build:
+      context: ..
+      dockerfile: sync_async_pattern/imagenet_inception_v3/Dockerfile
+    environment:
+      - PORT=8600
+      - REST_API_PORT=8601
+    ports:
+      - "8600:8600"
+      - "8601:8601"
+    entrypoint: ["/usr/bin/tf_serving_entrypoint.sh"]
+
+  sync_async_backend:
+    container_name: sync_async_backend
+    build:
+      context: ..
+      dockerfile: sync_async_pattern/Dockerfile.backend
+    environment:
+      - PLATFORM=docker_compose
+      - QUEUE_NAME=tfs_queue
+      - SERVICE_MOBILENET_V2=sync:8501
+      - SERVICE_INCEPTION_V3=async:8601
+      - GRPC_MOBILENET_V2=sync:8500
+      - GRPC_INCEPTION_V3=async:8600
+    entrypoint:
+      ["python", "-m", "src.api_composition_proxy.backend.prediction_batch"]
+    depends_on:
+      - redis
+
+  redis:
+    container_name: sync_async_redis
+    image: "redis:latest"
+    ports:
+      - "6379:6379"

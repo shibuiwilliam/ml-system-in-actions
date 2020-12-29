@@ -72,7 +72,7 @@ async def predict_post_test() -> Dict[str, Any]:
 
 
 @router.post("/predict")
-async def post_redirect(data: Data) -> Dict[str, Any]:
+async def predict(data: Data) -> Dict[str, Any]:
     logger.info(f"POST redirect to: /predict")
     results = {}
     async with httpx.AsyncClient() as ac:
@@ -83,7 +83,7 @@ async def post_redirect(data: Data) -> Dict[str, Any]:
 
 
 @router.post("/predict/label")
-async def post_redirect(data: Data) -> Dict[str, Any]:
+async def predict_label(data: Data) -> Dict[str, Any]:
     logger.info(f"POST redirect to: /predict")
     results = {"prediction": {"proba": -1.0, "label": None}}
     async with httpx.AsyncClient() as ac:
