@@ -10,7 +10,12 @@ from src.configurations import CacheConfigurations, ModelConfigurations
 from src.app.backend import store_data_job, request_inception_v3
 
 
+log_format = logging.Formatter("%(asctime)s %(name)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("prediction_batch")
+stdout_handler = logging.StreamHandler()
+stdout_handler.setFormatter(log_format)
+logger.addHandler(stdout_handler)
+logger.setLevel(logging.DEBUG)
 
 
 def _run_prediction(job_id: str) -> bool:
@@ -56,3 +61,13 @@ def prediction_loop(num_procs: int = 2):
         asyncio.ensure_future(loop.run_in_executor(executor, _loop))
 
     loop.run_forever()
+
+
+def main():
+    NUM_PROCS = int(os.getenv("NUM_PROCS", 2))
+    prediction_loop(NUM_PROCS)
+
+
+if __name__ == "__main__":
+    logger.info("start backend")
+    main()

@@ -5,7 +5,7 @@ from tensorflow import keras
 import tensorflow_hub as hub
 
 
-def get_label(json_path: str = "./image_net_labels.json") -> List[str]:
+def get_label(json_path: str = "./data/image_net_labels.json") -> List[str]:
     with open(json_path, "r") as f:
         labels = json.load(f)
     return labels
@@ -51,7 +51,7 @@ class InceptionV3Model(tf.keras.Model):
 
 
 def main():
-    labels = get_label(json_path="./image_net_labels.json")
+    labels = get_label(json_path="./data/image_net_labels.json")
     inception_v3_hub_model = load_hub_model()
     inception_v3_model = InceptionV3Model(model=inception_v3_hub_model, labels=labels)
     version_number = 0

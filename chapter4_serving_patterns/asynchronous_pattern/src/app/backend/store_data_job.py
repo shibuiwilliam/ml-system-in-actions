@@ -58,25 +58,6 @@ def get_image_redis(key: str) -> Image.Image:
     return image
 
 
-def save_data_redis_job(job_id: str, data: Any) -> bool:
-    return save_data_dict_redis_job(job_id, data.__dict__)
-
-
-def save_data_dict_redis_job(job_id: str, data: Dict[str, Any]) -> bool:
-    data_dict = {}
-    for k, v in data.items():
-        if isinstance(v, np.ndarray):
-            data_dict[k] = v.tolist()
-        elif isinstance(v, Image.Image):
-            image_key = set_image_redis(job_id, v)
-            data_dict[k] = image_key
-        else:
-            data_dict[k] = v
-    logger.info(f"job_id: {job_id}")
-    redis_client.set(job_id, json.dumps(data_dict))
-    return True
-
-
 def save_image_redis_job(job_id: str, image: Image.Image) -> bool:
     set_image_redis(job_id, image)
     redis_client.set(job_id, "")

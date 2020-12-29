@@ -118,5 +118,64 @@ up_asynchronous_pattern:
 		-f $(ASYNCHRONOUS_PATTERN)/$(DOCKER_COMPOSE) \
 		up -d
 
+.PHONY: down_asynchronous_pattern
+down_asynchronous_pattern:
+	docker-compose \
+		-f $(ASYNCHRONOUS_PATTERN)/$(DOCKER_COMPOSE) \
+		down
 
 
+PREP_PRED_PATTERN := prep_pred_pattern
+PREP_PRED_PATTERN_PREP := prep
+PREP_PRED_PATTERN_PREP_PORT := 8000
+PREP_PRED_PATTERN_PRED := pred
+PREP_PRED_PATTERN_REST_PORT := 8001
+PREP_PRED_PATTERN_GRPC_PORT := 50051
+
+.PHONY: build_prep_pred_pattern_prep
+build_prep_pred_pattern_prep:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PREP)_$(IMAGE_VERSION) \
+		-f $(PREP_PRED_PATTERN)/$(DOCKERFILE).prep .
+
+.PHONY: run_prep_pred_pattern_prep
+run_prep_pred_pattern_prep:
+	docker run \
+		-d \
+		--name $(PREP_PRED_PATTERN_PREP) \
+		-p $(PREP_PRED_PATTERN_PREP_PORT):$(PREP_PRED_PATTERN_PREP_PORT) \
+		$(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PREP)_$(IMAGE_VERSION)
+
+.PHONY: build_prep_pred_pattern_pred
+build_prep_pred_pattern_pred:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PRED)_$(IMAGE_VERSION) \
+		-f $(PREP_PRED_PATTERN)/$(DOCKERFILE).pred .
+
+.PHONY: run_prep_pred_pattern_pred
+run_prep_pred_pattern_pred:
+	docker run \
+		-d \
+		--name $(PREP_PRED_PATTERN_PRED) \
+		-p $(PREP_PRED_PATTERN_GRPC_PORT):$(PREP_PRED_PATTERN_GRPC_PORT) \
+		-p $(PREP_PRED_PATTERN_REST_PORT):$(PREP_PRED_PATTERN_REST_PORT) \
+		$(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PRED)_$(IMAGE_VERSION)
+
+
+.PHONY: build_prep_pred_pattern
+build_prep_pred_pattern:
+	docker-compose \
+		-f $(PREP_PRED_PATTERN)/$(DOCKER_COMPOSE) \
+		build
+
+.PHONY: up_prep_pred_pattern
+up_prep_pred_pattern:
+	docker-compose \
+		-f $(PREP_PRED_PATTERN)/$(DOCKER_COMPOSE) \
+		up -d
+
+.PHONY: down_prep_pred_pattern
+down_prep_pred_pattern:
+	docker-compose \
+		-f $(PREP_PRED_PATTERN)/$(DOCKER_COMPOSE) \
+		down

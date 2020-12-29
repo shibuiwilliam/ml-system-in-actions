@@ -39,7 +39,7 @@ services:
       - PLATFORM=docker_compose
       - QUEUE_NAME=tfs_queue
       - API_ADDRESS=imagenet_inception_v3
-    entrypoint: ["python", "-m", "src.app.backend.main"]
+    entrypoint: ["python", "-m", "src.app.backend.prediction_batch"]
     depends_on:
       - redis
 
