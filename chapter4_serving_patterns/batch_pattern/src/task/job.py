@@ -24,7 +24,7 @@ def predict(item: schemas.Item) -> Tuple[int, np.ndarray]:
 
 def main():
     logger.info("waiting for batch to start")
-    time.sleep(120)
+    time.sleep(60)
     logger.info("starting batch")
     with get_context_db() as db:
         data = cruds.select_without_prediction(db=db)
@@ -33,7 +33,7 @@ def main():
         with ThreadPoolExecutor(4) as executor:
             results = executor.map(predict, data)
         for result in results:
-            predictions[result[0]] = result[1]
+            predictions[result[0]] = list(result[1])
         # for _d in data:
         #     prediction = classifier.predict(data=[_d.values])
         #     predictions[_d.id] = {
