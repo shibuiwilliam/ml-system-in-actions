@@ -1,6 +1,6 @@
 FROM python:3.8-slim
 
-ENV PROJECT_DIR web_single_pattern
+ENV PROJECT_DIR model_in_image_pattern
 WORKDIR /${PROJECT_DIR}
 ADD ./requirements.txt /${PROJECT_DIR}/
 RUN apt-get -y update && \

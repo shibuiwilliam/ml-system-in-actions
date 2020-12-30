@@ -1,70 +1,46 @@
-DOCKER_REPOSITORY := shibui/ml-system-in-action
+DOCKER_REPOSITORY := shibui/ml-system-in-actions
 
 ABSOLUTE_PATH := $(shell pwd)
 
 DOCKERFILE := Dockerfile
 IMAGE_VERSION := 0.0.1
 
-WEB_SINGLE_PATTERN := web_single_pattern
-WEB_SINGLE_PATTERN_PORT := 8000
+MODEL_LOAD_PATTERN := model_load_pattern
+MODEL_LOAD_PATTERN_PORT := 8000
+MODEL_LOADER := model_loader
 
 
-.PHONY: build
-build:
+.PHONY: build_api
+build_api:
 	docker build \
-		-t $(DOCKER_REPOSITORY):$(WEB_SINGLE_PATTERN)_$(IMAGE_VERSION) \
+		-t $(DOCKER_REPOSITORY):$(MODEL_LOAD_PATTERN)_api_$(IMAGE_VERSION) \
 		-f $(DOCKERFILE) \
 		.
-	 
-.PHONY: run
-run:
-	docker run \
-		-d \
-		--name $(WEB_SINGLE_PATTERN) \
-		-p $(WEB_SINGLE_PATTERN_PORT):$(WEB_SINGLE_PATTERN_PORT) \
-		$(DOCKER_REPOSITORY):$(WEB_SINGLE_PATTERN)_$(IMAGE_VERSION)
 
-.PHONY: stop
-stop:
-	docker rm -f $(WEB_SINGLE_PATTERN)
+.PHONY: push_api
+push_api:
+	docker push $(DOCKER_REPOSITORY):$(MODEL_LOAD_PATTERN)_api_$(IMAGE_VERSION)
 
-.PHONY: push
-push:
-	docker push $(DOCKER_REPOSITORY):$(WEB_SINGLE_PATTERN)_$(IMAGE_VERSION)
+.PHONY: build_loader
+build_loader:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(MODEL_LOAD_PATTERN)_loader_$(IMAGE_VERSION) \
+		-f $(MODEL_LOADER)/$(DOCKERFILE) \
+		.
+
+.PHONY: push_loader
+push_loader:
+	docker push $(DOCKER_REPOSITORY):$(MODEL_LOAD_PATTERN)_loader_$(IMAGE_VERSION) 
+
+.PHONY: build_all
+build_all: build_api build_loader
+
+.PHONY: push_all
+push_all: push_api push_loader
+
+.PHONY: deploy
+deploy:
+	kubectl apply -f manifests/namespace.yml
+	kubectl apply -f manifests/deployment.yml
 
 
-.PHONY: health
-health:
-	curl localhost:8000/health
-
-.PHONY: metadata
-metadata:
-	curl localhost:8000/metadata
-
-.PHONY: label
-label:
-	curl localhost:8000/label
-
-.PHONY: predict_test
-predict_test:
-	curl localhost:8000/predict/test
-
-.PHONY: predict_test_label
-predict_test_label:
-	curl localhost:8000/predict/test/label
-
-.PHONY: predict
-predict:
-	curl \
-		-X POST \
-		-H "Content-Type: application/json" \
-		-d '{"Data": [1.0, 2.0, 3.0, 4.0]}' \
-		localhost:8000/predict
-
-.PHONY: predict_label
-predict_label:
-	curl \
-		-X POST \
-		-H "Content-Type: application/json" \
-		-d '{"Data": [1.0, 2.0, 3.0, 4.0]}' \
-		localhost:8000/predict/label

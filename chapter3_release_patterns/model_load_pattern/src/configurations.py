@@ -31,7 +31,11 @@ class APIConfigurations:
 
 class ModelConfigurations:
     model_filepath = os.getenv("MODEL_FILEPATH")
+    if not os.path.exists(model_filepath):
+        model_filepath = "/model_load_pattern/models/default_iris_svc.onnx"
     label_filepath = os.getenv("LABEL_FILEPATH")
+    if not os.path.exists(label_filepath):
+        label_filepath = "/model_load_pattern/models/label.json"
 
 
 logger.info(f"{PlatformConfigurations.__name__}: {PlatformConfigurations.__dict__}")

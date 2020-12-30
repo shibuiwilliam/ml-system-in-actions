@@ -37,6 +37,11 @@ stop_setosa:
 	docker rm -f $(HORIZONTAL_MICROSERVICE_PATTERN)_setosa
 
 
+.PHONY: push_setosa
+push_setosa:
+	docker push $(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_setosa_$(IMAGE_VERSION)
+
+
 .PHONY: build_versicolor
 build_versicolor:
 	docker build \
@@ -57,6 +62,11 @@ run_versicolor:
 .PHONY: stop_versicolor
 stop_versicolor:
 	docker rm -f $(HORIZONTAL_MICROSERVICE_PATTERN)_versicolor
+
+.PHONY: push_versicolor
+push_versicolor:
+	docker push $(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_versicolor_$(IMAGE_VERSION)
+
 
 .PHONY: build_virginica
 build_virginica:
@@ -79,6 +89,11 @@ run_virginica:
 stop_virginica:
 	docker rm -f $(HORIZONTAL_MICROSERVICE_PATTERN)_virginica
 
+.PHONY: push_virginica
+push_virginica:
+	docker push $(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_virginica_$(IMAGE_VERSION)
+
+
 .PHONY: build_proxy
 build_proxy:
 	docker build \
@@ -100,6 +115,11 @@ run_proxy:
 stop_proxy:
 	docker rm -f $(HORIZONTAL_MICROSERVICE_PATTERN)_proxy
 
+.PHONY: push_proxy
+push_proxy:
+	docker push $(DOCKER_REPOSITORY):$(HORIZONTAL_MICROSERVICE_PATTERN)_proxy_$(IMAGE_VERSION)
+
+
 .PHONY: build_all
 build_all: build_setosa build_versicolor build_virginica build_proxy
 
@@ -108,6 +128,9 @@ run_all: run_setosa run_versicolor run_virginica run_proxy
 
 .PHONY: stop_all
 stop_all: stop_setosa stop_versicolor stop_virginica stop_proxy
+
+.PHONY: push_all
+push_all: push_setosa push_versicolor push_virginica push_proxy
 
 .PHONY: c_build
 c_build:

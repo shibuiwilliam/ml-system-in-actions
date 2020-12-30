@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-load
+  namespace: model-load
+  labels:
+    app: model-load
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: model-load
+  template:
+    metadata:
+      labels:
+        app: model-load
+    spec:
+      containers:
+        - name: model-load
+          image: shibui/ml-system-in-actions:model_load_pattern_api_0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 500m
+              memory: "300Mi"
+            requests:
+              cpu: 500m
+              memory: "300Mi"
+          volumeMounts:
+            - name: workdir
+              mountPath: /workdir
+          env:
+            - name: MODEL_FILEPATH
+              value: "/workdir/iris_svc.onnx"
+      initContainers:
+        - name: model-loader
+          image: shibui/ml-system-in-actions:model_load_pattern_loader_0.0.1
+          imagePullPolicy: Always
+          command:
+            - python
+            - "-m"
+            - "src.main"
+            - "--gcs_bucket"
+            - "ml_system_model_repository"
+            - "--gcs_model_blob"
+            - "iris_svc.onnx"
+            - "--model_filepath"
+            - "/workdir/iris_svc.onnx"
+          volumeMounts:
+            - name: workdir
+              mountPath: /workdir
+      volumes:
+        - name: workdir
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-load
+  namespace: model-load
+  labels:
+    app: model-load
+spec:
+  ports:
+    - name: rest
+      port: 8000
+      protocol: TCP
+  selector:
+    app: model-load
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: model-load
+  namespace: model-load
+  labels:
+    app: model-load
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: model-load
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50

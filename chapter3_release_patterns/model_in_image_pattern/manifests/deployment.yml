@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-in-image
+  namespace: model-in-image
+  labels:
+    app: model-in-image
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: model-in-image
+  template:
+    metadata:
+      labels:
+        app: model-in-image
+    spec:
+      containers:
+        - name: model-in-image
+          image: shibui/ml-system-in-actions:model_in_image_pattern_0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 500m
+              memory: "300Mi"
+            requests:
+              cpu: 500m
+              memory: "300Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-in-image
+  namespace: model-in-image
+  labels:
+    app: model-in-image
+spec:
+  ports:
+    - name: rest
+      port: 8000
+      protocol: TCP
+  selector:
+    app: model-in-image
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: model-in-image
+  namespace: model-in-image
+  labels:
+    app: model-in-image
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: model-in-image
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50

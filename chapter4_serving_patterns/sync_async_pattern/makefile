@@ -93,7 +93,7 @@ push_backend:
 	docker push $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_BACKEND)_$(IMAGE_VERSION)
 
 .PHONY: build_all
-build_all: build_proxy build_sync build_async buil_backend
+build_all: build_proxy build_sync build_async build_backend
 
 .PHONY: run_all
 run_all: run_proxy run_sync run_async run_backend
