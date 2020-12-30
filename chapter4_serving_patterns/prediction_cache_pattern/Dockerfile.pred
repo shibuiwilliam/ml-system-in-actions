@@ -1,0 +1,37 @@
+FROM python:3.8-slim as builder
+
+ARG SERVER_DIR=resnet50_onnx_runtime
+ENV PROJECT_DIR prediction_cache_pattern
+
+WORKDIR /${PROJECT_DIR}
+ADD ./${SERVER_DIR}/requirements.txt /${PROJECT_DIR}/
+
+COPY ./${SERVER_DIR}/extract_resnet50_onnx.py /${PROJECT_DIR}/extract_resnet50_onnx.py
+COPY ./src/ml/transformers.py /${PROJECT_DIR}/src/ml/transformers.py
+COPY ./data /${PROJECT_DIR}/data
+COPY ./data/image_net_labels.json /${PROJECT_DIR}/data/image_net_labels.json
+
+RUN apt-get -y update && \
+    apt-get -y install apt-utils gcc && \
+    pip install --no-cache-dir -r requirements.txt && \
+    touch __init__.py && \
+    touch src/__init__.py && \
+    touch src/ml/__init__.py && \
+    python -m extract_resnet50_onnx --pred --prep
+
+FROM mcr.microsoft.com/onnxruntime/server:latest
+
+ARG SERVER_DIR=resnet50_onnx_runtime
+ENV PROJECT_DIR prediction_cache_pattern
+ENV MODEL_BASE_PATH=${PROJECT_DIR}/models
+
+WORKDIR /${PROJECT_DIR}
+
+COPY --from=builder /${MODEL_BASE_PATH}/resnet50.onnx /${MODEL_BASE_PATH}/resnet50.onnx
+
+ENV MODEL_PATH /${MODEL_BASE_PATH}/resnet50.onnx
+
+WORKDIR /onnxruntime/server/
+COPY ./${SERVER_DIR}/onnx_runtime_server_entrypoint.sh ./onnx_runtime_server_entrypoint.sh
+RUN chmod +x onnx_runtime_server_entrypoint.sh
+ENTRYPOINT ["./onnx_runtime_server_entrypoint.sh"]

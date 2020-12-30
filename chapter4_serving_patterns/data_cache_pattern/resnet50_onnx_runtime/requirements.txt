@@ -1,0 +1,13 @@
+joblib>=0.15.1
+numpy>=1.18.5
+onnxruntime>=1.4.0
+Pillow==7.2.0
+pydantic>=1.5.1
+PyYAML>=5.3.1
+scikit-learn==0.23.1
+skl2onnx>=1.7.0
+typing>=3.7.4.1
+requests>=2.25.1
+torch>=1.7.0
+torchvision>=0.8.1
+click>=7.1.2
