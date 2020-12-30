@@ -35,6 +35,7 @@ def _run_prediction(job_id: str) -> bool:
         timeout_second=5,
     )
     if prediction is not None:
+        logger.info(f"{job_id} {prediction}")
         return store_data_job.set_data_redis(job_id, prediction)
     else:
         return store_data_job.left_push_queue(CacheConfigurations.queue_name, job_id)

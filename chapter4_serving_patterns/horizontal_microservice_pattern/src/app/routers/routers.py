@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+import uuid
 from src.app.api import api
 from src.ml.prediction import Data
 from logging import getLogger
@@ -29,10 +30,10 @@ def metadata():
 
 
 @router.get("/predict/test")
-async def predict_test():
-    return await api.predict_test()
+async def predict_test(id: str = str(uuid.uuid4())[:6]):
+    return await api.predict_test(id=id)
 
 
 @router.post("/predict")
-async def predict(data: Data):
-    return await api.predict(data=data)
+async def predict(data: Data, id: str = str(uuid.uuid4())[:6]):
+    return await api.predict(data=data, id=id)

@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 import logging
 import asyncio
+import uuid
 import httpx
 from typing import Dict, Any, List
 from pydantic import BaseModel
@@ -50,46 +51,50 @@ async def health_all() -> Dict[str, Any]:
 
 @router.get("/predict/get/test")
 async def predict_get_test() -> Dict[str, Any]:
-    logger.info(f"TEST GET redirect to: /predict/test")
+    job_id = str(uuid.uuid4())[:6]
+    logger.info(f"TEST GET redirect to: /predict/test as {job_id}")
     results = {}
     async with httpx.AsyncClient() as ac:
         for service, url in ServiceConfigurations.services.items():
-            r = await ac.get(f"{url}/predict/test")
-            results[service] = r.json()
+            r = await ac.get(f"{url}/predict/test", params={"id": job_id})
+            logger.info(f"{service} {job_id} {r.json()}")
+            proba = r.json()["prediction"][0]
+            if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
+                results[service] = 1
+            else:
+                results[service] = 0
     return results
 
 
 @router.get("/predict/post/test")
 async def predict_post_test() -> Dict[str, Any]:
-    logger.info(f"TEST POST redirect to: /predict")
+    job_id = str(uuid.uuid4())[:6]
+    logger.info(f"TEST POST redirect to: /predict as {job_id}")
     results = {}
     async with httpx.AsyncClient() as ac:
         for service, url in ServiceConfigurations.services.items():
-            r = await ac.post(f"{url}/predict", json={"Data": Data().data})
-            logger.info(f"prediction: {r} {r.__dict__}")
-            results[service] = r.json()
+            r = await ac.post(f"{url}/predict", json={"Data": Data().data}, params={"id": job_id})
+            logger.info(f"{service} {job_id} {r.json()}")
+            proba = r.json()["prediction"][0]
+            if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
+                results[service] = 1
+            else:
+                results[service] = 0
     return results
 
 
 @router.post("/predict")
 async def predict(data: Data) -> Dict[str, Any]:
-    logger.info(f"POST redirect to: /predict")
+    job_id = str(uuid.uuid4())[:6]
+    logger.info(f"POST redirect to: /predict as {job_id}")
     results = {}
     async with httpx.AsyncClient() as ac:
         for service, url in ServiceConfigurations.services.items():
-            r = await ac.post(f"{url}/predict", json={"Data": data.data})
-            results[service] = r.json()
-    return results
-
-
-@router.post("/predict/label")
-async def predict_label(data: Data) -> Dict[str, Any]:
-    logger.info(f"POST redirect to: /predict")
-    results = {"prediction": {"proba": -1.0, "label": None}}
-    async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
-            r = await ac.post(f"{url}/predict", json={"Data": data.data})
+            r = await ac.post(f"{url}/predict", json={"Data": data.data}, params={"id": job_id})
+            logger.info(f"{service} {job_id} {r.json()}")
             proba = r.json()["prediction"][0]
-            if results["prediction"]["proba"] < proba:
-                results["prediction"] = {"proba": r.json()["prediction"][0], "label": service}
+            if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
+                results[service] = 1
+            else:
+                results[service] = 0
     return results

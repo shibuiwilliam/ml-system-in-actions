@@ -1,5 +1,6 @@
 from typing import Dict, List, Any
 from src.ml.prediction import classifier, Data
+from src.configurations import ModelConfigurations
 
 from logging import getLogger
 
@@ -31,9 +32,13 @@ def metadata() -> Dict[str, Any]:
 
 async def predict_test() -> Dict[str, List[float]]:
     prediction = await classifier.predict(data=Data().data)
-    return {"prediction": list(prediction)}
+    prediction_list = list(prediction)
+    logger.info(f"{ModelConfigurations.mode_name} {id}: {prediction_list}")
+    return {"prediction": prediction_list}
 
 
 async def predict(data: Data) -> Dict[str, List[float]]:
     prediction = await classifier.predict(data.data)
-    return {"prediction": list(prediction)}
+    prediction_list = list(prediction)
+    logger.info(f"{ModelConfigurations.mode_name} {id}: {prediction_list}")
+    return {"prediction": prediction_list}

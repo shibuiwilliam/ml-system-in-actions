@@ -12,6 +12,12 @@ class ServiceConfigurations:
             url = f"http://{os.getenv(environ)}"
             services[environ.lower().replace("service_", "")] = url
 
+    thresholds = {
+        "setosa": float(os.getenv("THRESHOLD_SETOSA", 0.95)),
+        "versicolor": float(os.getenv("THRESHOLD_VERSICOLOR", 0.80)),
+        "virginica": float(os.getenv("THRESHOLD_VIRGINICA", 0.99)),
+    }
+
 
 class APIConfigurations:
     title = os.getenv("API_TITLE", "ServingPattern")

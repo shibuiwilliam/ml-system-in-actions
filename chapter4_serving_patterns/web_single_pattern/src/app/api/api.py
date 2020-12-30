@@ -1,4 +1,5 @@
 from typing import Dict, List, Any
+import uuid
 from src.ml.prediction import classifier, Data
 
 from logging import getLogger
@@ -34,20 +35,30 @@ def label() -> Dict[int, str]:
 
 
 async def predict_test() -> Dict[str, List[float]]:
+    job_id = str(uuid.uuid4())
     prediction = await classifier.predict(data=Data().data)
-    return {"prediction": list(prediction)}
+    prediction_list = list(prediction)
+    logger.info(f"test {job_id}: {prediction_list}")
+    return {"prediction": prediction_list}
 
 
 async def predict_test_label() -> Dict[str, str]:
+    job_id = str(uuid.uuid4())
     prediction = await classifier.predict_label(data=Data().data)
+    logger.info(f"test {job_id}: {prediction}")
     return {"prediction": prediction}
 
 
 async def predict(data: Data) -> Dict[str, List[float]]:
+    job_id = str(uuid.uuid4())
     prediction = await classifier.predict(data.data)
-    return {"prediction": list(prediction)}
+    prediction_list = list(prediction)
+    logger.info(f"{job_id}: {prediction_list}")
+    return {"prediction": prediction_list}
 
 
 async def predict_label(data: Data) -> Dict[str, str]:
+    job_id = str(uuid.uuid4())
     prediction = await classifier.predict_label(data.data)
+    logger.info(f"test {job_id}: {prediction}")
     return {"prediction": prediction}
