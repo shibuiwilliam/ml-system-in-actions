@@ -16,9 +16,7 @@ class PlatformConfigurations:
     mysql_port = int(os.getenv("MYSQL_PORT", 3306))
     mysql_database = os.getenv("MYSQL_DATABASE", "model_management_db")
     mysql_server = os.getenv("MYSQL_SERVER")
-    sql_alchemy_database_url = (
-        f"mysql://{mysql_username}:{mysql_password}@{mysql_server}:{mysql_port}/{mysql_database}?charset=utf8"
-    )
+    sql_alchemy_database_url = f"mysql://{mysql_username}:{mysql_password}@{mysql_server}:{mysql_port}/{mysql_database}?charset=utf8"
 
     sample_data_path = os.getenv("SAMPLE_DATA_PATH", "models/data.json")
     with open(sample_data_path, "r") as f:

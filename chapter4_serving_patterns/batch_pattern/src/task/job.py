@@ -24,7 +24,7 @@ def predict(item: schemas.Item) -> Tuple[int, np.ndarray]:
 
 def main():
     logger.info("waiting for batch to start")
-    time.sleep(180)
+    time.sleep(120)
     logger.info("starting batch")
     with get_context_db() as db:
         data = cruds.select_without_prediction(db=db)
