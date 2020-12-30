@@ -1,5 +1,5 @@
 ABSOLUTE_PATH := $(shell pwd)
-BASE_IMAGE_NAME := shibui/ml-system-in-action
+BASE_IMAGE_NAME := shibui/ml-system-in-actions
 TRAINING_PATTERN := training_pattern
 TRAINING_PROJECT := mnist
 IMAGE_VERSION := 0.0.1

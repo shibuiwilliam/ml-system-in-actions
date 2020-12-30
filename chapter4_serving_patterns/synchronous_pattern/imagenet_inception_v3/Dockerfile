@@ -5,7 +5,9 @@ ENV PROJECT_DIR training_patterns
 WORKDIR /${PROJECT_DIR}
 ADD ./${SERVER_DIR}/requirements.txt /${PROJECT_DIR}/
 RUN apt-get -y update && \
-    apt-get -y install apt-utils gcc curl && \
+    apt-get -y install apt-utils gcc && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     pip install  --no-cache-dir -r requirements.txt && \
     touch __init__.py
 

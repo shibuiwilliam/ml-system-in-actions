@@ -1,4 +1,4 @@
-DOCKER_REPOSITORY := shibui/ml-system-in-action
+DOCKER_REPOSITORY := shibui/ml-system-in-actions
 
 ABSOLUTE_PATH := $(shell pwd)
 
@@ -27,6 +27,10 @@ run_prep:
 		-p $(PREP_PRED_PATTERN_PREP_PORT):$(PREP_PRED_PATTERN_PREP_PORT) \
 		$(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PREP)_$(IMAGE_VERSION)
 
+.PHONY: push_prep
+push_prep: 
+	docker push $(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PREP)_$(IMAGE_VERSION)
+
 .PHONY: build_pred
 build_pred:
 	docker build \
@@ -42,6 +46,18 @@ run_pred:
 		-p $(PREP_PRED_PATTERN_REST_PORT):$(PREP_PRED_PATTERN_REST_PORT) \
 		$(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PRED)_$(IMAGE_VERSION)
 
+.PHONY: push_pred
+push_pred:
+	docker push $(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PRED)_$(IMAGE_VERSION)
+
+.PHONY: build_all
+build_all: build_prep build_pred
+
+.PHONY: run_all
+run_all: run_prep run_pred
+
+.PHONY: push_all
+push_all: push_prep push_pred
 
 .PHONY: c_build
 c_build:

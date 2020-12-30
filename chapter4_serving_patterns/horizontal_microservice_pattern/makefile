@@ -1,4 +1,4 @@
-DOCKER_REPOSITORY := shibui/ml-system-in-action
+DOCKER_REPOSITORY := shibui/ml-system-in-actions
 
 ABSOLUTE_PATH := $(shell pwd)
 

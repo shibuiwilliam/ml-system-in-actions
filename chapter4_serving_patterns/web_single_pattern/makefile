@@ -1,4 +1,4 @@
-DOCKER_REPOSITORY := shibui/ml-system-in-action
+DOCKER_REPOSITORY := shibui/ml-system-in-actions
 
 ABSOLUTE_PATH := $(shell pwd)
 
@@ -31,7 +31,6 @@ stop:
 .PHONY: push
 push:
 	docker push $(DOCKER_REPOSITORY):$(WEB_SINGLE_PATTERN)_$(IMAGE_VERSION)
-
 
 .PHONY: health
 health:

@@ -1,4 +1,4 @@
-DOCKER_REPOSITORY := shibui/ml-system-in-action
+DOCKER_REPOSITORY := shibui/ml-system-in-actions
 
 ABSOLUTE_PATH := $(shell pwd)
 
@@ -25,6 +25,19 @@ run:
 		-p $(SYNCHRONOUS_PATTERN_GRPC_PORT):$(SYNCHRONOUS_PATTERN_GRPC_PORT) \
 		-p $(SYNCHRONOUS_PATTERN_REST_PORT):$(SYNCHRONOUS_PATTERN_REST_PORT) \
 		$(DOCKER_REPOSITORY):$(SYNCHRONOUS_PATTERN)_$(SYNCHRONOUS_PATTERN_SERVER)_$(IMAGE_VERSION)
+
+.PHONY: push
+push:
+	docker push $(DOCKER_REPOSITORY):$(SYNCHRONOUS_PATTERN)_$(SYNCHRONOUS_PATTERN_SERVER)_$(IMAGE_VERSION)
+
+.PHONY: build_all
+build_all: build
+
+.PHONY: run_all
+run_all: run
+
+.PHONY: push_all
+push_all: push
 
 .PHONY: metadata
 metadata:

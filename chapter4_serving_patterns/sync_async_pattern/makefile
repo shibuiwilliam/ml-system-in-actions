@@ -1,4 +1,4 @@
-DOCKER_REPOSITORY := shibui/ml-system-in-action
+DOCKER_REPOSITORY := shibui/ml-system-in-actions
 
 ABSOLUTE_PATH := $(shell pwd)
 
@@ -31,6 +31,10 @@ run_proxy:
 		-p $(SYNC_ASYNC_PATTERN_PROXY_PORT):$(SYNC_ASYNC_PATTERN_PROXY_PORT) \
 		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_PROXY)_$(IMAGE_VERSION)
 
+.PHONY: push_proxy
+push_proxy:
+	docker push $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_PROXY)_$(IMAGE_VERSION)
+
 .PHONY: build_sync
 build_sync:
 	docker build \
@@ -45,6 +49,11 @@ run_sync:
 		-p $(SYNC_ASYNC_PATTERN_SYNC_GRPC_PORT):$(SYNC_ASYNC_PATTERN_SYNC_GRPC_PORT) \
 		-p $(SYNC_ASYNC_PATTERN_SYNC_REST_PORT):$(SYNC_ASYNC_PATTERN_SYNC_REST_PORT) \
 		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_SYNC_MODEL)_$(IMAGE_VERSION)
+
+.PHONY: push_sync
+push_sync:
+	docker push $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_SYNC_MODEL)_$(IMAGE_VERSION)
+
 
 .PHONY: build_async
 build_async:
@@ -61,6 +70,11 @@ run_async:
 		-p $(SYNC_ASYNC_PATTERN_ASYNC_REST_PORT):$(SYNC_ASYNC_PATTERN_ASYNC_REST_PORT) \
 		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_ASYNC_MODEL)_$(IMAGE_VERSION)
 
+.PHONY: push_async
+push_async:
+	docker push $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_ASYNC_MODEL)_$(IMAGE_VERSION)
+
+
 .PHONY: build_backend
 build_backend:
 	docker build \
@@ -73,6 +87,19 @@ run_backend:
 		-d \
 		--name $(SYNC_ASYNC_PATTERN_BACKEND) \
 		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_BACKEND)_$(IMAGE_VERSION)
+
+.PHONY: push_backend
+push_backend:
+	docker push $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_BACKEND)_$(IMAGE_VERSION)
+
+.PHONY: build_all
+build_all: build_proxy build_sync build_async buil_backend
+
+.PHONY: run_all
+run_all: run_proxy run_sync run_async run_backend
+
+.PHONY: push_all
+push_all: push_proxy push_sync push_async push_backend
 
 .PHONY: c_build
 c_build:
