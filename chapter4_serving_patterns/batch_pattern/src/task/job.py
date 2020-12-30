@@ -34,13 +34,6 @@ def main():
             results = executor.map(predict, data)
         for result in results:
             predictions[result[0]] = list(result[1])
-        # for _d in data:
-        #     prediction = classifier.predict(data=[_d.values])
-        #     predictions[_d.id] = {
-        #         "setosa": prediction[0],
-        #         "versicolor": prediction[1],
-        #         "virginica": prediction[2],
-        #     }
         cruds.register_predictions(db=db, predictions=predictions, commit=True)
     logger.info("finished batch")
 
