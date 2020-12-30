@@ -4,8 +4,8 @@ services:
   proxy:
     container_name: proxy
     build:
-      context: ..
-      dockerfile: horizontal_microservice_pattern/Dockerfile.proxy
+      context: .
+      dockerfile: ./Dockerfile.proxy
     environment:
       - PLATFORM=docker_compose
       - APP_NAME=src.api_composition_proxy.app.proxy:app
@@ -24,8 +24,8 @@ services:
   service_setosa:
     container_name: service_setosa
     build:
-      context: ..
-      dockerfile: horizontal_microservice_pattern/Dockerfile.service.setosa
+      context: .
+      dockerfile: ./Dockerfile.service.setosa
     environment:
       - PLATFORM=docker_compose
       - PORT=8000
@@ -37,8 +37,8 @@ services:
   service_versicolor:
     container_name: service_versicolor
     build:
-      context: ..
-      dockerfile: horizontal_microservice_pattern/Dockerfile.service.versicolor
+      context: .
+      dockerfile: ./Dockerfile.service.versicolor
     environment:
       - PLATFORM=docker_compose
       - PORT=8001
@@ -50,8 +50,8 @@ services:
   service_virginica:
     container_name: service_virginica
     build:
-      context: ..
-      dockerfile: horizontal_microservice_pattern/Dockerfile.service.virginica
+      context: .
+      dockerfile: ./Dockerfile.service.virginica
     environment:
       - PLATFORM=docker_compose
       - PORT=8002

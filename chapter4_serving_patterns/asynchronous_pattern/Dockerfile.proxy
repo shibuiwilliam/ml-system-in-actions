@@ -1,21 +1,19 @@
 FROM python:3.8-slim
 
-ARG PATTERN=asynchronous_pattern
 ENV MODEL_DIR imagenet_inception_v3
 ENV PROJECT_DIR asynchronous_pattern
 WORKDIR /${PROJECT_DIR}
-ADD ${PATTERN}/requirements_proxy.txt /${PROJECT_DIR}/
+ADD ./requirements_proxy.txt /${PROJECT_DIR}/
 RUN apt-get -y update && \
     apt-get -y install apt-utils gcc curl && \
     pip install --no-cache-dir -r requirements_proxy.txt
 
-COPY ${PATTERN}/src/ /${PROJECT_DIR}/src/
-COPY utils/ /${PROJECT_DIR}/utils/
-COPY ${PATTERN}/${MODEL_DIR}/data/ /${PROJECT_DIR}/data/
+COPY ./src/ /${PROJECT_DIR}/src/
+COPY ./${MODEL_DIR}/data/ /${PROJECT_DIR}/data/
 
 ENV LOG_LEVEL DEBUG
 ENV LOG_FORMAT TEXT
 
-COPY ${PATTERN}/run.sh /${PROJECT_DIR}/run.sh
+COPY ./run.sh /${PROJECT_DIR}/run.sh
 RUN chmod +x /${PROJECT_DIR}/run.sh
 CMD [ "./run.sh" ]

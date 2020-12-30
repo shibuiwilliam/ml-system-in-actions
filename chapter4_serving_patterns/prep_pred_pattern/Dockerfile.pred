@@ -1,16 +1,15 @@
 FROM python:3.8-slim as builder
 
-ARG PATTERN=prep_pred_pattern
 ARG SERVER_DIR=resnet50_onnx_runtime
 ENV PROJECT_DIR prep_pred_pattern
 
 WORKDIR /${PROJECT_DIR}
-ADD ${PATTERN}/${SERVER_DIR}/requirements.txt /${PROJECT_DIR}/
+ADD ./${SERVER_DIR}/requirements.txt /${PROJECT_DIR}/
 
-COPY ${PATTERN}/${SERVER_DIR}/extract_resnet50_onnx.py /${PROJECT_DIR}/extract_resnet50_onnx.py
-COPY ${PATTERN}/src/ml/transformers.py /${PROJECT_DIR}/src/ml/transformers.py
-COPY ${PATTERN}/data/cat.jpg /${PROJECT_DIR}/data/cat.jpg
-COPY ${PATTERN}/data/image_net_labels.json /${PROJECT_DIR}/data/image_net_labels.json
+COPY ./${SERVER_DIR}/extract_resnet50_onnx.py /${PROJECT_DIR}/extract_resnet50_onnx.py
+COPY ./src/ml/transformers.py /${PROJECT_DIR}/src/ml/transformers.py
+COPY ./data/cat.jpg /${PROJECT_DIR}/data/cat.jpg
+COPY ./data/image_net_labels.json /${PROJECT_DIR}/data/image_net_labels.json
 
 RUN apt-get -y update && \
     apt-get -y install apt-utils gcc && \
@@ -22,7 +21,6 @@ RUN apt-get -y update && \
 
 FROM mcr.microsoft.com/onnxruntime/server:latest
 
-ARG PATTERN=prep_pred_pattern
 ARG SERVER_DIR=resnet50_onnx_runtime
 ENV PROJECT_DIR prep_pred_pattern
 ENV MODEL_BASE_PATH=${PROJECT_DIR}/models
@@ -34,6 +32,6 @@ COPY --from=builder /${MODEL_BASE_PATH}/resnet50.onnx /${MODEL_BASE_PATH}/resnet
 ENV MODEL_PATH /${MODEL_BASE_PATH}/resnet50.onnx
 
 WORKDIR /onnxruntime/server/
-COPY ${PATTERN}/${SERVER_DIR}/onnx_runtime_server_entrypoint.sh ./onnx_runtime_server_entrypoint.sh
+COPY ./${SERVER_DIR}/onnx_runtime_server_entrypoint.sh ./onnx_runtime_server_entrypoint.sh
 RUN chmod +x onnx_runtime_server_entrypoint.sh
 ENTRYPOINT ["./onnx_runtime_server_entrypoint.sh"]

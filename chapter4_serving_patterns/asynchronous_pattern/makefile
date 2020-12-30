@@ -1,0 +1,106 @@
+DOCKER_REPOSITORY := shibui/ml-system-in-action
+
+ABSOLUTE_PATH := $(shell pwd)
+
+DOCKERFILE := Dockerfile
+DOCKER_COMPOSE := dockercompose.yaml
+IMAGE_VERSION := 0.0.1
+
+ASYNCHRONOUS_PATTERN := asynchronous_pattern
+ASYNCHRONOUS_PATTERN_PROXY := asynchronous_proxy
+ASYNCHRONOUS_PATTERN_PROXY_PORT := 8000
+ASYNCHRONOUS_PATTERN_SERVER := imagenet_inception_v3
+ASYNCHRONOUS_PATTERN_GRPC_PORT := 8500
+ASYNCHRONOUS_PATTERN_REST_PORT := 8501
+ASYNCHRONOUS_PATTERN_BACKEND := asynchronous_backend
+
+.PHONY: build_proxy
+build_proxy:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(ASYNCHRONOUS_PATTERN)_$(ASYNCHRONOUS_PATTERN_PROXY)_$(IMAGE_VERSION) \
+		-f ./$(DOCKERFILE).proxy .
+
+.PHONY: run_proxy
+run_proxy:
+	docker run \
+		-d \
+		--name $(ASYNCHRONOUS_PATTERN_PROXY) \
+		-p $(ASYNCHRONOUS_PATTERN_PROXY_PORT):$(ASYNCHRONOUS_PATTERN_PROXY_PORT) \
+		$(DOCKER_REPOSITORY):$(ASYNCHRONOUS_PATTERN)_$(ASYNCHRONOUS_PATTERN_PROXY)_$(IMAGE_VERSION)
+
+.PHONY: build_server
+build_server:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(ASYNCHRONOUS_PATTERN)_$(ASYNCHRONOUS_PATTERN_SERVER)_$(IMAGE_VERSION) \
+		-f ./$(ASYNCHRONOUS_PATTERN_SERVER)/$(DOCKERFILE) .
+
+.PHONY: run_server
+run_server:
+	docker run \
+		-d \
+		--name $(ASYNCHRONOUS_PATTERN_SERVER) \
+		-p $(ASYNCHRONOUS_PATTERN_GRPC_PORT):$(ASYNCHRONOUS_PATTERN_GRPC_PORT) \
+		-p $(ASYNCHRONOUS_PATTERN_REST_PORT):$(ASYNCHRONOUS_PATTERN_REST_PORT) \
+		$(DOCKER_REPOSITORY):$(ASYNCHRONOUS_PATTERN)_$(ASYNCHRONOUS_PATTERN_SERVER)_$(IMAGE_VERSION)
+
+.PHONY: build_backend
+build_backend:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(ASYNCHRONOUS_PATTERN)_$(ASYNCHRONOUS_PATTERN_BACKEND)_$(IMAGE_VERSION) \
+		-f ./$(DOCKERFILE).backend .
+
+.PHONY: run_backend
+run_backend:
+	docker run \
+		-d \
+		--name $(ASYNCHRONOUS_PATTERN_BACKEND) \
+		$(DOCKER_REPOSITORY):$(ASYNCHRONOUS_PATTERN)_$(ASYNCHRONOUS_PATTERN_BACKEND)_$(IMAGE_VERSION)
+
+.PHONY: c_build
+c_build:
+	docker-compose \
+		-f ./$(DOCKER_COMPOSE) \
+		build
+
+.PHONY: c_up
+c_up:
+	docker-compose \
+		-f ./$(DOCKER_COMPOSE) \
+		up -d
+
+.PHONY: c_down
+c_down:
+	docker-compose \
+		-f ./$(DOCKER_COMPOSE) \
+		down
+
+.PHONY: health
+health:
+	curl localhost:8000/health
+
+.PHONY: metadata
+metadata:
+	curl localhost:8000/metadata
+
+.PHONY: label
+label:
+	curl localhost:8000/label
+
+.PHONY: predict_test
+predict_test:
+	curl localhost:8000/predict/test
+
+.PHONY: predict
+predict:
+	(echo -n '{"image_data": "'; base64 imagenet_inception_v3/data/cat.jpg; echo '"}') \
+	| curl \
+		-X POST \
+			-H "Content-Type: application/json" \
+			-d @- \
+			localhost:8000/predict
+
+JOB_ID = aaaaaa
+
+.PHONY: job
+job:
+	curl localhost:8000/job/${JOB_ID}

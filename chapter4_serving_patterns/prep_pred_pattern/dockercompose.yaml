@@ -4,8 +4,8 @@ services:
   prep:
     container_name: prep
     build:
-      context: ..
-      dockerfile: prep_pred_pattern/Dockerfile.prep
+      context: .
+      dockerfile: Dockerfile.prep
     environment:
       - PLATFORM=docker_compose
       - API_ADDRESS=pred
@@ -18,8 +18,8 @@ services:
   pred:
     container_name: pred
     build:
-      context: ..
-      dockerfile: prep_pred_pattern/Dockerfile.pred
+      context: .
+      dockerfile: Dockerfile.pred
     environment:
       - HTTP_PORT=8001
       - GRPC_PORT=50051

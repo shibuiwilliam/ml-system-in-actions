@@ -1,0 +1,101 @@
+DOCKER_REPOSITORY := shibui/ml-system-in-action
+
+ABSOLUTE_PATH := $(shell pwd)
+
+DOCKERFILE := Dockerfile
+DOCKER_COMPOSE := dockercompose.yaml
+IMAGE_VERSION := 0.0.1
+
+PREP_PRED_PATTERN := prep_pred_pattern
+PREP_PRED_PATTERN_PREP := prep
+PREP_PRED_PATTERN_PREP_PORT := 8000
+PREP_PRED_PATTERN_PRED := pred
+PREP_PRED_PATTERN_REST_PORT := 8001
+PREP_PRED_PATTERN_GRPC_PORT := 50051
+
+.PHONY: build_prep
+build_prep:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PREP)_$(IMAGE_VERSION) \
+		-f ./$(DOCKERFILE).prep .
+
+.PHONY: run_prep
+run_prep:
+	docker run \
+		-d \
+		--name $(PREP_PRED_PATTERN_PREP) \
+		-p $(PREP_PRED_PATTERN_PREP_PORT):$(PREP_PRED_PATTERN_PREP_PORT) \
+		$(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PREP)_$(IMAGE_VERSION)
+
+.PHONY: build_pred
+build_pred:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PRED)_$(IMAGE_VERSION) \
+		-f ./$(DOCKERFILE).pred .
+
+.PHONY: run_pred
+run_pred:
+	docker run \
+		-d \
+		--name $(PREP_PRED_PATTERN_PRED) \
+		-p $(PREP_PRED_PATTERN_GRPC_PORT):$(PREP_PRED_PATTERN_GRPC_PORT) \
+		-p $(PREP_PRED_PATTERN_REST_PORT):$(PREP_PRED_PATTERN_REST_PORT) \
+		$(DOCKER_REPOSITORY):$(PREP_PRED_PATTERN)_$(PREP_PRED_PATTERN_PRED)_$(IMAGE_VERSION)
+
+
+.PHONY: c_build
+c_build:
+	docker-compose \
+		-f ./$(DOCKER_COMPOSE) \
+		build
+
+.PHONY: c_up
+c_up:
+	docker-compose \
+		-f ./$(DOCKER_COMPOSE) \
+		up -d
+
+.PHONY: c_down
+c_down:
+	docker-compose \
+		-f ./$(DOCKER_COMPOSE) \
+		down
+
+
+.PHONY: health
+health:
+	curl localhost:8000/health
+
+.PHONY: metadata
+metadata:
+	curl localhost:8000/metadata
+
+.PHONY: label
+label:
+	curl localhost:8000/label
+
+.PHONY: predict_test
+predict_test:
+	curl localhost:8000/predict/test
+
+.PHONY: predict_test_label
+predict_test_label:
+	curl localhost:8000/predict/test/label
+
+.PHONY: predict
+predict:
+	(echo -n '{"data": "'; base64 data/cat.jpg; echo '"}') \
+	| curl \
+		-X POST \
+			-H "Content-Type: application/json" \
+			-d @- \
+			localhost:8000/predict
+
+.PHONY: predict_label
+predict_label:
+	(echo -n '{"data": "'; base64 data/cat.jpg; echo '"}') \
+	| curl \
+		-X POST \
+			-H "Content-Type: application/json" \
+			-d @- \
+			localhost:8000/predict/label

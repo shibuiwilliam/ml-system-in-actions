@@ -1,0 +1,37 @@
+DOCKER_REPOSITORY := shibui/ml-system-in-action
+
+ABSOLUTE_PATH := $(shell pwd)
+
+DOCKERFILE := Dockerfile
+IMAGE_VERSION := 0.0.1
+
+SYNCHRONOUS_PATTERN := synchronous_pattern
+SYNCHRONOUS_PATTERN_SERVER := imagenet_inception_v3
+SYNCHRONOUS_PATTERN_GRPC_PORT := 8500
+SYNCHRONOUS_PATTERN_REST_PORT := 8501
+
+
+.PHONY: build
+build:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(SYNCHRONOUS_PATTERN)_$(SYNCHRONOUS_PATTERN_SERVER)_$(IMAGE_VERSION) \
+		-f $(SYNCHRONOUS_PATTERN_SERVER)/$(DOCKERFILE) .
+
+.PHONY: run
+run:
+	docker run \
+		-d \
+		--name $(SYNCHRONOUS_PATTERN_SERVER) \
+		-p $(SYNCHRONOUS_PATTERN_GRPC_PORT):$(SYNCHRONOUS_PATTERN_GRPC_PORT) \
+		-p $(SYNCHRONOUS_PATTERN_REST_PORT):$(SYNCHRONOUS_PATTERN_REST_PORT) \
+		$(DOCKER_REPOSITORY):$(SYNCHRONOUS_PATTERN)_$(SYNCHRONOUS_PATTERN_SERVER)_$(IMAGE_VERSION)
+
+.PHONY: metadata
+metadata:
+	 curl localhost:8501/v1/models/inception_v3/versions/0/metadata
+
+.PHONY: predict
+predict:
+	python \
+		-m client.request_inception_v3 \
+		--image_file ./cat.jpg

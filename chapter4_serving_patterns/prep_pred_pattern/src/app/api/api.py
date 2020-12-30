@@ -50,10 +50,13 @@ async def predict(data: Data) -> Dict[str, List[float]]:
     image = base64.b64decode(str(data.data))
     io_bytes = io.BytesIO(image)
     image_data = Image.open(io_bytes)
-    prediction = classifier.predict(data=image_data)
+    prediction = await classifier.predict(data=image_data)
     return {"prediction": list(prediction)}
 
 
 async def predict_label(data: Data) -> Dict[str, str]:
-    prediction = await classifier.predict_label(data.data)
+    image = base64.b64decode(str(data.data))
+    io_bytes = io.BytesIO(image)
+    image_data = Image.open(io_bytes)
+    prediction = await classifier.predict_label(data=image_data)
     return {"prediction": prediction}

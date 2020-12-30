@@ -25,16 +25,12 @@ def health() -> Dict[str, str]:
 @router.get("/metadata")
 def metadata() -> Dict[str, Any]:
     return {
-        "data_type": "float32",
-        "data_structure": "(1,4)",
-        "data_sample": Data().data,
+        "data_type": "str",
+        "data_structure": "(1,1)",
+        "data_sample": "base64 encoded image file",
         "prediction_type": "float32",
-        "prediction_structure": "(1,2)",
-        "prediction_sample": {
-            "service_setosa": [0.970000, 0.030000],
-            "service_versicolor": [0.970000, 0.030000],
-            "service_virginica": [0.970000, 0.030000],
-        },
+        "prediction_structure": "(1,1001)",
+        "prediction_sample": "[0.07093159, 0.01558308, 0.01348537, ...]",
     }
 
 
@@ -87,10 +83,13 @@ async def predict(data: Data, background_tasks: BackgroundTasks) -> Dict[str, An
     logger.info(f"POST redirect to: /predict")
     job_id = str(uuid.uuid4())[:6]
     results = {"job_id": job_id}
+    image = base64.b64decode(str(data.image_data))
+    bytes_io = io.BytesIO(image)
+    image_data = Image.open(bytes_io)
     for service, url in ServiceConfigurations.grpc.items():
         if service == "mobilenet_v2":
-            image = base64.b64decode(str(data.image_data))
-            bytes_io = io.BytesIO(image)
+            image_data.save(bytes_io, format=image_data.format)
+            bytes_io.seek(0)
             r = request_tfserving.request_grpc(
                 image=bytes_io.read(),
                 model_spec_name=service,
@@ -101,11 +100,8 @@ async def predict(data: Data, background_tasks: BackgroundTasks) -> Dict[str, An
             logger.info(f"prediction: {r}")
             results[service] = r
         else:
-            image = base64.b64decode(str(data.image_data))
-            bytes_io = io.BytesIO(image)
-            data.image_data = Image.open(bytes_io)
             background_job.save_data_job(
-                data=data.image_data,
+                data=image_data,
                 job_id=job_id,
                 background_tasks=background_tasks,
                 enqueue=True,
