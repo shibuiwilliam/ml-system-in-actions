@@ -133,10 +133,7 @@ stop_all: stop_setosa stop_versicolor stop_virginica stop_proxy
 push_all: push_setosa push_versicolor push_virginica push_proxy
 
 .PHONY: c_build
-c_build:
-	docker-compose \
-		-f ./$(DOCKER_COMPOSE) \
-		build
+c_build: build_all
 
 .PHONY: c_up
 c_up:

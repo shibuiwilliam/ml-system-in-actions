@@ -3,9 +3,8 @@ version: "3"
 services:
   asynchronous_proxy:
     container_name: asynchronous_proxy
-    build:
-      context: .
-      dockerfile: Dockerfile.proxy
+    image: shibui/ml-system-in-actions:asynchronous_pattern_asynchronous_proxy_0.0.1
+    restart: always
     environment:
       - PLATFORM=docker_compose
       - QUEUE_NAME=tfs_queue
@@ -20,9 +19,8 @@ services:
 
   imagenet_inception_v3:
     container_name: imagenet_inception_v3
-    build:
-      context: .
-      dockerfile: imagenet_inception_v3/Dockerfile
+    image: shibui/ml-system-in-actions:asynchronous_pattern_imagenet_inception_v3_0.0.1
+    restart: always
     environment:
       - PORT=8500
       - REST_API_PORT=8501
@@ -33,9 +31,8 @@ services:
 
   asynchronous_backend:
     container_name: asynchronous_backend
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
+    image: shibui/ml-system-in-actions:asynchronous_pattern_asynchronous_backend_0.0.1
+    restart: always
     environment:
       - PLATFORM=docker_compose
       - QUEUE_NAME=tfs_queue

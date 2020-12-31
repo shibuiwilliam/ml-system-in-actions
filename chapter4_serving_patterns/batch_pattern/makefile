@@ -65,10 +65,7 @@ run_all: run_api run_batch
 push_all: push_api push_batch
 
 .PHONY: c_build
-c_build:
-	docker-compose \
-		-f ./$(DOCKER_COMPOSE) \
-		build
+c_build: build_all
 
 .PHONY: c_up
 c_up:

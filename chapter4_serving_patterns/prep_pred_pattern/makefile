@@ -60,10 +60,7 @@ run_all: run_prep run_pred
 push_all: push_prep push_pred
 
 .PHONY: c_build
-c_build:
-	docker-compose \
-		-f ./$(DOCKER_COMPOSE) \
-		build
+c_build: build_all
 
 .PHONY: c_up
 c_up:

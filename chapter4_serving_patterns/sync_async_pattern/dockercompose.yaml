@@ -3,9 +3,8 @@ version: "3"
 services:
   proxy:
     container_name: proxy
-    build:
-      context: .
-      dockerfile: ./Dockerfile.proxy
+    image: shibui/ml-system-in-actions:sync_async_pattern_sync_async_proxy_0.0.1
+    restart: always
     environment:
       - PLATFORM=docker_compose
       - QUEUE_NAME=tfs_queue
@@ -24,9 +23,8 @@ services:
 
   sync:
     container_name: sync
-    build:
-      context: .
-      dockerfile: ./imagenet_mobilenet_v2/Dockerfile
+    image: shibui/ml-system-in-actions:sync_async_pattern_imagenet_mobilenet_v2_0.0.1
+    restart: always
     environment:
       - PORT=8500
       - REST_API_PORT=8501
@@ -37,9 +35,8 @@ services:
 
   async:
     container_name: async
-    build:
-      context: .
-      dockerfile: ./imagenet_inception_v3/Dockerfile
+    image: shibui/ml-system-in-actions:sync_async_pattern_imagenet_inception_v3_0.0.1
+    restart: always
     environment:
       - PORT=8600
       - REST_API_PORT=8601
@@ -50,9 +47,8 @@ services:
 
   backend:
     container_name: backend
-    build:
-      context: .
-      dockerfile: ./Dockerfile.backend
+    image: shibui/ml-system-in-actions:sync_async_pattern_sync_async_backend_0.0.1
+    restart: always
     environment:
       - PLATFORM=docker_compose
       - QUEUE_NAME=tfs_queue

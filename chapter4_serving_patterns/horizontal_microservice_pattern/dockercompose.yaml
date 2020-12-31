@@ -3,9 +3,8 @@ version: "3"
 services:
   proxy:
     container_name: proxy
-    build:
-      context: .
-      dockerfile: ./Dockerfile.proxy
+    image: shibui/ml-system-in-actions:horizontal_microservice_pattern_proxy_0.0.1
+    restart: always
     environment:
       - PLATFORM=docker_compose
       - APP_NAME=src.api_composition_proxy.app.proxy:app
@@ -23,9 +22,8 @@ services:
 
   service_setosa:
     container_name: service_setosa
-    build:
-      context: .
-      dockerfile: ./Dockerfile.service.setosa
+    image: shibui/ml-system-in-actions:horizontal_microservice_pattern_setosa_0.0.1
+    restart: always
     environment:
       - PLATFORM=docker_compose
       - PORT=8000
@@ -36,9 +34,8 @@ services:
 
   service_versicolor:
     container_name: service_versicolor
-    build:
-      context: .
-      dockerfile: ./Dockerfile.service.versicolor
+    image: shibui/ml-system-in-actions:horizontal_microservice_pattern_versicolor_0.0.1
+    restart: always
     environment:
       - PLATFORM=docker_compose
       - PORT=8001
@@ -49,9 +46,8 @@ services:
 
   service_virginica:
     container_name: service_virginica
-    build:
-      context: .
-      dockerfile: ./Dockerfile.service.virginica
+    image: shibui/ml-system-in-actions:horizontal_microservice_pattern_virginica_0.0.1
+    restart: always
     environment:
       - PLATFORM=docker_compose
       - PORT=8002

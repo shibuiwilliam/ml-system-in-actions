@@ -21,9 +21,8 @@ services:
 
   api:
     container_name: api
-    build:
-      context: .
-      dockerfile: Dockerfile.api
+    image: shibui/ml-system-in-actions:batch_pattern_api_0.0.1
+    restart: always
     environment:
       - MYSQL_DATABASE=sample_db
       - MYSQL_USER=user
@@ -38,9 +37,8 @@ services:
 
   job:
     container_name: job
-    build:
-      context: .
-      dockerfile: Dockerfile.batch
+    image: shibui/ml-system-in-actions:batch_pattern_batch_0.0.1
+    restart: always
     environment:
       - MYSQL_DATABASE=sample_db
       - MYSQL_USER=user
