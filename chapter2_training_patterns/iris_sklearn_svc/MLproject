@@ -1,0 +1,13 @@
+name: iris_sklearn
+
+docker_env:
+  image: shibui/ml-system-in-actions:training_pattern_iris_sklearn_0.0.1
+
+entry_points:
+  main:
+    parameters:
+      test_size: {type: float, default: 0.3}
+
+    command: |
+          python -m iris_train \
+            --test_size {test_size} 

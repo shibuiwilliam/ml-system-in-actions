@@ -1,20 +1,20 @@
 from fastapi import APIRouter
 import logging
 import asyncio
-import uuid
+import io
 import httpx
 from typing import Dict, Any, List
-from pydantic import BaseModel
+import uuid
+import base64
+from PIL import Image
 
-from src.api_composition_proxy.configurations import ServiceConfigurations
+from src.api_composition_proxy.configurations import ServiceConfigurations, ModelConfigurations
+from src.api_composition_proxy.backend.data import Data
+from src.api_composition_proxy.backend import request_tfserving
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
-
-
-class Data(BaseModel):
-    data: List[List[float]] = [[5.1, 3.5, 1.4, 0.2]]
 
 
 @router.get("/health")
@@ -22,79 +22,73 @@ def health() -> Dict[str, str]:
     return {"health": "ok"}
 
 
+@router.get("/label")
+def label() -> List[str]:
+    return ModelConfigurations.labels
+
+
 @router.get("/metadata")
 def metadata() -> Dict[str, Any]:
     return {
-        "data_type": "float32",
-        "data_structure": "(1,4)",
-        "data_sample": Data().data,
+        "data_type": "str",
+        "data_structure": "(1,1)",
+        "data_sample": "base64 encoded image file",
         "prediction_type": "float32",
-        "prediction_structure": "(1,2)",
-        "prediction_sample": {
-            "service_setosa": [0.970000, 0.030000],
-            "service_versicolor": [0.970000, 0.030000],
-            "service_virginica": [0.970000, 0.030000],
-        },
+        "prediction_structure": f"(1,{len(ModelConfigurations.labels)})",
+        "prediction_sample": "[0.07093159, 0.01558308, 0.01348537, ...]",
     }
 
 
-@router.get("/health/all")
-async def health_all() -> Dict[str, Any]:
+@router.get("/health/pred")
+async def health_pred() -> Dict[str, Any]:
     logger.info(f"GET redirect to: /health")
-    results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
-            r = await ac.get(f"{url}/health")
-            results[service] = r.json()
-    return results
+        serving_address = (
+            f"http://{ServiceConfigurations.rest}/v1/models/{ModelConfigurations.model_spec_name}/versions/0/metadata"
+        )
+        logger.info(f"health pred : {serving_address}")
+        r = await ac.get(serving_address)
+        logger.info(f"health pred res: {r}")
+    if r.status_code == 200:
+        return {"health": "ok"}
+    else:
+        return {"health": "ng"}
 
 
-@router.get("/predict/get/test")
-async def predict_get_test() -> Dict[str, Any]:
+@router.get("/predict/test")
+async def predict_test() -> Dict[str, Any]:
     job_id = str(uuid.uuid4())[:6]
-    logger.info(f"TEST GET redirect to: /predict/test as {job_id}")
-    results = {}
-    async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
-            r = await ac.get(f"{url}/predict/test", params={"id": job_id})
-            logger.info(f"{service} {job_id} {r.json()}")
-            proba = r.json()["prediction"][0]
-            if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
-                results[service] = 1
-            else:
-                results[service] = 0
-    return results
-
-
-@router.get("/predict/post/test")
-async def predict_post_test() -> Dict[str, Any]:
-    job_id = str(uuid.uuid4())[:6]
-    logger.info(f"TEST POST redirect to: /predict as {job_id}")
-    results = {}
-    async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
-            r = await ac.post(f"{url}/predict", json={"Data": Data().data}, params={"id": job_id})
-            logger.info(f"{service} {job_id} {r.json()}")
-            proba = r.json()["prediction"][0]
-            if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
-                results[service] = 1
-            else:
-                results[service] = 0
-    return results
+    logger.info(f"{job_id} TEST GET redirect to: /predict/test")
+    image = Data().image_data
+    bytes_io = io.BytesIO()
+    image.save(bytes_io, format=image.format)
+    bytes_io.seek(0)
+    r = request_tfserving.request_grpc(
+        image=bytes_io.read(),
+        model_spec_name=ModelConfigurations.model_spec_name,
+        signature_name="serving_default",
+        serving_address=ServiceConfigurations.grpc,
+        timeout_second=5,
+    )
+    logger.info(f"{job_id} prediction: {r}")
+    return r
 
 
 @router.post("/predict")
 async def predict(data: Data) -> Dict[str, Any]:
     job_id = str(uuid.uuid4())[:6]
-    logger.info(f"POST redirect to: /predict as {job_id}")
-    results = {}
-    async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
-            r = await ac.post(f"{url}/predict", json={"Data": data.data}, params={"id": job_id})
-            logger.info(f"{service} {job_id} {r.json()}")
-            proba = r.json()["prediction"][0]
-            if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
-                results[service] = 1
-            else:
-                results[service] = 0
-    return results
+    logger.info(f"{job_id} POST redirect to: /predict")
+    image = base64.b64decode(str(data.image_data))
+    bytes_io = io.BytesIO(image)
+    image_data = Image.open(bytes_io)
+    image_data.save(bytes_io, format=image_data.format)
+    bytes_io.seek(0)
+    r = request_tfserving.request_grpc(
+        image=bytes_io.read(),
+        model_spec_name=ModelConfigurations.model_spec_name,
+        signature_name="serving_default",
+        serving_address=ServiceConfigurations.grpc,
+        timeout_second=5,
+    )
+    logger.info(f"{job_id} prediction: {r}")
+    return r

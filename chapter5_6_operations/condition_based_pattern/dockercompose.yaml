@@ -1,57 +1,63 @@
 version: "3"
 
 services:
-  proxy:
-    container_name: proxy
-    image: shibui/ml-system-in-actions:parameter_based_pattern_proxy_0.0.1
+  mobilenet_v2_proxy:
+    container_name: mobilenet_v2_proxy
+    image: shibui/ml-system-in-actions:condition_based_pattern_proxy_0.0.1
     restart: always
     environment:
       - PLATFORM=docker_compose
-      - APP_NAME=src.api_composition_proxy.app.proxy:app
+      - REST=mobilenet_v2:8501
+      - GRPC=mobilenet_v2:8500
+      - MODEL_SPEC_NAME=mobilenet_v2
+      - SIGNATURE_NAME=serving_default
+      - LABEL_PATH=./data/image_net_labels.json
+      - SAMPLE_IMAGE_PATH=./data/cat.jpg
+    ports:
+      - "8000:8000"
+    command: ./run.sh
+    depends_on:
+      - mobilenet_v2
+
+  plant_proxy:
+    container_name: plant_proxy
+    image: shibui/ml-system-in-actions:condition_based_pattern_proxy_0.0.1
+    restart: always
+    environment:
+      - PLATFORM=docker_compose
       - PORT=9000
-      - SERVICE_SETOSA=service_setosa:8000
-      - SERVICE_VERSICOLOR=service_versicolor:8001
-      - SERVICE_VIRGINICA=service_virginica:8002
+      - REST=plant:9501
+      - GRPC=plant:9500
+      - MODEL_SPEC_NAME=plant
+      - SIGNATURE_NAME=serving_default
+      - LABEL_PATH=./data/plant_labels.json
+      - SAMPLE_IMAGE_PATH=./data/iris.jpg
     ports:
       - "9000:9000"
     command: ./run.sh
     depends_on:
-      - service_setosa
-      - service_versicolor
-      - service_virginica
+      - plant
 
-  service_setosa:
-    container_name: service_setosa
-    image: shibui/ml-system-in-actions:parameter_based_pattern_setosa_0.0.1
+  mobilenet_v2:
+    container_name: mobilenet_v2
+    image: shibui/ml-system-in-actions:condition_based_pattern_imagenet_mobilenet_v2_0.0.1
     restart: always
     environment:
-      - PLATFORM=docker_compose
-      - PORT=8000
-      - MODE=setosa
+      - PORT=8500
+      - REST_API_PORT=8501
     ports:
-      - "8000:8000"
-    command: ./run.sh
+      - "8500:8500"
+      - "8501:8501"
+    entrypoint: ["/usr/bin/tf_serving_entrypoint.sh"]
 
-  service_versicolor:
-    container_name: service_versicolor
-    image: shibui/ml-system-in-actions:parameter_based_pattern_versicolor_0.0.1
+  plant:
+    container_name: plant
+    image: shibui/ml-system-in-actions:condition_based_pattern_plant_0.0.1
     restart: always
     environment:
-      - PLATFORM=docker_compose
-      - PORT=8001
-      - MODE=versicolor
+      - PORT=9500
+      - REST_API_PORT=9501
     ports:
-      - "8001:8001"
-    command: ./run.sh
-
-  service_virginica:
-    container_name: service_virginica
-    image: shibui/ml-system-in-actions:parameter_based_pattern_virginica_0.0.1
-    restart: always
-    environment:
-      - PLATFORM=docker_compose
-      - PORT=8002
-      - MODE=virginica
-    ports:
-      - "8002:8002"
-    command: ./run.sh
+      - "9500:9500"
+      - "9501:9501"
+    entrypoint: ["/usr/bin/tf_serving_entrypoint.sh"]

@@ -1,6 +1,6 @@
 FROM python:3.8-slim
 
-ENV PROJECT_DIR parameter_based_pattern
+ENV PROJECT_DIR mobilenet_v2_inception_v3_pattern
 ENV PROXY_DIR api_composition_proxy
 
 WORKDIR /${PROJECT_DIR}
@@ -13,11 +13,11 @@ RUN apt-get -y update && \
     pip install --no-cache-dir -r requirements_proxy.txt
 
 COPY ./src/ /${PROJECT_DIR}/src/
-COPY ./models/ /${PROJECT_DIR}/models/
+COPY ./data/ /${PROJECT_DIR}/data/
 
 ENV LOG_LEVEL DEBUG
 ENV LOG_FORMAT TEXT
-ENV PORT 9000
+ENV PORT 8000
 ENV APP_NAME src.api_composition_proxy.app.proxy:app
 
 COPY ./run.sh /${PROJECT_DIR}/run.sh

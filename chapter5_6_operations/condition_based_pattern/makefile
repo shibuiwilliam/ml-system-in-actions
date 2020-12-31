@@ -7,130 +7,64 @@ DOCKER_COMPOSE := dockercompose.yaml
 IMAGE_VERSION := 0.0.1
 
 
-PARAMETER_BASED_PATTERN := parameter_based_pattern
-PARAMETER_BASED_PATTERN_PATH := $(ABSOLUTE_PATH)/$(PARAMETER_BASED_PATTERN)
-PARAMETER_BASED_PATTERN_SETOSA_PORT := 8000
-PARAMETER_BASED_PATTERN_VERSICOLOR_PORT := 8001
-PARAMETER_BASED_PATTERN_VIRGINICA_PORT := 8002
+CONDITION_BASED_PATTERN := condition_based_pattern
+CONDITION_BASED_PATTERN_PATH := $(ABSOLUTE_PATH)/$(CONDITION_BASED_PATTERN)
 
-PARAMETER_BASED_PATTERN_PROXY_PORT := 9000
+CONDITION_BASED_PATTERN_MOBILENET_V2 := imagenet_mobilenet_v2
+CONDITION_BASED_PATTERN_PLANT := plant
 
-.PHONY: build_setosa
-build_setosa:
-	docker build \
-		-t $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_setosa_$(IMAGE_VERSION) \
-		-f ./$(DOCKERFILE).service.setosa \
-		.
-	
-.PHONY: run_setosa
-run_setosa:
-	docker run \
-		-d \
-		--name $(PARAMETER_BASED_PATTERN)_setosa \
-		-e MODE:setosa \
-		-e PORT:$(PARAMETER_BASED_PATTERN_SETOSA_PORT) \
-		-p $(PARAMETER_BASED_PATTERN_SETOSA_PORT):$(PARAMETER_BASED_PATTERN_SETOSA_PORT) \
-		$(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_setosa_$(IMAGE_VERSION)
+CONDITION_BASED_PATTERN_MOBILENET_V2_PROXY_PORT := 8000
+CONDITION_BASED_PATTERN_PLANT_PROXY_PORT := 9000
 
-.PHONY: stop_setosa
-stop_setosa:
-	docker rm -f $(PARAMETER_BASED_PATTERN)_setosa
-
-
-.PHONY: push_setosa
-push_setosa:
-	docker push $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_setosa_$(IMAGE_VERSION)
-
-
-.PHONY: build_versicolor
-build_versicolor:
-	docker build \
-		-t $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_versicolor_$(IMAGE_VERSION) \
-		-f ./$(DOCKERFILE).service.versicolor \
-		.
-	
-.PHONY: run_versicolor
-run_versicolor:
-	docker run \
-		-d \
-		--name $(PARAMETER_BASED_PATTERN)_versicolor \
-		-e MODE:versicolor \
-		-e PORT:$(PARAMETER_BASED_PATTERN_VERSICOLOR_PORT) \
-		-p $(PARAMETER_BASED_PATTERN_VERSICOLOR_PORT):$(PARAMETER_BASED_PATTERN_VERSICOLOR_PORT) \
-		$(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_versicolor_$(IMAGE_VERSION)
-
-.PHONY: stop_versicolor
-stop_versicolor:
-	docker rm -f $(PARAMETER_BASED_PATTERN)_versicolor
-
-.PHONY: push_versicolor
-push_versicolor:
-	docker push $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_versicolor_$(IMAGE_VERSION)
-
-
-.PHONY: build_virginica
-build_virginica:
-	docker build \
-		-t $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_virginica_$(IMAGE_VERSION) \
-		-f ./$(DOCKERFILE).service.virginica \
-		.
-	
-.PHONY: run_virginica
-run_virginica:
-	docker run \
-		-d \
-		--name $(PARAMETER_BASED_PATTERN)_virginica \
-		-e MODE:virginica \
-		-e PORT:$(PARAMETER_BASED_PATTERN_VIRGINICA_PORT) \
-		-p $(PARAMETER_BASED_PATTERN_VIRGINICA_PORT):$(PARAMETER_BASED_PATTERN_VIRGINICA_PORT) \
-		$(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_virginica_$(IMAGE_VERSION)
-
-.PHONY: stop_virginica
-stop_virginica:
-	docker rm -f $(PARAMETER_BASED_PATTERN)_virginica
-
-.PHONY: push_virginica
-push_virginica:
-	docker push $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_virginica_$(IMAGE_VERSION)
-
+CONDITION_BASED_PATTERN_MOBILENET_V2_GRPC_PORT := 8500
+CONDITION_BASED_PATTERN_MOBILENET_V2_REST_PORT := 8501
+CONDITION_BASED_PATTERN_PLANT_GRPC_PORT := 9500
+CONDITION_BASED_PATTERN_PLANT_REST_PORT := 9501
 
 .PHONY: build_proxy
 build_proxy:
 	docker build \
-		-t $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_proxy_$(IMAGE_VERSION) \
+		-t $(DOCKER_REPOSITORY):$(CONDITION_BASED_PATTERN)_proxy_$(IMAGE_VERSION) \
 		-f ./$(DOCKERFILE).proxy \
 		.
-	
-.PHONY: run_proxy
-run_proxy:
-	docker run \
-		-d \
-		--name $(PARAMETER_BASED_PATTERN)_proxy \
-		-e MODE:proxy \
-		-e PORT:$(PARAMETER_BASED_PATTERN_PROXY_PORT) \
-		-p $(PARAMETER_BASED_PATTERN_PROXY_PORT):$(PARAMETER_BASED_PATTERN_PROXY_PORT) \
-		$(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_proxy_$(IMAGE_VERSION)
-
-.PHONY: stop_proxy
-stop_proxy:
-	docker rm -f $(PARAMETER_BASED_PATTERN)_proxy
 
 .PHONY: push_proxy
 push_proxy:
-	docker push $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_proxy_$(IMAGE_VERSION)
+	docker push $(DOCKER_REPOSITORY):$(CONDITION_BASED_PATTERN)_proxy_$(IMAGE_VERSION)
+
+
+.PHONY: build_mobilenet_v2
+build_mobilenet_v2:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(CONDITION_BASED_PATTERN)_$(CONDITION_BASED_PATTERN_MOBILENET_V2)_$(IMAGE_VERSION) \
+		-f ./$(CONDITION_BASED_PATTERN_MOBILENET_V2)/$(DOCKERFILE) .
+
+.PHONY: push_mobilenet_v2
+push_mobilenet_v2:
+	docker push $(DOCKER_REPOSITORY):$(CONDITION_BASED_PATTERN)_$(CONDITION_BASED_PATTERN_MOBILENET_V2)_$(IMAGE_VERSION)
+
+
+.PHONY: build_plant
+build_plant:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(CONDITION_BASED_PATTERN)_$(CONDITION_BASED_PATTERN_PLANT)_$(IMAGE_VERSION) \
+		-f ./$(CONDITION_BASED_PATTERN_PLANT)/$(DOCKERFILE) .
+
+.PHONY: push_plant
+push_plant:
+	docker push $(DOCKER_REPOSITORY):$(CONDITION_BASED_PATTERN)_$(CONDITION_BASED_PATTERN_PLANT)_$(IMAGE_VERSION)
+
 
 
 .PHONY: build_all
-build_all: build_setosa build_versicolor build_virginica build_proxy
+build_all: build_proxy build_mobilenet_v2 build_plant
 
 .PHONY: run_all
-run_all: run_setosa run_versicolor run_virginica run_proxy
+run_all: run_proxy run_mobilenet_v2 run_plant
 
-.PHONY: stop_all
-stop_all: stop_setosa stop_versicolor stop_virginica stop_proxy
 
 .PHONY: push_all
-push_all: push_setosa push_versicolor push_virginica push_proxy
+push_all: push_proxy push_mobilenet_v2 push_plant
 
 .PHONY: c_build
 c_build: build_all
@@ -147,33 +81,33 @@ c_down:
 		-f ./$(DOCKER_COMPOSE) \
 		down
 
+.PHONY: deploy
+deploy:
+	kubectl apply -f manifests
 
 .PHONY: health
 health:
-	curl localhost:9000/health
+	curl localhost:8000/health
 
-.PHONY: health_all
-health_all:
-	curl localhost:9000/health/all
+.PHONY: health_pred
+health_pred:
+	curl localhost:8000/health/pred
 
 .PHONY: metadata
 metadata:
-	curl localhost:9000/metadata
+	curl localhost:8000/metadata
 
 
 .PHONY: predict_get_test
 predict_get_test:
-	curl localhost:9000/predict/get/test
-
-.PHONY: predict_post_test
-predict_post_test:
-	curl localhost:9000/predict/post/test
+	curl localhost:8000/predict/test
 
 
 .PHONY: predict
 predict:
-	curl \
+	(echo -n '{"image_data": "'; base64 data/cat.jpg; echo '"}') \
+	| curl \
 		-X POST \
-		-H "Content-Type: application/json" \
-		-d '{"Data": [1.0, 2.0, 3.0, 4.0]}' \
-		localhost:9000/predict
+			-H "Content-Type: application/json" \
+			-d @- \
+			localhost:8000/predict

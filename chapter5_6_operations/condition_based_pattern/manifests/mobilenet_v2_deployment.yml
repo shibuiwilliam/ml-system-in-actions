@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mobilenet-v2
+  namespace: condition-based-serving
+  labels:
+    app: mobilenet-v2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mobilenet-v2
+  template:
+    metadata:
+      labels:
+        app: mobilenet-v2
+      annotations:
+        sidecar.istio.io/inject: "true"
+        sidecar.istio.io/proxyCPU: "128m"
+        sidecar.istio.io/proxyMemory: "128Mi"
+        proxy.istio.io/config: "{'concurrency':'8'}"
+    spec:
+      containers:
+        - name: mobilenet-v2
+          image: shibui/ml-system-in-actions:condition_based_pattern_imagenet_mobilenet_v2_0.0.1
+          imagePullPolicy: Always
+          env:
+            - name: REST_API_PORT
+              value: "8501"
+            - name: PORT
+              value: "8500"
+          ports:
+            - containerPort: 8500
+            - containerPort: 8501
+          resources:
+            limits:
+              cpu: 1000m
+              memory: "300Mi"
+            requests:
+              cpu: 1000m
+              memory: "300Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mobilenet-v2
+  namespace: condition-based-serving
+  labels:
+    app: mobilenet-v2
+spec:
+  ports:
+    - name: grpc
+      port: 8500
+      protocol: TCP
+    - name: rest
+      port: 8501
+      protocol: TCP
+  selector:
+    app: mobilenet-v2
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mobilenet-v2
+  namespace: condition-based-serving
+  labels:
+    app: mobilenet-v2
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mobilenet-v2
+  minReplicas: 3
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

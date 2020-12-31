@@ -1,7 +1,7 @@
 ABSOLUTE_PATH := $(shell pwd)
 BASE_IMAGE_NAME := shibui/ml-system-in-actions
 TRAINING_PATTERN := training_pattern
-TRAINING_PROJECT := iris_sklearn
+TRAINING_PROJECT := iris_sklearn_svc
 IMAGE_VERSION := 0.0.1
 
 DOCKERFILE := Dockerfile

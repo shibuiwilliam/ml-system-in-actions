@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plant
+  namespace: condition-based-serving
+  labels:
+    app: plant
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: plant
+  template:
+    metadata:
+      labels:
+        app: plant
+      annotations:
+        sidecar.istio.io/inject: "true"
+        sidecar.istio.io/proxyCPU: "128m"
+        sidecar.istio.io/proxyMemory: "128Mi"
+        proxy.istio.io/config: "{'concurrency':'8'}"
+    spec:
+      containers:
+        - name: plant
+          image: shibui/ml-system-in-actions:condition_based_pattern_plant_0.0.1
+          imagePullPolicy: Always
+          env:
+            - name: REST_API_PORT
+              value: "9501"
+            - name: PORT
+              value: "9500"
+          ports:
+            - containerPort: 9500
+            - containerPort: 9501
+          resources:
+            limits:
+              cpu: 1000m
+              memory: "600Mi"
+            requests:
+              cpu: 1000m
+              memory: "600Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plant
+  namespace: condition-based-serving
+  labels:
+    app: plant
+spec:
+  ports:
+    - name: grpc
+      port: 9500
+      protocol: TCP
+    - name: rest
+      port: 9501
+      protocol: TCP
+  selector:
+    app: plant
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: plant
+  namespace: condition-based-serving
+  labels:
+    app: plant
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: plant
+  minReplicas: 3
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
