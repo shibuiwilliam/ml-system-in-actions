@@ -1,9 +1,0 @@
-/iris_label.csv
-/iris_svc.onnx
-/iris_svc.pkl
-/iris_svc_onnx_runtime.yaml
-/iris_svc_sklearn.yaml
-/iris_tree.onnx
-/iris_tree.pkl
-/iris_tree_onnx_runtime.yaml
-/iris_tree_sklearn.yaml

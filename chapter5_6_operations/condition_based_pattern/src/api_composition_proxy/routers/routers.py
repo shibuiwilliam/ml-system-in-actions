@@ -43,9 +43,7 @@ def metadata() -> Dict[str, Any]:
 async def health_pred() -> Dict[str, Any]:
     logger.info(f"GET redirect to: /health")
     async with httpx.AsyncClient() as ac:
-        serving_address = (
-            f"http://{ServiceConfigurations.rest}/v1/models/{ModelConfigurations.model_spec_name}/versions/0/metadata"
-        )
+        serving_address = f"http://{ServiceConfigurations.rest}/v1/models/{ModelConfigurations.model_spec_name}/versions/0/metadata"
         logger.info(f"health pred : {serving_address}")
         r = await ac.get(serving_address)
         logger.info(f"health pred res: {r}")

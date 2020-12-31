@@ -1,3 +1,0 @@
-azure-storage-blob>=2.1.0
-boto3>=1.14.38
-google-cloud>=0.34.0
