@@ -7,7 +7,7 @@ entry_points:
   main:
     parameters:
       test_size: {type: float, default: 0.3}
-      target_iris: {type: string, default: versicolor}
+      target_iris: {type: string, default: virginica}
 
     command: |
           python -m iris_train \
