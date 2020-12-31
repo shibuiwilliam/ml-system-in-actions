@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iris-svc
+  namespace: circuit-breaker
+  labels:
+    app: iris-svc
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: iris
+  template:
+    metadata:
+      labels:
+        app: iris
+        version: svc
+      annotations:
+        sidecar.istio.io/inject: "true"
+        sidecar.istio.io/proxyCPU: "128m"
+        sidecar.istio.io/proxyMemory: "128Mi"
+        proxy.istio.io/config: "{'concurrency':'4'}"
+    spec:
+      containers:
+        - name: iris-svc
+          image: shibui/ml-system-in-actions:circuit_breaker_pattern_api_0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 500m
+              memory: "300Mi"
+            requests:
+              cpu: 500m
+              memory: "300Mi"
+          volumeMounts:
+            - name: workdir
+              mountPath: /workdir
+          env:
+            - name: MODEL_FILEPATH
+              value: "/workdir/iris_svc.onnx"
+            - name: WORKERS
+              value: "8"
+      initContainers:
+        - name: model-loader
+          image: shibui/ml-system-in-actions:circuit_breaker_pattern_loader_0.0.1
+          imagePullPolicy: Always
+          command:
+            - python
+            - "-m"
+            - "src.main"
+            - "--gcs_bucket"
+            - "ml_system_model_repository"
+            - "--gcs_model_blob"
+            - "iris_svc.onnx"
+            - "--model_filepath"
+            - "/workdir/iris_svc.onnx"
+          volumeMounts:
+            - name: workdir
+              mountPath: /workdir
+      volumes:
+        - name: workdir
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iris
+  namespace: circuit-breaker
+  labels:
+    app: iris
+spec:
+  ports:
+    - name: rest
+      port: 8000
+      protocol: TCP
+  selector:
+    app: iris
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: iris
+  namespace: circuit-breaker
+spec:
+  host: iris
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        http1MaxPendingRequests: 100
+        maxRequestsPerConnection: 100
+    outlierDetection:
+      consecutiveErrors: 100
+      interval: 1s
+      baseEjectionTime: 10m
+      maxEjectionPercent: 10
+  subsets:
+    - name: svc
+      labels:
+        version: svc
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: iris
+  namespace: circuit-breaker
+spec:
+  hosts:
+    - iris
+  http:
+    - route:
+        - destination:
+            host: iris
+            subset: svc
+          weight: 100

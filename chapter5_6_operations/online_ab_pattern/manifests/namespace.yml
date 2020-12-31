@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: online-ab
+  labels:
+    istio-injection: enabled

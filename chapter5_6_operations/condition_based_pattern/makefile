@@ -55,16 +55,23 @@ push_plant:
 	docker push $(DOCKER_REPOSITORY):$(CONDITION_BASED_PATTERN)_$(CONDITION_BASED_PATTERN_PLANT)_$(IMAGE_VERSION)
 
 
+.PHONY: build_client
+build_client:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(CONDITION_BASED_PATTERN)_client_$(IMAGE_VERSION) \
+		-f $(DOCKERFILE).client \
+		.
+
+.PHONY: push_client
+push_client:
+	docker push $(DOCKER_REPOSITORY):$(CONDITION_BASED_PATTERN)_client_$(IMAGE_VERSION)
 
 .PHONY: build_all
-build_all: build_proxy build_mobilenet_v2 build_plant
-
-.PHONY: run_all
-run_all: run_proxy run_mobilenet_v2 run_plant
+build_all: build_proxy build_mobilenet_v2 build_plant build_client
 
 
 .PHONY: push_all
-push_all: push_proxy push_mobilenet_v2 push_plant
+push_all: push_proxy push_mobilenet_v2 push_plant push_client
 
 .PHONY: c_build
 c_build: build_all
@@ -83,6 +90,7 @@ c_down:
 
 .PHONY: deploy
 deploy:
+	kubectl apply -f manifests/namespace.yml
 	kubectl apply -f manifests
 
 .PHONY: health

@@ -1,0 +1,162 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mobilenet-v2-proxy
+  namespace: condition-based-serving
+  labels:
+    app: mobilenet-v2-proxy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: proxy
+  template:
+    metadata:
+      labels:
+        app: proxy
+        version: mobilenet-v2
+      annotations:
+        sidecar.istio.io/inject: "true"
+        sidecar.istio.io/proxyCPU: "128m"
+        sidecar.istio.io/proxyMemory: "128Mi"
+        proxy.istio.io/config: "{'concurrency':'8'}"
+    spec:
+      containers:
+        - name: mobilenet-v2-proxy
+          image: shibui/ml-system-in-actions:condition_based_pattern_proxy_0.0.1
+          imagePullPolicy: Always
+          env:
+            - name: REST
+              value: mobilenet-v2.condition-based-serving.svc.cluster.local:8501
+            - name: GRPC
+              value: mobilenet-v2.condition-based-serving.svc.cluster.local:8500
+            - name: MODEL_SPEC_NAME
+              value: mobilenet_v2
+            - name: SIGNATURE_NAME
+              value: serving_default
+            - name: LABEL_PATH
+              value: ./data/image_net_labels.json
+            - name: SAMPLE_IMAGE_PATH
+              value: ./data/cat.jpg
+            - name: WORKERS
+              value: "2"
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 600m
+              memory: "300Mi"
+            requests:
+              cpu: 600m
+              memory: "300Mi"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plant-proxy
+  namespace: condition-based-serving
+  labels:
+    app: plant-proxy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: proxy
+  template:
+    metadata:
+      labels:
+        app: proxy
+        version: plant
+      annotations:
+        sidecar.istio.io/inject: "true"
+        sidecar.istio.io/proxyCPU: "128m"
+        sidecar.istio.io/proxyMemory: "128Mi"
+        proxy.istio.io/config: "{'concurrency':'8'}"
+    spec:
+      containers:
+        - name: plant-proxy
+          image: shibui/ml-system-in-actions:condition_based_pattern_proxy_0.0.1
+          imagePullPolicy: Always
+          env:
+            - name: REST
+              value: plant.condition-based-serving.svc.cluster.local:9501
+            - name: GRPC
+              value: plant.condition-based-serving.svc.cluster.local:9500
+            - name: MODEL_SPEC_NAME
+              value: plant
+            - name: SIGNATURE_NAME
+              value: serving_default
+            - name: LABEL_PATH
+              value: ./data/plant_labels.json
+            - name: SAMPLE_IMAGE_PATH
+              value: ./data/iris.jpg
+            - name: WORKERS
+              value: "2"
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 800m
+              memory: "500Mi"
+            requests:
+              cpu: 800m
+              memory: "500Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy
+  namespace: condition-based-serving
+  labels:
+    app: proxy
+spec:
+  ports:
+    - name: rest
+      port: 8000
+      protocol: TCP
+  selector:
+    app: proxy
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: proxy
+  namespace: condition-based-serving
+spec:
+  host: proxy
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+  subsets:
+    - name: mobilenet-v2
+      labels:
+        version: mobilenet-v2
+    - name: plant
+      labels:
+        version: plant
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: proxy
+  namespace: condition-based-serving
+spec:
+  hosts:
+    - proxy
+  http:
+    - match:
+        - headers:
+            target:
+              exact: plant
+      route:
+        - destination:
+            host: proxy
+            subset: plant
+    - route:
+        - destination:
+            host: proxy
+            subset: mobilenet-v2

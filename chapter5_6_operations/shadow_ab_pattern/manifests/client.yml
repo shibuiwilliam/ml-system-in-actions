@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vegeta
+  namespace: shadow-ab
+  annotations:
+    sidecar.istio.io/inject: "true"
+    sidecar.istio.io/proxyCPU: "128m"
+    sidecar.istio.io/proxyMemory: "128Mi"
+    proxy.istio.io/config: "{'concurrency':'16'}"
+spec:
+  containers:
+    - name: vegeta
+      image: shibui/ml-system-in-actions:shadow_ab_pattern_client_0.0.1
+      imagePullPolicy: Always
+      command:
+        - tail
+        - -f
+        - /dev/null
+      resources:
+        requests:
+          cpu: 200m
+          memory: "200Mi"
+      volumeMounts:
+        - name: vegeta
+          mountPath: "/opt/vegeta"
+          readOnly: true
+  volumes:
+    - name: vegeta
+      configMap:
+        name: vegeta
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vegeta
+  namespace: shadow-ab
+data:
+  get-target: "GET http://iris.shadow-ab.svc.cluster.local:8000/predict/test"

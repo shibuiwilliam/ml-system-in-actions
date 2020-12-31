@@ -1,0 +1,2 @@
+google-cloud-storage>=1.35.0
+click>=7.1.2

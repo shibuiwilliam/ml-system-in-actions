@@ -58,26 +58,3 @@ spec:
       protocol: TCP
   selector:
     app: mobilenet-v2
-
----
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: mobilenet-v2
-  namespace: condition-based-serving
-  labels:
-    app: mobilenet-v2
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: mobilenet-v2
-  minReplicas: 3
-  maxReplicas: 5
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70

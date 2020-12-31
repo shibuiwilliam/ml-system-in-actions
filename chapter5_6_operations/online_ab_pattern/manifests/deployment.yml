@@ -1,0 +1,231 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iris-svc
+  namespace: online-ab
+  labels:
+    app: iris-svc
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: iris
+  template:
+    metadata:
+      labels:
+        app: iris
+        version: svc
+      annotations:
+        sidecar.istio.io/inject: "true"
+        sidecar.istio.io/proxyCPU: "128m"
+        sidecar.istio.io/proxyMemory: "128Mi"
+        proxy.istio.io/config: "{'concurrency':'4'}"
+    spec:
+      containers:
+        - name: iris-svc
+          image: shibui/ml-system-in-actions:online_ab_pattern_api_0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 500m
+              memory: "300Mi"
+            requests:
+              cpu: 500m
+              memory: "300Mi"
+          volumeMounts:
+            - name: workdir
+              mountPath: /workdir
+          env:
+            - name: MODEL_FILEPATH
+              value: "/workdir/iris_svc.onnx"
+            - name: WORKERS
+              value: "8"
+      initContainers:
+        - name: model-loader
+          image: shibui/ml-system-in-actions:online_ab_pattern_loader_0.0.1
+          imagePullPolicy: Always
+          command:
+            - python
+            - "-m"
+            - "src.main"
+            - "--gcs_bucket"
+            - "ml_system_model_repository"
+            - "--gcs_model_blob"
+            - "iris_svc.onnx"
+            - "--model_filepath"
+            - "/workdir/iris_svc.onnx"
+          volumeMounts:
+            - name: workdir
+              mountPath: /workdir
+      volumes:
+        - name: workdir
+          emptyDir: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iris-rf
+  namespace: online-ab
+  labels:
+    app: iris-rf
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: iris
+  template:
+    metadata:
+      labels:
+        app: iris
+        version: rf
+      annotations:
+        sidecar.istio.io/inject: "true"
+        sidecar.istio.io/proxyCPU: "128m"
+        sidecar.istio.io/proxyMemory: "128Mi"
+        proxy.istio.io/config: "{'concurrency':'4'}"
+    spec:
+      containers:
+        - name: iris-rf
+          image: shibui/ml-system-in-actions:online_ab_pattern_api_0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 500m
+              memory: "300Mi"
+            requests:
+              cpu: 500m
+              memory: "300Mi"
+          volumeMounts:
+            - name: workdir
+              mountPath: /workdir
+          env:
+            - name: MODEL_FILEPATH
+              value: "/workdir/iris_rf.onnx"
+            - name: WORKERS
+              value: "8"
+      initContainers:
+        - name: model-loader
+          image: shibui/ml-system-in-actions:online_ab_pattern_loader_0.0.1
+          imagePullPolicy: Always
+          command:
+            - python
+            - "-m"
+            - "src.main"
+            - "--gcs_bucket"
+            - "ml_system_model_repository"
+            - "--gcs_model_blob"
+            - "iris_rf.onnx"
+            - "--model_filepath"
+            - "/workdir/iris_rf.onnx"
+          volumeMounts:
+            - name: workdir
+              mountPath: /workdir
+      volumes:
+        - name: workdir
+          emptyDir: {}
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: iris-svc
+  namespace: online-ab
+  labels:
+    app: iris-svc
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: iris-svc
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: iris-rf
+  namespace: online-ab
+  labels:
+    app: iris-rf
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: iris-rf
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iris
+  namespace: online-ab
+  labels:
+    app: iris
+spec:
+  ports:
+    - name: rest
+      port: 8000
+      protocol: TCP
+  selector:
+    app: iris
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: iris
+  namespace: online-ab
+spec:
+  host: iris
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+  subsets:
+    - name: svc
+      labels:
+        version: svc
+    - name: rf
+      labels:
+        version: rf
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: iris
+  namespace: online-ab
+spec:
+  hosts:
+    - iris
+  http:
+    - route:
+        - destination:
+            host: iris
+            subset: svc
+          weight: 60
+        - destination:
+            host: iris
+            subset: rf
+          weight: 40
