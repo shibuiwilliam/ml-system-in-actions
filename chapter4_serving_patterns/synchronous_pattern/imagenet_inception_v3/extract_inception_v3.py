@@ -26,20 +26,21 @@ class InceptionV3Model(tf.keras.Model):
     @tf.function(input_signature=[tf.TensorSpec(shape=[None], dtype=tf.string, name="image")])
     def serving_fn(self, input_img: str) -> tf.Tensor:
         def _base64_to_array(img):
-            img = tf.io.decode_base64(img)
-            img = tf.io.decode_jpeg(img)
-            img = tf.image.convert_image_dtype(img, tf.float32)
-            img = tf.image.resize(img, (299, 299))
-            img = tf.reshape(img, (299, 299, 3))
+            img = tf.io.decode_base64(img)  # base64のデコード
+            img = tf.io.decode_jpeg(img)  # jpeg形式のデコード
+            img = tf.image.convert_image_dtype(img, tf.float32)  # float32への変換
+            img = tf.image.resize(img, (299, 299))  # サイズを299x299に変換
+            img = tf.reshape(img, (299, 299, 3))  # ディメンジョンを(299,299,3)に変換
             return img
 
+        # 推論
         img = tf.map_fn(_base64_to_array, input_img, dtype=tf.float32)
         predictions = self.model(img)
 
         def _convert_to_label(candidates):
-            max_prob = tf.math.reduce_max(candidates)
-            idx = tf.where(tf.equal(candidates, max_prob))
-            label = tf.squeeze(tf.gather(self.labels, idx))
+            max_prob = tf.math.reduce_max(candidates)  # Softmaxの結果から最も確率の高いクラスを取得
+            idx = tf.where(tf.equal(candidates, max_prob))  # クラスのインデックスを取得
+            label = tf.squeeze(tf.gather(self.labels, idx))  # ラベル一覧からラベルを取得
             return label
 
         return tf.map_fn(_convert_to_label, predictions, dtype=tf.string)

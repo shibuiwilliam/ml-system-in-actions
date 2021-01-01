@@ -61,3 +61,12 @@ c_down:
 	docker-compose \
 		-f ./$(DOCKER_COMPOSE) \
 		down
+
+	
+
+.PHONY: deploy
+deploy:
+	kubectl apply -f manifests/namespace.yml
+	kubectl apply -f manifests/
+
+

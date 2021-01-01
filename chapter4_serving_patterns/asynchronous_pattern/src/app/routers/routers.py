@@ -9,7 +9,6 @@ import requests
 
 from src.app.backend.data import Data
 from src.app.backend import background_job, store_data_job
-from src.app.backend.data import Data
 from src.configurations import ModelConfigurations
 
 logger = getLogger(__name__)

@@ -1,7 +1,7 @@
 FROM tensorflow/tensorflow:2.4.0 as builder
 
 ARG SERVER_DIR=imagenet_inception_v3
-ENV PROJECT_DIR training_patterns
+ENV PROJECT_DIR synchronous_pattern
 WORKDIR /${PROJECT_DIR}
 ADD ./${SERVER_DIR}/requirements.txt /${PROJECT_DIR}/
 RUN apt-get -y update && \
@@ -24,7 +24,7 @@ ENV PROJECT_DIR synchronous_pattern
 ENV MODEL_BASE_PATH /${PROJECT_DIR}/saved_model/inception_v3
 ENV MODEL_NAME inception_v3
 
-COPY --from=builder /training_patterns/saved_model/inception_v3 ${MODEL_BASE_PATH}
+COPY --from=builder /synchronous_pattern/saved_model/inception_v3 ${MODEL_BASE_PATH}
 EXPOSE 8500
 EXPOSE 8501
 

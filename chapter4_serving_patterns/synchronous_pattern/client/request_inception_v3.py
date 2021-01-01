@@ -9,17 +9,13 @@ import tensorflow as tf
 from tensorflow_serving.apis import predict_pb2
 from tensorflow_serving.apis import prediction_service_pb2_grpc
 
-from client.profiler import do_cprofile
 
-
-@do_cprofile
 def read_image(image_file: str = "./cat.jpg") -> bytes:
     with open(image_file, "rb") as f:
         raw_image = f.read()
     return raw_image
 
 
-@do_cprofile
 def request_grpc(
     image: bytes,
     model_spec_name: str = "inception_v3",
@@ -43,14 +39,11 @@ def request_grpc(
     return prediction
 
 
-@do_cprofile
 def request_rest(
     image: bytes,
     model_spec_name: str = "inception_v3",
-    signature_name: str = "serving_default",
     address: str = "localhost",
     port: int = 8501,
-    timeout_second: int = 5,
 ):
     serving_address = f"http://{address}:{port}/v1/models/{model_spec_name}:predict"
     headers = {"Content-Type": "application/json"}
@@ -155,10 +148,8 @@ def main(
             prediction = request_rest(
                 image=raw_image,
                 model_spec_name=model_spec_name,
-                signature_name=signature_name,
                 address=target,
                 port=8501,
-                timeout_second=timeout_second,
             )
         else:
             raise ValueError("Undefined format; should be GRPC or REST")
