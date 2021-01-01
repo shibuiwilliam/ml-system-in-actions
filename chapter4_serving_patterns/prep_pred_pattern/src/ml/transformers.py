@@ -1,4 +1,3 @@
-from sklearn.pipeline import Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin
 from typing import Tuple, List, Union
 import numpy as np

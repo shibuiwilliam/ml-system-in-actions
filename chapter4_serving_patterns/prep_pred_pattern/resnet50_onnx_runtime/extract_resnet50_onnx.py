@@ -2,13 +2,11 @@ import onnxruntime as rt
 import os
 import click
 from PIL import Image
-import requests
 import joblib
 import json
 import numpy as np
-from typing import Tuple, List, Union
+from typing import List
 import torch
-import torch.nn as nn
 from torchvision.models.resnet import resnet50
 
 from src.ml.transformers import PytorchImagePreprocessTransformer, SoftmaxTransformer
