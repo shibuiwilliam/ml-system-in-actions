@@ -1,5 +1,5 @@
 import json
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Union
 from fastapi import BackgroundTasks
 import logging
 from pydantic import BaseModel
@@ -16,7 +16,7 @@ def set_data_redis(key: str, value: List) -> bool:
     return True
 
 
-def get_data_redis(key: str) -> List:
+def get_data_redis(key: str) -> Union[List, None]:
     data = redis_client.get(key)
     if data is None:
         return None
