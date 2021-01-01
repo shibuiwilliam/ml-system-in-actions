@@ -17,14 +17,6 @@ build_api:
 		-f $(DOCKERFILE).api \
 		.
 	 
-.PHONY: run_api
-run_api:
-	docker run \
-		-d \
-		--name $(BATCH_PATTERN)_api \
-		-p $(BATCH_PATTERN_PORT):$(BATCH_PATTERN_PORT) \
-		$(DOCKER_REPOSITORY):$(BATCH_PATTERN)_api_$(IMAGE_VERSION)
-
 .PHONY: stop_api
 stop_api:
 	docker rm -f $(BATCH_PATTERN)_api
@@ -40,13 +32,6 @@ build_batch:
 		-f $(DOCKERFILE).batch \
 		.
 	 
-.PHONY: run_batch
-run_batch:
-	docker run \
-		-d \
-		--name $(BATCH_PATTERN)_batch \
-		$(DOCKER_REPOSITORY):$(BATCH_PATTERN)_batch_$(IMAGE_VERSION)
-
 .PHONY: stop_batch
 stop_batch:
 	docker rm -f $(BATCH_PATTERN)_batch
@@ -58,8 +43,6 @@ push_batch:
 .PHONY: build_all
 build_all: build_api build_batch
 
-.PHONY: run_all
-run_all: run_api run_batch
 
 .PHONY: push_all
 push_all: push_api push_batch
