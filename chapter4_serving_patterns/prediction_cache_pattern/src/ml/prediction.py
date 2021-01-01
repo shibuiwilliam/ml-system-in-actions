@@ -97,7 +97,7 @@ class Classifier(object):
             prediction = np.frombuffer(actual_result.outputs[self.onnx_output_name].raw_data, dtype=np.float32)
 
             softmax = self.softmax_transformer.transform(prediction).tolist()
-            background_job.save_data_job(data=list(softmax), item_id=data.data, background_tasks=background_tasks)
+            await background_job.save_data_job(data=list(softmax), item_id=data.data, background_tasks=background_tasks)
         else:
             logger.info(f"cache hit: {data.data}")
             softmax = list(cache_data)

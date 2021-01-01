@@ -1,4 +1,5 @@
-from typing import Dict, Any
+import json
+from typing import Dict, List, Any
 from fastapi import BackgroundTasks
 import logging
 from pydantic import BaseModel
@@ -9,21 +10,24 @@ from src.app.backend.redis_client import redis_client
 logger = logging.getLogger(__name__)
 
 
-def set_data_redis(key: str, value: Any) -> bool:
-    redis_client.set(key, value)
+def set_data_redis(key: str, value: List) -> bool:
+    data_json = json.dumps(value)
+    redis_client.set(key, data_json)
     return True
 
 
-def get_data_redis(key: str) -> Any:
+def get_data_redis(key: str) -> List:
     data = redis_client.get(key)
     if data is None:
         return None
-    return data
+    original_data = json.loads(data)
+    return original_data
 
 
 class SaveDataJob(BaseModel):
     item_id: str
     data: Any
+    is_completed: bool = False
 
     def __call__(self):
         pass

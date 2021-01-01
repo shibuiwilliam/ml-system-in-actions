@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+import os
 import logging
 import asyncio
 import uuid
@@ -6,11 +7,16 @@ import httpx
 from typing import Dict, Any, List
 from pydantic import BaseModel
 
-from src.api_composition_proxy.configurations import ServiceConfigurations
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+services = {
+    "setosa": os.getenv("SERVICE_SETOSA"),
+    "versicolor": os.getenv("SERVICE_VERSICOLOR"),
+    "virginica": os.getenv("SERVICE_VIRGINICA"),
+}
 
 
 class Data(BaseModel):
@@ -43,7 +49,7 @@ async def health_all() -> Dict[str, Any]:
     logger.info(f"GET redirect to: /health")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
+        for service, url in services.items():
             r = await ac.get(f"{url}/health")
             results[service] = r.json()
     return results
@@ -55,7 +61,7 @@ async def predict_get_test() -> Dict[str, Any]:
     logger.info(f"TEST GET redirect to: /predict/test as {job_id}")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
+        for service, url in services.items():
             r = await ac.get(f"{url}/predict/test", params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
             results[service] = r.json()
@@ -68,7 +74,7 @@ async def predict_post_test() -> Dict[str, Any]:
     logger.info(f"TEST POST redirect to: /predict as {job_id}")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
+        for service, url in services.items():
             r = await ac.post(f"{url}/predict", json={"Data": Data().data}, params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
             logger.info(f"prediction: {r} {r.__dict__}")
@@ -82,7 +88,7 @@ async def predict(data: Data) -> Dict[str, Any]:
     logger.info(f"POST redirect to: /predict as {job_id}")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
+        for service, url in services.items():
             r = await ac.post(f"{url}/predict", json={"Data": data.data}, params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
             results[service] = r.json()
@@ -95,7 +101,7 @@ async def predict_label(data: Data) -> Dict[str, Any]:
     logger.info(f"POST redirect to: /predict as {job_id}")
     results = {"prediction": {"proba": -1.0, "label": None}}
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
+        for service, url in services.items():
             r = await ac.post(f"{url}/predict", json={"Data": data.data}, params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
             proba = r.json()["prediction"][0]

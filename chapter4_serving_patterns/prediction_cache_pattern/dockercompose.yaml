@@ -8,6 +8,7 @@ services:
     environment:
       - PLATFORM=docker_compose
       - API_ADDRESS=pred
+      - CACHE_HOST=redis
     ports:
       - "8000:8000"
     command: ./run.sh

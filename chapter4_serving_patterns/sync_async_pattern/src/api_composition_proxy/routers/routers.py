@@ -3,7 +3,8 @@ import logging
 import asyncio
 import io
 import httpx
-from typing import Dict, Any, List
+import os
+from typing import Dict, Any
 import uuid
 import base64
 from PIL import Image
@@ -15,6 +16,11 @@ from src.api_composition_proxy.backend import background_job, store_data_job, re
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+grpcs = {
+    "mobilenet_v2": os.getenv("GRPC_MOBILENET_V2"),
+    "inception_v3": os.getenv("GRPC_INCEPTION_V3"),
+}
 
 
 @router.get("/health")
