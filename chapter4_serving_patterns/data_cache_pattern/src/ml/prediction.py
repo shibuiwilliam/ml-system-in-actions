@@ -80,9 +80,7 @@ class Classifier(object):
             logger.info(f"registering cache: {data.data}")
             image = Image.open(os.path.join("data/", f"{data.data}.jpg"))
             preprocessed = self.preprocess_transformer.transform(image)
-            await background_job.save_data_job(
-                data=preprocessed.tolist(), item_id=data.data, background_tasks=background_tasks
-            )
+            await background_job.save_data_job(data=preprocessed.tolist(), item_id=data.data, background_tasks=background_tasks)
         else:
             logger.info(f"cache hit: {data.data}")
             preprocessed = np.array(cache_data).astype(np.float32)
