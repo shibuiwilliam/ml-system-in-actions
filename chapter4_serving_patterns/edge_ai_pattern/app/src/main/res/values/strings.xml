@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TFLitePyTorch</string>
+    <string name="tflite">TFLite</string>
+    <string name="pytorch">PyTorch</string>
+</resources>
