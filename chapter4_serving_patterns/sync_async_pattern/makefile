@@ -23,14 +23,6 @@ build_proxy:
 		-t $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_PROXY)_$(IMAGE_VERSION) \
 		-f ./$(DOCKERFILE).proxy .
 
-.PHONY: run_proxy
-run_proxy:
-	docker run \
-		-d \
-		--name $(SYNC_ASYNC_PATTERN_PROXY) \
-		-p $(SYNC_ASYNC_PATTERN_PROXY_PORT):$(SYNC_ASYNC_PATTERN_PROXY_PORT) \
-		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_PROXY)_$(IMAGE_VERSION)
-
 .PHONY: push_proxy
 push_proxy:
 	docker push $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_PROXY)_$(IMAGE_VERSION)
@@ -40,15 +32,6 @@ build_sync:
 	docker build \
 		-t $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_SYNC_MODEL)_$(IMAGE_VERSION) \
 		-f ./$(SYNC_ASYNC_PATTERN_SYNC_MODEL)/$(DOCKERFILE) .
-
-.PHONY: run_sync
-run_sync:
-	docker run \
-		-d \
-		--name $(SYNC_ASYNC_PATTERN_SYNC_MODEL) \
-		-p $(SYNC_ASYNC_PATTERN_SYNC_GRPC_PORT):$(SYNC_ASYNC_PATTERN_SYNC_GRPC_PORT) \
-		-p $(SYNC_ASYNC_PATTERN_SYNC_REST_PORT):$(SYNC_ASYNC_PATTERN_SYNC_REST_PORT) \
-		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_SYNC_MODEL)_$(IMAGE_VERSION)
 
 .PHONY: push_sync
 push_sync:
@@ -61,15 +44,6 @@ build_async:
 		-t $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_ASYNC_MODEL)_$(IMAGE_VERSION) \
 		-f ./$(SYNC_ASYNC_PATTERN_ASYNC_MODEL)/$(DOCKERFILE) .
 
-.PHONY: run_async
-run_async:
-	docker run \
-		-d \
-		--name $(SYNC_ASYNC_PATTERN_ASYNC_MODEL) \
-		-p $(SYNC_ASYNC_PATTERN_ASYNC_GRPC_PORT):$(SYNC_ASYNC_PATTERN_ASYNC_GRPC_PORT) \
-		-p $(SYNC_ASYNC_PATTERN_ASYNC_REST_PORT):$(SYNC_ASYNC_PATTERN_ASYNC_REST_PORT) \
-		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_ASYNC_MODEL)_$(IMAGE_VERSION)
-
 .PHONY: push_async
 push_async:
 	docker push $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_ASYNC_MODEL)_$(IMAGE_VERSION)
@@ -81,22 +55,12 @@ build_backend:
 		-t $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_BACKEND)_$(IMAGE_VERSION) \
 		-f ./$(DOCKERFILE).backend .
 
-.PHONY: run_backend
-run_backend:
-	docker run \
-		-d \
-		--name $(SYNC_ASYNC_PATTERN_BACKEND) \
-		$(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_BACKEND)_$(IMAGE_VERSION)
-
 .PHONY: push_backend
 push_backend:
 	docker push $(DOCKER_REPOSITORY):$(SYNC_ASYNC_PATTERN)_$(SYNC_ASYNC_PATTERN_BACKEND)_$(IMAGE_VERSION)
 
 .PHONY: build_all
 build_all: build_proxy build_sync build_async build_backend
-
-.PHONY: run_all
-run_all: run_proxy run_sync run_async run_backend
 
 .PHONY: push_all
 push_all: push_proxy push_sync push_async push_backend

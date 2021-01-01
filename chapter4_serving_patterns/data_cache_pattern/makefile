@@ -19,14 +19,6 @@ build_proxy:
 		-t $(DOCKER_REPOSITORY):$(DATA_CACHE_PATTERN)_$(DATA_CACHE_PATTERN_PREP)_$(IMAGE_VERSION) \
 		-f ./$(DOCKERFILE).proxy .
 
-.PHONY: run_proxy
-run_proxy:
-	docker run \
-		-d \
-		--name $(DATA_CACHE_PATTERN_PREP) \
-		-p $(DATA_CACHE_PATTERN_PREP_PORT):$(DATA_CACHE_PATTERN_PREP_PORT) \
-		$(DOCKER_REPOSITORY):$(DATA_CACHE_PATTERN)_$(DATA_CACHE_PATTERN_PREP)_$(IMAGE_VERSION)
-
 .PHONY: push_proxy
 push_proxy:
 	docker push $(DOCKER_REPOSITORY):$(DATA_CACHE_PATTERN)_$(DATA_CACHE_PATTERN_PREP)_$(IMAGE_VERSION)
@@ -38,15 +30,6 @@ build_pred:
 		-t $(DOCKER_REPOSITORY):$(DATA_CACHE_PATTERN)_$(DATA_CACHE_PATTERN_PRED)_$(IMAGE_VERSION) \
 		-f ./$(DOCKERFILE).pred .
 
-.PHONY: run_pred
-run_pred:
-	docker run \
-		-d \
-		--name $(DATA_CACHE_PATTERN_PRED) \
-		-p $(DATA_CACHE_PATTERN_GRPC_PORT):$(DATA_CACHE_PATTERN_GRPC_PORT) \
-		-p $(DATA_CACHE_PATTERN_REST_PORT):$(DATA_CACHE_PATTERN_REST_PORT) \
-		$(DOCKER_REPOSITORY):$(DATA_CACHE_PATTERN)_$(DATA_CACHE_PATTERN_PRED)_$(IMAGE_VERSION)
-
 .PHONY: push_pred
 push_pred:
 	docker push $(DOCKER_REPOSITORY):$(DATA_CACHE_PATTERN)_$(DATA_CACHE_PATTERN_PRED)_$(IMAGE_VERSION)
@@ -54,8 +37,6 @@ push_pred:
 .PHONY: build_all
 build_all: build_proxy build_pred
 
-.PHONY: run_all
-run_all: run_proxy run_pred
 
 .PHONY: push_all
 push_all: push_proxy push_pred
