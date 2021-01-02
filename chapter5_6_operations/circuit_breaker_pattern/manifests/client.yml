@@ -19,8 +19,8 @@ spec:
         - /dev/null
       resources:
         requests:
-          cpu: 200m
-          memory: "200Mi"
+          cpu: 1000m
+          memory: "1000Mi"
       volumeMounts:
         - name: vegeta
           mountPath: "/opt/vegeta"
@@ -37,4 +37,5 @@ metadata:
   name: vegeta
   namespace: circuit-breaker
 data:
-  get-target: "GET http://iris.circuit-breaker.svc.cluster.local:8000/predict/test"
+  get-target: "GET http://iris-svc.circuit-breaker.svc.cluster.local:8000/predict/test"
+  post-target: "POST http://iris-svc.circuit-breaker.svc.cluster.local:8000/predict\nContent-Type: application/json\n@/opt/data.json"

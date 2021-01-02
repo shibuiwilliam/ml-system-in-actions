@@ -9,11 +9,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: iris
+      app: iris-svc
   template:
     metadata:
       labels:
-        app: iris
+        app: iris-svc
         version: svc
       annotations:
         sidecar.istio.io/inject: "true"
@@ -67,26 +67,26 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: iris
+  name: iris-svc
   namespace: circuit-breaker
   labels:
-    app: iris
+    app: iris-svc
 spec:
   ports:
     - name: rest
       port: 8000
       protocol: TCP
   selector:
-    app: iris
+    app: iris-svc
 
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: iris
+  name: iris-svc
   namespace: circuit-breaker
 spec:
-  host: iris
+  host: iris-svc
   trafficPolicy:
     loadBalancer:
       simple: ROUND_ROBIN
@@ -110,14 +110,14 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: iris
+  name: iris-svc
   namespace: circuit-breaker
 spec:
   hosts:
-    - iris
+    - iris-svc
   http:
     - route:
         - destination:
-            host: iris
+            host: iris-svc
             subset: svc
           weight: 100
