@@ -5,3 +5,5 @@ RUN apt-get -y update && \
     apt-get -y install apt-utils gcc curl && \
     apt-get clean && \
     go get -u github.com/tsenart/vegeta
+
+COPY /models/data.json /opt/data.json

@@ -19,8 +19,8 @@ spec:
         - /dev/null
       resources:
         requests:
-          cpu: 200m
-          memory: "200Mi"
+          cpu: 1000m
+          memory: "1000Mi"
       volumeMounts:
         - name: vegeta
           mountPath: "/opt/vegeta"
@@ -37,4 +37,5 @@ metadata:
   name: vegeta
   namespace: shadow-ab
 data:
-  get-target: "GET http://iris.shadow-ab.svc.cluster.local:8000/predict/test"
+  get-target: "GET http://iris.shadow-ab.svc.cluster.local:8000/predict-test/abcd"
+  post-target: "POST http://iris.shadow-ab.svc.cluster.local:8000/predict/abcd\nContent-Type: application/json\n@/opt/data.json"
