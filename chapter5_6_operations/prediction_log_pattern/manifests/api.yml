@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: prediction-log
+  labels:
+    app: api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: shibui/ml-system-in-actions:prediction_log_pattern_api_0.0.1
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "8000"
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 500m
+              memory: "300Mi"
+            requests:
+              cpu: 500m
+              memory: "300Mi"
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+        - name: count-agent
+          image: k8s.gcr.io/fluentd-gcp:1.30
+          env:
+            - name: FLUENTD_ARGS
+              value: -c /etc/fluentd-config/fluentd.conf
+          resources:
+            limits:
+              cpu: 128m
+              memory: "300Mi"
+            requests:
+              cpu: 128m
+              memory: "300Mi"
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+            - name: config-volume
+              mountPath: /etc/fluentd-config
+      volumes:
+        - name: varlog
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: fluentd-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  namespace: prediction-log
+  labels:
+    app: api
+spec:
+  ports:
+    - name: rest
+      port: 8000
+      protocol: TCP
+  selector:
+    app: api
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+  namespace: prediction-log
+data:
+  fluentd.conf: |
+    <source>
+      type tail
+      format none
+      path /var/log/gunicorn_error.log
+      pos_file /var/log/gunicorn_error.log
+      tag gunicorn_error.log
+    </source>
+
+    <source>
+      type tail
+      format none
+      path /var/log/gunicorn_access.log
+      pos_file /var/log/gunicorn_access.log
+      tag gunicorn_access.log
+    </source>
+
+    <match **>
+      type google_cloud
+    </match>

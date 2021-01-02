@@ -19,12 +19,12 @@ def do_cprofile(func):
     return profiled_func
 
 
-def wrap_time(logger=logger):
+def wrap_time(endpoint: str = "/", logger=logger):
     def _log_decorator(func):
         def wrapper(*args, **kwargs):
             start = time.time()
             res = func(*args, **kwargs)
-            logger.info(f"time: {1000*(time.time() - start)} ms")
+            logger.info(f"[{endpoint}] [{kwargs['id']}] [{1000*(time.time() - start)} ms]")
             return res
 
         return wrapper

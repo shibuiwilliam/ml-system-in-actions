@@ -24,7 +24,7 @@ def wrap_time(endpoint: str = "/", logger=logger):
         def wrapper(*args, **kwargs):
             start = time.time()
             res = func(*args, **kwargs)
-            logger.info(f"[{endpoint}] [{kwargs['id']}] [{1000*(time.time() - start)} ms]")
+            logger.info(f"[{endpoint}] [{kwargs['job_id']}] [{1000*(time.time() - start)} ms]")
             return res
 
         return wrapper

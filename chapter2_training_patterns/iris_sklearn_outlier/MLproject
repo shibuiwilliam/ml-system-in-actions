@@ -1,0 +1,9 @@
+name: iris_sklearn_ocs
+
+docker_env:
+  image: shibui/ml-system-in-actions:training_pattern_iris_sklearn_ocs_0.0.1
+
+entry_points:
+  main:
+    command: |
+          python -m iris_train
