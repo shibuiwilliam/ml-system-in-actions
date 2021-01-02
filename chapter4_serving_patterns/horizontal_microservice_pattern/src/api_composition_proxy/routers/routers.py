@@ -75,7 +75,7 @@ async def predict_post_test() -> Dict[str, Any]:
     results = {}
     async with httpx.AsyncClient() as ac:
         for service, url in services.items():
-            r = await ac.post(f"{url}/predict", json={"Data": Data().data}, params={"id": job_id})
+            r = await ac.post(f"{url}/predict", json={"data": Data().data}, params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
             logger.info(f"prediction: {r} {r.__dict__}")
             results[service] = r.json()
@@ -89,7 +89,7 @@ async def predict(data: Data) -> Dict[str, Any]:
     results = {}
     async with httpx.AsyncClient() as ac:
         for service, url in services.items():
-            r = await ac.post(f"{url}/predict", json={"Data": data.data}, params={"id": job_id})
+            r = await ac.post(f"{url}/predict", json={"data": data.data}, params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
             results[service] = r.json()
     return results
@@ -102,7 +102,7 @@ async def predict_label(data: Data) -> Dict[str, Any]:
     results = {"prediction": {"proba": -1.0, "label": None}}
     async with httpx.AsyncClient() as ac:
         for service, url in services.items():
-            r = await ac.post(f"{url}/predict", json={"Data": data.data}, params={"id": job_id})
+            r = await ac.post(f"{url}/predict", json={"data": data.data}, params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
             proba = r.json()["prediction"][0]
             if results["prediction"]["proba"] < proba:

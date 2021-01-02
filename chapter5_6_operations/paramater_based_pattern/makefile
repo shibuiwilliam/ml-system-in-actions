@@ -133,5 +133,5 @@ predict:
 	curl \
 		-X POST \
 		-H "Content-Type: application/json" \
-		-d '{"Data": [1.0, 2.0, 3.0, 4.0]}' \
+		-d '{"data": [[1.0, 2.0, 3.0, 4.0]]}' \
 		localhost:9000/predict

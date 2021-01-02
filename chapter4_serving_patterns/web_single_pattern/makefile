@@ -57,7 +57,7 @@ predict:
 	curl \
 		-X POST \
 		-H "Content-Type: application/json" \
-		-d '{"Data": [1.0, 2.0, 3.0, 4.0]}' \
+		-d '{"data": [[1.0, 2.0, 3.0, 4.0]]}' \
 		localhost:8000/predict
 
 .PHONY: predict_label
@@ -65,5 +65,5 @@ predict_label:
 	curl \
 		-X POST \
 		-H "Content-Type: application/json" \
-		-d '{"Data": [1.0, 2.0, 3.0, 4.0]}' \
+		-d '{"data": [[1.0, 2.0, 3.0, 4.0]]}' \
 		localhost:8000/predict/label

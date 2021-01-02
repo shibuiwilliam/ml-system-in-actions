@@ -73,7 +73,7 @@ async def predict_post_test() -> Dict[str, Any]:
     results = {}
     async with httpx.AsyncClient() as ac:
         for service, url in ServiceConfigurations.services.items():
-            r = await ac.post(f"{url}/predict", json={"Data": Data().data}, params={"id": job_id})
+            r = await ac.post(f"{url}/predict", json={"data": Data().data}, params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
             proba = r.json()["prediction"][0]
             if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
@@ -90,7 +90,7 @@ async def predict(data: Data) -> Dict[str, Any]:
     results = {}
     async with httpx.AsyncClient() as ac:
         for service, url in ServiceConfigurations.services.items():
-            r = await ac.post(f"{url}/predict", json={"Data": data.data}, params={"id": job_id})
+            r = await ac.post(f"{url}/predict", json={"data": data.data}, params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
             proba = r.json()["prediction"][0]
             if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
