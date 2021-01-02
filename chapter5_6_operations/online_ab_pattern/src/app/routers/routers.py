@@ -37,7 +37,7 @@ async def predict_test() -> Dict[str, List[float]]:
     prediction = await classifier.predict(data=Data().data)
     prediction_list = list(prediction)
     logger.info(f"{ModelConfigurations.mode} {job_id}: {prediction_list}")
-    return {"prediction": prediction_list}
+    return {"prediction": prediction_list, "mode": ModelConfigurations.mode}
 
 
 @router.get("/predict/test/label")
@@ -45,7 +45,7 @@ async def predict_test_label() -> Dict[str, str]:
     job_id = str(uuid.uuid4())[:6]
     prediction = await classifier.predict_label(data=Data().data)
     logger.info(f"{ModelConfigurations.mode} {job_id}: {prediction}")
-    return {"prediction": prediction}
+    return {"prediction": prediction, "mode": ModelConfigurations.mode}
 
 
 @router.post("/predict")
@@ -54,7 +54,7 @@ async def predict(data: Data) -> Dict[str, List[float]]:
     prediction = await classifier.predict(data.data)
     prediction_list = list(prediction)
     logger.info(f"{ModelConfigurations.mode} {job_id}: {prediction_list}")
-    return {"prediction": prediction_list}
+    return {"prediction": prediction_list, "mode": ModelConfigurations.mode}
 
 
 @router.post("/predict/label")
@@ -62,4 +62,4 @@ async def predict_label(data: Data) -> Dict[str, str]:
     job_id = str(uuid.uuid4())[:6]
     prediction = await classifier.predict_label(data.data)
     logger.info(f"{ModelConfigurations.mode} {job_id}: {prediction}")
-    return {"prediction": prediction}
+    return {"prediction": prediction, "mode": ModelConfigurations.mode}
