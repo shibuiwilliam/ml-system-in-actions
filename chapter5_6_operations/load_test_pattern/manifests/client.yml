@@ -3,11 +3,6 @@ kind: Pod
 metadata:
   name: vegeta
   namespace: load-test
-  annotations:
-    sidecar.istio.io/inject: "true"
-    sidecar.istio.io/proxyCPU: "128m"
-    sidecar.istio.io/proxyMemory: "128Mi"
-    proxy.istio.io/config: "{'concurrency':'16'}"
 spec:
   containers:
     - name: vegeta
@@ -19,8 +14,8 @@ spec:
         - /dev/null
       resources:
         requests:
-          cpu: 200m
-          memory: "200Mi"
+          cpu: 1000m
+          memory: "1000Mi"
       volumeMounts:
         - name: vegeta
           mountPath: "/opt/vegeta"
@@ -37,4 +32,5 @@ metadata:
   name: vegeta
   namespace: load-test
 data:
-  get-target: "GET http://iris.load-test.svc.cluster.local:8000/predict/test"
+  get-target: "GET http://iris-svc.load-test.svc.cluster.local:8000/predict/test"
+  post-target: "POST http://iris-svc.load-test.svc.cluster.local:8000/predict\nContent-Type: application/json\n@/opt/data.json"

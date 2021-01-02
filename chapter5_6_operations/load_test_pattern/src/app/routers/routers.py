@@ -33,38 +33,54 @@ def label() -> Dict[int, str]:
 
 
 @wrap_time(logger=logger)
-@router.get("/predict/test")
-async def predict_test() -> Dict[str, List[float]]:
-    job_id = str(uuid.uuid4())[:6]
+async def _predict_test(job_id: str) -> Dict[str, List[float]]:
     prediction = await classifier.predict(data=Data().data)
     prediction_list = list(prediction)
     logger.info(f"{ModelConfigurations.mode} {job_id}: {prediction_list}")
     return {"prediction": prediction_list}
 
 
-@wrap_time(logger=logger)
-@router.get("/predict/test/label")
-async def predict_test_label() -> Dict[str, str]:
+@router.get("/predict/test")
+async def predict_test() -> Dict[str, List[float]]:
     job_id = str(uuid.uuid4())[:6]
+    return await _predict_test(job_id=job_id)
+
+
+@wrap_time(logger=logger)
+async def _predict_test_label(job_id: str) -> Dict[str, str]:
     prediction = await classifier.predict_label(data=Data().data)
     logger.info(f"{ModelConfigurations.mode} {job_id}: {prediction}")
     return {"prediction": prediction}
 
 
-@wrap_time(logger=logger)
-@router.post("/predict")
-async def predict(data: Data) -> Dict[str, List[float]]:
+@router.get("/predict/test/label")
+async def predict_test_label() -> Dict[str, str]:
     job_id = str(uuid.uuid4())[:6]
+    return await _predict_test_label(job_id=job_id)
+
+
+@wrap_time(logger=logger)
+async def _predict(data: Data, job_id: str) -> Dict[str, List[float]]:
     prediction = await classifier.predict(data.data)
     prediction_list = list(prediction)
     logger.info(f"{ModelConfigurations.mode} {job_id}: {prediction_list}")
     return {"prediction": prediction_list}
 
 
-@wrap_time(logger=logger)
-@router.post("/predict/label")
-async def predict_label(data: Data) -> Dict[str, str]:
+@router.post("/predict")
+async def predict(data: Data) -> Dict[str, List[float]]:
     job_id = str(uuid.uuid4())[:6]
+    return await _predict(data=data, job_id=job_id)
+
+
+@wrap_time(logger=logger)
+async def _predict_label(data: Data, job_id: str) -> Dict[str, str]:
     prediction = await classifier.predict_label(data.data)
     logger.info(f"{ModelConfigurations.mode} {job_id}: {prediction}")
     return {"prediction": prediction}
+
+
+@router.post("/predict/label")
+async def predict_label(data: Data) -> Dict[str, str]:
+    job_id = str(uuid.uuid4())[:6]
+    return await _predict_label(data=data, job_id=job_id)

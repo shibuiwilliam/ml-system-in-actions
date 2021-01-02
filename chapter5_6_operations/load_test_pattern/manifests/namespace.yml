@@ -2,5 +2,3 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: load-test
-  labels:
-    istio-injection: enabled
