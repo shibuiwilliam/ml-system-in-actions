@@ -19,12 +19,20 @@ def do_cprofile(func):
     return profiled_func
 
 
-def wrap_time(endpoint: str = "/", logger=logger):
+def log_decorator(endpoint: str = "/", logger=logger):
     def _log_decorator(func):
-        def wrapper(*args, **kwargs):
+        async def wrapper(*args, **kwargs):
             start = time.time()
-            res = func(*args, **kwargs)
-            logger.info(f"[{endpoint}] [{kwargs['job_id']}] [{1000*(time.time() - start)} ms]")
+            res = await func(*args, **kwargs)
+            elapsed = 1000 * (time.time() - start)
+            job_id = kwargs.get("job_id")
+            data = kwargs.get("data")
+            prediction = res.get("prediction")
+            is_outlier = res.get("is_outlier")
+            outlier_score = res.get("outlier_score")
+            logger.info(
+                f"[{endpoint}] [{job_id}] [{elapsed} ms] [{data}] [{prediction}] [{is_outlier}] [{outlier_score}]"
+            )
             return res
 
         return wrapper

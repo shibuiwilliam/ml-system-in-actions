@@ -5,7 +5,7 @@ from logging import getLogger
 from src.ml.prediction import classifier
 from src.ml.outlier_detection import outlier_detector
 from src.ml.data import Data
-from src.utils.profiler import wrap_time
+from src.utils.profiler import log_decorator
 
 logger = getLogger(__name__)
 router = APIRouter()
@@ -36,69 +36,83 @@ def label() -> Dict[int, str]:
     return classifier.label
 
 
-@wrap_time(endpoint="/predict/test", logger=logger)
-async def _predict_test(job_id: str) -> Dict[str, List[float]]:
+@log_decorator(endpoint="/predict/test", logger=logger)
+async def _predict_test(job_id: str) -> Dict[str, Any]:
+    logger.info(f"execute: [{job_id}]")
     prediction = await classifier.predict(data=Data().data)
     is_outlier, outlier_score = await outlier_detector.predict(data=Data().data)
     prediction_list = list(prediction)
-    logger.info(
-        f"test [job_id {job_id}] [data {Data().data}] [prediction {prediction_list}] [outlier {is_outlier} {outlier_score}]"
-    )
-    return {"prediction": prediction_list, "is_outlier": is_outlier, "outlier_score": outlier_score}
+    return {
+        "job_id": job_id,
+        "prediction": prediction_list,
+        "is_outlier": is_outlier,
+        "outlier_score": outlier_score,
+    }
 
 
-@router.get("/predict/test/label")
-async def predict_test() -> Dict[str, List[float]]:
-    job_id = str(uuid.uuid4())
+@router.get("/predict/test")
+async def predict_test() -> Dict[str, Any]:
+    job_id = str(uuid.uuid4())[:6]
     return await _predict_test(job_id=job_id)
 
 
-@wrap_time(endpoint="/predict/test/label", logger=logger)
-async def _predict_test_label(job_id: str) -> Dict[str, str]:
+@log_decorator(endpoint="/predict/test/label", logger=logger)
+async def _predict_test_label(job_id: str) -> Dict[str, Any]:
+    logger.info(f"execute: [{job_id}]")
     prediction = await classifier.predict_label(data=Data().data)
     is_outlier, outlier_score = await outlier_detector.predict(data=Data().data)
-    logger.info(
-        f"test [job_id {job_id}] [data {Data().data}] [prediction {prediction}] [outlier {is_outlier} {outlier_score}]"
-    )
-    return {"prediction": prediction, "is_outlier": is_outlier, "outlier_score": outlier_score}
+    return {
+        "job_id": job_id,
+        "prediction": prediction,
+        "is_outlier": is_outlier,
+        "outlier_score": outlier_score,
+    }
 
 
 @router.get("/predict/test/label")
-async def predict_test_label() -> Dict[str, str]:
-    job_id = str(uuid.uuid4())
+async def predict_test_label() -> Dict[str, Any]:
+    job_id = str(uuid.uuid4())[:6]
     return await _predict_test_label(job_id=job_id)
 
 
-@wrap_time(endpoint="/predict", logger=logger)
-async def _predict(data: Data, job_id: str) -> Dict[str, List[float]]:
-    if len(data.data[0]) != 4:
+@log_decorator(endpoint="/predict", logger=logger)
+async def _predict(data: Data, job_id: str) -> Dict[str, Any]:
+    logger.info(f"execute: [{job_id}]")
+    if len(data.data) != 1 or len(data.data[0]) != 4:
         raise HTTPException(status_code=404, detail="Invalid input data")
     prediction = await classifier.predict(data.data)
     is_outlier, outlier_score = await outlier_detector.predict(data=data.data)
     prediction_list = list(prediction)
-    logger.info(
-        f"[job_id {job_id}] [data {data}] [prediction {prediction_list}] [outlier {is_outlier} {outlier_score}]"
-    )
-    return {"prediction": prediction_list, "is_outlier": is_outlier, "outlier_score": outlier_score}
+    return {
+        "job_id": job_id,
+        "prediction": prediction_list,
+        "is_outlier": is_outlier,
+        "outlier_score": outlier_score,
+    }
 
 
 @router.post("/predict")
-async def predict(data: Data) -> Dict[str, List[float]]:
-    job_id = str(uuid.uuid4())
+async def predict(data: Data) -> Dict[str, Any]:
+    job_id = str(uuid.uuid4())[:6]
     return await _predict(data=data, job_id=job_id)
 
 
-@wrap_time(endpoint="/predict/label", logger=logger)
+@log_decorator(endpoint="/predict/label", logger=logger)
 async def _predict_label(data: Data, job_id: str) -> Dict[str, str]:
-    if len(data.data[0]) != 4:
+    logger.info(f"execute: [{job_id}]")
+    if len(data.data) != 1 or len(data.data[0]) != 4:
         raise HTTPException(status_code=404, detail="Invalid input data")
     prediction = await classifier.predict_label(data.data)
     is_outlier, outlier_score = await outlier_detector.predict(data=data.data)
-    logger.info(f"[job_id {job_id}] [data {data}] [prediction {prediction}] [outlier {is_outlier} {outlier_score}]")
-    return {"prediction": prediction, "is_outlier": is_outlier, "outlier_score": outlier_score}
+    return {
+        "job_id": job_id,
+        "prediction": prediction,
+        "is_outlier": is_outlier,
+        "outlier_score": outlier_score,
+    }
 
 
 @router.post("/predict/label")
-async def predict_label(data: Data) -> Dict[str, str]:
-    job_id = str(uuid.uuid4())
+async def predict_label(data: Data) -> Dict[str, Any]:
+    job_id = str(uuid.uuid4())[:6]
     return await _predict_label(data=data, job_id=job_id)
