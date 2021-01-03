@@ -5,3 +5,6 @@ RUN apt-get -y update && \
     apt-get -y install apt-utils gcc curl && \
     apt-get clean && \
     go get -u github.com/tsenart/vegeta
+
+COPY data/cat.jpg /opt/cat.jpg
+COPY data/iris.jpg /opt/iris.jpg
