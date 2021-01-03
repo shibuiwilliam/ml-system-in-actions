@@ -6,6 +6,7 @@ import uuid
 import httpx
 from typing import Dict, Any, List
 from pydantic import BaseModel
+from src.api_composition_proxy.configurations import ServiceConfigurations
 
 
 logger = logging.getLogger(__name__)
@@ -49,9 +50,16 @@ async def health_all() -> Dict[str, Any]:
     logger.info(f"GET redirect to: /health")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in services.items():
-            r = await ac.get(f"{url}/health")
-            results[service] = r.json()
+
+        async def req(ac, service, url):
+            response = await ac.get(f"{url}/health")
+            return service, response
+
+        tasks = [req(ac, service, url) for service, url in ServiceConfigurations.services.items()]
+
+        responses = await asyncio.gather(*tasks)
+        for r in responses:
+            results[r[0]] = r[1].json()
     return results
 
 
@@ -61,10 +69,18 @@ async def predict_get_test() -> Dict[str, Any]:
     logger.info(f"TEST GET redirect to: /predict/test as {job_id}")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in services.items():
-            r = await ac.get(f"{url}/predict/test", params={"id": job_id})
-            logger.info(f"{service} {job_id} {r.json()}")
-            results[service] = r.json()
+
+        async def req(ac, service, url, job_id):
+            response = await ac.get(f"{url}/predict/test", params={"id": job_id})
+            return service, response
+
+        tasks = [req(ac, service, url, job_id) for service, url in ServiceConfigurations.services.items()]
+
+        responses = await asyncio.gather(*tasks)
+
+        for r in responses:
+            logger.info(f"{r[0]} {job_id} {r[1].json()}")
+            results[r[0]] = r[1].json()
     return results
 
 
@@ -74,11 +90,18 @@ async def predict_post_test() -> Dict[str, Any]:
     logger.info(f"TEST POST redirect to: /predict as {job_id}")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in services.items():
-            r = await ac.post(f"{url}/predict", json={"data": Data().data}, params={"id": job_id})
-            logger.info(f"{service} {job_id} {r.json()}")
-            logger.info(f"prediction: {r} {r.__dict__}")
-            results[service] = r.json()
+
+        async def req(ac, service, url, job_id):
+            response = await ac.post(f"{url}/predict", json={"data": Data().data}, params={"id": job_id})
+            return service, response
+
+        tasks = [req(ac, service, url, job_id) for service, url in ServiceConfigurations.services.items()]
+
+        responses = await asyncio.gather(*tasks)
+
+        for r in responses:
+            logger.info(f"{r[0]} {job_id} {r[1].json()}")
+            results[r[0]] = r[1].json()
     return results
 
 
@@ -88,10 +111,18 @@ async def predict(data: Data) -> Dict[str, Any]:
     logger.info(f"POST redirect to: /predict as {job_id}")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in services.items():
-            r = await ac.post(f"{url}/predict", json={"data": data.data}, params={"id": job_id})
-            logger.info(f"{service} {job_id} {r.json()}")
-            results[service] = r.json()
+
+        async def req(ac, service, url, job_id, data):
+            response = await ac.post(f"{url}/predict", json={"data": data.data}, params={"id": job_id})
+            return service, response
+
+        tasks = [req(ac, service, url, job_id, data) for service, url in ServiceConfigurations.services.items()]
+
+        responses = await asyncio.gather(*tasks)
+
+        for r in responses:
+            logger.info(f"{r[0]} {job_id} {r[1].json()}")
+            results[r[0]] = r[1].json()
     return results
 
 
@@ -101,10 +132,18 @@ async def predict_label(data: Data) -> Dict[str, Any]:
     logger.info(f"POST redirect to: /predict as {job_id}")
     results = {"prediction": {"proba": -1.0, "label": None}}
     async with httpx.AsyncClient() as ac:
-        for service, url in services.items():
-            r = await ac.post(f"{url}/predict", json={"data": data.data}, params={"id": job_id})
-            logger.info(f"{service} {job_id} {r.json()}")
-            proba = r.json()["prediction"][0]
+
+        async def req(ac, service, url, job_id, data):
+            response = await ac.post(f"{url}/predict", json={"data": data.data}, params={"id": job_id})
+            return service, response
+
+        tasks = [req(ac, service, url, job_id, data) for service, url in ServiceConfigurations.services.items()]
+
+        responses = await asyncio.gather(*tasks)
+
+        for r in responses:
+            logger.info(f"{r[0]} {job_id} {r[1].json()}")
+            proba = r[1].json()["prediction"][0]
             if results["prediction"]["proba"] < proba:
-                results["prediction"] = {"proba": r.json()["prediction"][0], "label": service}
+                results["prediction"] = {"proba": r[1].json()["prediction"][0], "label": r[0]}
     return results
