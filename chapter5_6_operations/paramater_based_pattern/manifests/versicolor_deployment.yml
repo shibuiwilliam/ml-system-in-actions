@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iris-versicolor
+  namespace: parameter-based
+  labels:
+    app: iris-versicolor
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: iris-versicolor
+  template:
+    metadata:
+      labels:
+        app: iris-versicolor
+    spec:
+      containers:
+        - name: iris-versicolor
+          image: shibui/ml-system-in-actions:parameter_based_pattern_versicolor_0.0.1
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "8001"
+            - name: MODE
+              value: versicolor
+            - name: WORKERS
+              value: "8"
+          ports:
+            - containerPort: 8001
+          resources:
+            limits:
+              cpu: 500m
+              memory: "300Mi"
+            requests:
+              cpu: 500m
+              memory: "300Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iris-versicolor
+  namespace: parameter-based
+  labels:
+    app: iris-versicolor
+spec:
+  ports:
+    - name: rest
+      port: 8001
+      protocol: TCP
+  selector:
+    app: iris-versicolor

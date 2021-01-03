@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vegeta
+  namespace: parameter-based
+spec:
+  containers:
+    - name: vegeta
+      image: shibui/ml-system-in-actions:parameter_based_pattern_client_0.0.1
+      imagePullPolicy: Always
+      command:
+        - tail
+        - -f
+        - /dev/null
+      resources:
+        requests:
+          cpu: 200m
+          memory: "200Mi"
+      volumeMounts:
+        - name: vegeta
+          mountPath: "/opt/vegeta"
+          readOnly: true
+  volumes:
+    - name: vegeta
+      configMap:
+        name: vegeta
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vegeta
+  namespace: parameter-based
+data:
+  get-target: "GET http://proxy.parameter-based.svc.cluster.local:9000/predict/test"
+  post-target: "POST http://proxy.parameter-based.svc.cluster.local:9000/predict\nContent-Type: application/json\n@/opt/data.json"

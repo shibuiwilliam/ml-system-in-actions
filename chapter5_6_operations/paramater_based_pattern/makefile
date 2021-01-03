@@ -22,11 +22,6 @@ build_setosa:
 		-f ./$(DOCKERFILE).service.setosa \
 		.
 	
-.PHONY: stop_setosa
-stop_setosa:
-	docker rm -f $(PARAMETER_BASED_PATTERN)_setosa
-
-
 .PHONY: push_setosa
 push_setosa:
 	docker push $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_setosa_$(IMAGE_VERSION)
@@ -38,10 +33,6 @@ build_versicolor:
 		-t $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_versicolor_$(IMAGE_VERSION) \
 		-f ./$(DOCKERFILE).service.versicolor \
 		.
-
-.PHONY: stop_versicolor
-stop_versicolor:
-	docker rm -f $(PARAMETER_BASED_PATTERN)_versicolor
 
 .PHONY: push_versicolor
 push_versicolor:
@@ -55,11 +46,6 @@ build_virginica:
 		-f ./$(DOCKERFILE).service.virginica \
 		.
 	
-	
-.PHONY: stop_virginica
-stop_virginica:
-	docker rm -f $(PARAMETER_BASED_PATTERN)_virginica
-
 .PHONY: push_virginica
 push_virginica:
 	docker push $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_virginica_$(IMAGE_VERSION)
@@ -72,23 +58,27 @@ build_proxy:
 		-f ./$(DOCKERFILE).proxy \
 		.
 	
-.PHONY: stop_proxy
-stop_proxy:
-	docker rm -f $(PARAMETER_BASED_PATTERN)_proxy
-
 .PHONY: push_proxy
 push_proxy:
 	docker push $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_proxy_$(IMAGE_VERSION)
 
+.PHONY: build_client
+build_client:
+	docker build \
+		-t $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_client_$(IMAGE_VERSION) \
+		-f ./$(DOCKERFILE).client \
+		.
+	
+.PHONY: push_client
+push_client:
+	docker push $(DOCKER_REPOSITORY):$(PARAMETER_BASED_PATTERN)_client_$(IMAGE_VERSION)
+
 
 .PHONY: build_all
-build_all: build_setosa build_versicolor build_virginica build_proxy
-
-.PHONY: stop_all
-stop_all: stop_setosa stop_versicolor stop_virginica stop_proxy
+build_all: build_setosa build_versicolor build_virginica build_proxy build_client
 
 .PHONY: push_all
-push_all: push_setosa push_versicolor push_virginica push_proxy
+push_all: push_setosa push_versicolor push_virginica push_proxy push_client
 
 .PHONY: c_build
 c_build: build_all
@@ -135,3 +125,8 @@ predict:
 		-H "Content-Type: application/json" \
 		-d '{"data": [[1.0, 2.0, 3.0, 4.0]]}' \
 		localhost:9000/predict
+
+.PHONY: deploy
+deploy:
+	kubectl apply -f manifests/namespace.yml
+	kubectl apply -f manifests

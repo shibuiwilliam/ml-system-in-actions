@@ -58,6 +58,8 @@ async def predict_get_test() -> Dict[str, Any]:
         for service, url in ServiceConfigurations.services.items():
             r = await ac.get(f"{url}/predict/test", params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
+            if not ServiceConfigurations.activates[service]:
+                continue
             proba = r.json()["prediction"][0]
             if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
                 results[service] = 1
@@ -75,6 +77,8 @@ async def predict_post_test() -> Dict[str, Any]:
         for service, url in ServiceConfigurations.services.items():
             r = await ac.post(f"{url}/predict", json={"data": Data().data}, params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
+            if not ServiceConfigurations.activates[service]:
+                continue
             proba = r.json()["prediction"][0]
             if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
                 results[service] = 1
@@ -92,6 +96,8 @@ async def predict(data: Data) -> Dict[str, Any]:
         for service, url in ServiceConfigurations.services.items():
             r = await ac.post(f"{url}/predict", json={"data": data.data}, params={"id": job_id})
             logger.info(f"{service} {job_id} {r.json()}")
+            if not ServiceConfigurations.activates[service]:
+                continue
             proba = r.json()["prediction"][0]
             if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
                 results[service] = 1

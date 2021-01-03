@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iris-setosa
+  namespace: parameter-based
+  labels:
+    app: iris-setosa
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: iris-setosa
+  template:
+    metadata:
+      labels:
+        app: iris-setosa
+    spec:
+      containers:
+        - name: iris-setosa
+          image: shibui/ml-system-in-actions:parameter_based_pattern_setosa_0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: 500m
+              memory: "300Mi"
+            requests:
+              cpu: 500m
+              memory: "300Mi"
+          env:
+            - name: PORT
+              value: "8000"
+            - name: MODE
+              value: setosa
+            - name: WORKERS
+              value: "8"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iris-setosa
+  namespace: parameter-based
+  labels:
+    app: iris-setosa
+spec:
+  ports:
+    - name: rest
+      port: 8000
+      protocol: TCP
+  selector:
+    app: iris-setosa

@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proxy
+  namespace: parameter-based
+  labels:
+    app: proxy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: proxy
+  template:
+    metadata:
+      labels:
+        app: proxy
+    spec:
+      containers:
+        - name: proxy
+          image: shibui/ml-system-in-actions:parameter_based_pattern_proxy_0.0.1
+          imagePullPolicy: Always
+          env:
+            - name: APP_NAME
+              value: src.api_composition_proxy.app.proxy:app
+            - name: PORT
+              value: "9000"
+            - name: SERVICE_SETOSA
+              value: iris-setosa.parameter-based.svc.cluster.local:8000
+            - name: SERVICE_VERSICOLOR
+              value: iris-versicolor.parameter-based.svc.cluster.local:8001
+            - name: SERVICE_VIRGINICA
+              value: iris-virginica.parameter-based.svc.cluster.local:8002
+            - name: WORKERS
+              value: "8"
+            - name: THRESHOLD_SETOSA
+              value: "0.90"
+            - name: THRESHOLD_VERSICOLOR
+              value: "0.85"
+            - name: THRESHOLD_VIRGINICA
+              value: "0.95"
+            - name: ACTIVATE_SETOSA
+              value: "1"
+            - name: ACTIVATE_VERSICOLOR
+              value: "1"
+            - name: ACTIVATE_VIRGINICA
+              value: "0"
+          ports:
+            - containerPort: 9000
+          resources:
+            limits:
+              cpu: 300m
+              memory: "300Mi"
+            requests:
+              cpu: 300m
+              memory: "300Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy
+  namespace: parameter-based
+  labels:
+    app: proxy
+spec:
+  ports:
+    - name: rest
+      port: 9000
+      protocol: TCP
+  selector:
+    app: proxy
