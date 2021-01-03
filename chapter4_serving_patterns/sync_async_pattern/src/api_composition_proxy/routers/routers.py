@@ -3,13 +3,15 @@ import logging
 import asyncio
 import io
 import httpx
+import grpc
+from tensorflow_serving.apis import prediction_service_pb2_grpc
 import os
 from typing import Dict, Any
 import uuid
 import base64
 from PIL import Image
 
-from src.api_composition_proxy.configurations import ServiceConfigurations
+from src.api_composition_proxy.configurations import ServiceConfigurations, ModelConfigurations
 from src.api_composition_proxy.backend.data import Data
 from src.api_composition_proxy.backend import background_job, store_data_job, request_tfserving
 
@@ -17,10 +19,9 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-grpcs = {
-    "mobilenet_v2": os.getenv("GRPC_MOBILENET_V2"),
-    "inception_v3": os.getenv("GRPC_INCEPTION_V3"),
-}
+
+channel = grpc.insecure_channel(ServiceConfigurations.grpc_mobilenet_v2)
+stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
 
 
 @router.get("/health")
@@ -45,7 +46,10 @@ async def health_all() -> Dict[str, Any]:
     logger.info(f"GET redirect to: /health")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
+        for service, url in zip(
+            [ServiceConfigurations.mobilenet_v2, ServiceConfigurations.inception_v3],
+            [ServiceConfigurations.service_mobilenet_v2, ServiceConfigurations.service_inception_v3],
+        ):
             serving_address = f"http://{url}/v1/models/{service}/versions/0/metadata"
             logger.info(f"health all : {serving_address}")
             r = await ac.get(serving_address)
@@ -59,28 +63,27 @@ async def predict_test(background_tasks: BackgroundTasks) -> Dict[str, Any]:
     logger.info(f"TEST GET redirect to: /predict/test")
     job_id = str(uuid.uuid4())[:6]
     results = {"job_id": job_id}
-    for service, url in ServiceConfigurations.grpc.items():
-        if service == "mobilenet_v2":
-            image = Data().image_data
-            bytes_io = io.BytesIO()
-            image.save(bytes_io, format=image.format)
-            bytes_io.seek(0)
-            r = request_tfserving.request_grpc(
-                image=bytes_io.read(),
-                model_spec_name=service,
-                signature_name="serving_default",
-                serving_address=url,
-                timeout_second=5,
-            )
-            logger.info(f"prediction: {r}")
-            results[service] = r
-        else:
-            background_job.save_data_job(
-                data=Data().image_data,
-                job_id=job_id,
-                background_tasks=background_tasks,
-                enqueue=True,
-            )
+    image = Data().image_data
+
+    bytes_io = io.BytesIO()
+    image.save(bytes_io, format=image.format)
+    bytes_io.seek(0)
+    r = request_tfserving.request_grpc(
+        stub=stub,
+        image=bytes_io.read(),
+        model_spec_name=ModelConfigurations.sync_model_spec_name,
+        signature_name=ModelConfigurations.sync_signature_name,
+        timeout_second=5,
+    )
+    logger.info(f"prediction: {r}")
+    results[ServiceConfigurations.mobilenet_v2] = r
+
+    background_job.save_data_job(
+        data=Data().image_data,
+        job_id=job_id,
+        background_tasks=background_tasks,
+        enqueue=True,
+    )
     return results
 
 
@@ -92,26 +95,25 @@ async def predict(data: Data, background_tasks: BackgroundTasks) -> Dict[str, An
     image = base64.b64decode(str(data.image_data))
     bytes_io = io.BytesIO(image)
     image_data = Image.open(bytes_io)
-    for service, url in ServiceConfigurations.grpc.items():
-        if service == "mobilenet_v2":
-            image_data.save(bytes_io, format=image_data.format)
-            bytes_io.seek(0)
-            r = request_tfserving.request_grpc(
-                image=bytes_io.read(),
-                model_spec_name=service,
-                signature_name="serving_default",
-                serving_address=url,
-                timeout_second=5,
-            )
-            logger.info(f"prediction: {r}")
-            results[service] = r
-        else:
-            background_job.save_data_job(
-                data=image_data,
-                job_id=job_id,
-                background_tasks=background_tasks,
-                enqueue=True,
-            )
+
+    image_data.save(bytes_io, format=image_data.format)
+    bytes_io.seek(0)
+    r = request_tfserving.request_grpc(
+        stub=stub,
+        image=bytes_io.read(),
+        model_spec_name=ModelConfigurations.sync_model_spec_name,
+        signature_name=ModelConfigurations.sync_signature_name,
+        timeout_second=5,
+    )
+    logger.info(f"prediction: {r}")
+    results[ServiceConfigurations.mobilenet_v2] = r
+
+    background_job.save_data_job(
+        data=image_data,
+        job_id=job_id,
+        background_tasks=background_tasks,
+        enqueue=True,
+    )
     return results
 
 

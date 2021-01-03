@@ -7,6 +7,8 @@ from typing import Dict, Any, List
 import uuid
 import base64
 from PIL import Image
+import grpc
+from tensorflow_serving.apis import prediction_service_pb2_grpc
 
 from src.api_composition_proxy.configurations import ServiceConfigurations, ModelConfigurations
 from src.api_composition_proxy.backend.data import Data
@@ -15,6 +17,9 @@ from src.api_composition_proxy.backend import request_tfserving
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+channel = grpc.insecure_channel(ServiceConfigurations.grpc)
+stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
 
 
 @router.get("/health")
@@ -43,7 +48,9 @@ def metadata() -> Dict[str, Any]:
 async def health_pred() -> Dict[str, Any]:
     logger.info(f"GET redirect to: /health")
     async with httpx.AsyncClient() as ac:
-        serving_address = f"http://{ServiceConfigurations.rest}/v1/models/{ModelConfigurations.model_spec_name}/versions/0/metadata"
+        serving_address = (
+            f"http://{ServiceConfigurations.rest}/v1/models/{ModelConfigurations.model_spec_name}/versions/0/metadata"
+        )
         logger.info(f"health pred : {serving_address}")
         r = await ac.get(serving_address)
         logger.info(f"health pred res: {r}")
@@ -62,10 +69,10 @@ async def predict_test() -> Dict[str, Any]:
     image.save(bytes_io, format=image.format)
     bytes_io.seek(0)
     r = request_tfserving.request_grpc(
+        stub=stub,
         image=bytes_io.read(),
         model_spec_name=ModelConfigurations.model_spec_name,
-        signature_name="serving_default",
-        serving_address=ServiceConfigurations.grpc,
+        signature_name=ModelConfigurations.signature_name,
         timeout_second=5,
     )
     logger.info(f"{job_id} prediction: {r}")
@@ -82,10 +89,10 @@ async def predict(data: Data) -> Dict[str, Any]:
     image_data.save(bytes_io, format=image_data.format)
     bytes_io.seek(0)
     r = request_tfserving.request_grpc(
+        stub=stub,
         image=bytes_io.read(),
         model_spec_name=ModelConfigurations.model_spec_name,
-        signature_name="serving_default",
-        serving_address=ServiceConfigurations.grpc,
+        signature_name=ModelConfigurations.signature_name,
         timeout_second=5,
     )
     logger.info(f"{job_id} prediction: {r}")

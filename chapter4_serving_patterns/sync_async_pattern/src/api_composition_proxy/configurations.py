@@ -26,17 +26,14 @@ class PlatformConfigurations:
 
 
 class ServiceConfigurations:
-    services: Dict[str, str] = {}
-    for environ in os.environ.keys():
-        if environ.startswith("SERVICE_"):
-            url = f"{os.getenv(environ)}"
-            services[environ.lower().replace("service_", "")] = url
+    mobilenet_v2 = "mobilenet_v2"
+    inception_v3 = "inception_v3"
 
-    grpc: Dict[str, str] = {}
-    for environ in os.environ.keys():
-        if environ.startswith("GRPC_"):
-            url = f"{os.getenv(environ)}"
-            grpc[environ.lower().replace("grpc_", "")] = url
+    service_mobilenet_v2 = os.getenv("SERVICE_MOBILENET_V2")
+    service_inception_v3 = os.getenv("SERVICE_INCEPTION_V3")
+
+    grpc_mobilenet_v2 = os.getenv("GRPC_MOBILENET_V2")
+    grpc_inception_v3 = os.getenv("GRPC_INCEPTION_V3")
 
 
 class APIConfigurations:

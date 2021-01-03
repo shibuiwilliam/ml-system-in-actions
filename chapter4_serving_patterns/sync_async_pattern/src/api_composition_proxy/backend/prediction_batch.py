@@ -5,6 +5,8 @@ import os
 import base64
 import io
 from concurrent.futures import ProcessPoolExecutor
+import grpc
+from tensorflow_serving.apis import prediction_service_pb2_grpc
 
 from src.api_composition_proxy.configurations import CacheConfigurations, ModelConfigurations, ServiceConfigurations
 from src.api_composition_proxy.backend import store_data_job, request_tfserving
@@ -18,38 +20,37 @@ logger.addHandler(stdout_handler)
 logger.setLevel(logging.DEBUG)
 
 
-def _run_prediction(job_id: str) -> bool:
-    data = store_data_job.get_data_redis(job_id)
-    if data != "":
-        return True
-    image_key = store_data_job.make_image_key(job_id)
-    image_data = store_data_job.get_data_redis(image_key)
-    decoded = base64.b64decode(image_data)
-    io_bytes = io.BytesIO(decoded)
-    prediction = request_tfserving.request_grpc(
-        image=io_bytes.read(),
-        model_spec_name=ModelConfigurations.async_model_spec_name,
-        signature_name=ModelConfigurations.async_signature_name,
-        serving_address=ServiceConfigurations.grpc[ModelConfigurations.async_model_spec_name],
-        timeout_second=5,
-    )
-    if prediction is not None:
-        return store_data_job.set_data_redis(job_id, prediction)
-    else:
-        return store_data_job.left_push_queue(CacheConfigurations.queue_name, job_id)
-
-
-def _trigger_prediction_if_queue():
+def _trigger_prediction_if_queue(stub: prediction_service_pb2_grpc.PredictionServiceStub):
     job_id = store_data_job.right_pop_queue(CacheConfigurations.queue_name)
     logger.info(f"predict job_id: {job_id}")
     if job_id is not None:
-        _run_prediction(job_id)
+        data = store_data_job.get_data_redis(job_id)
+        if data != "":
+            return True
+        image_key = store_data_job.make_image_key(job_id)
+        image_data = store_data_job.get_data_redis(image_key)
+        decoded = base64.b64decode(image_data)
+        io_bytes = io.BytesIO(decoded)
+        prediction = request_tfserving.request_grpc(
+            stub=stub,
+            image=io_bytes.read(),
+            model_spec_name=ModelConfigurations.async_model_spec_name,
+            signature_name=ModelConfigurations.async_signature_name,
+            timeout_second=5,
+        )
+        if prediction is not None:
+            return store_data_job.set_data_redis(job_id, prediction)
+        else:
+            return store_data_job.left_push_queue(CacheConfigurations.queue_name, job_id)
 
 
 def _loop():
+    channel = grpc.insecure_channel(ServiceConfigurations.grpc_inception_v3)
+    stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
+
     while True:
         sleep(1)
-        _trigger_prediction_if_queue()
+        _trigger_prediction_if_queue(stub=stub)
 
 
 def prediction_loop(num_procs: int = 2):

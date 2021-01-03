@@ -11,19 +11,16 @@ from tensorflow_serving.apis import prediction_service_pb2_grpc
 
 
 def request_grpc(
+    stub: prediction_service_pb2_grpc.PredictionServiceStub,
     image: bytes,
     model_spec_name: str = "inception_v3",
     signature_name: str = "serving_default",
-    serving_address: str = "localhost:8500",
     timeout_second: int = 5,
 ) -> str:
-    channel = grpc.insecure_channel(serving_address)
-    stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
-    base64_image = base64.urlsafe_b64encode(image)
-
     request = predict_pb2.PredictRequest()
     request.model_spec.name = model_spec_name
     request.model_spec.signature_name = signature_name
+    base64_image = base64.urlsafe_b64encode(image)
     request.inputs["image"].CopyFrom(tf.make_tensor_proto([base64_image]))
     response = stub.Predict(request, timeout_second)
 
@@ -34,10 +31,8 @@ def request_grpc(
 def request_rest(
     image: bytes,
     model_spec_name: str = "inception_v3",
-    signature_name: str = "serving_default",
     address: str = "localhost",
     port: int = 8501,
-    timeout_second: int = 5,
 ):
     serving_address = f"http://{address}:{port}/v1/models/{model_spec_name}:predict"
     headers = {"Content-Type": "application/json"}
