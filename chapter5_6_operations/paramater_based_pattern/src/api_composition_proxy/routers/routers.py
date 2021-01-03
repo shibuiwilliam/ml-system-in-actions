@@ -43,9 +43,17 @@ async def health_all() -> Dict[str, Any]:
     logger.info(f"GET redirect to: /health")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
-            r = await ac.get(f"{url}/health")
-            results[service] = r.json()
+
+        async def req(ac, service, url):
+            response = await ac.get(f"{url}/health")
+            return service, response
+
+        tasks = [req(ac, service, url) for service, url in ServiceConfigurations.services.items()]
+
+        responses = await asyncio.gather(*tasks)
+
+        for service, response in responses:
+            results[service] = response.json()
     return results
 
 
@@ -55,12 +63,20 @@ async def predict_get_test() -> Dict[str, Any]:
     logger.info(f"TEST GET redirect to: /predict/test as {job_id}")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
-            r = await ac.get(f"{url}/predict/test", params={"id": job_id})
-            logger.info(f"{service} {job_id} {r.json()}")
+
+        async def req(ac, service, url, job_id):
+            response = await ac.get(f"{url}/predict/test", params={"id": job_id})
+            return service, response
+
+        tasks = [req(ac, service, url, job_id) for service, url in ServiceConfigurations.services.items()]
+
+        responses = await asyncio.gather(*tasks)
+
+        for service, response in responses:
+            logger.info(f"{service} {job_id} {response.json()}")
             if not ServiceConfigurations.activates[service]:
                 continue
-            proba = r.json()["prediction"][0]
+            proba = response.json()["prediction"][0]
             if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
                 results[service] = 1
             else:
@@ -73,13 +89,22 @@ async def predict_post_test() -> Dict[str, Any]:
     job_id = str(uuid.uuid4())[:6]
     logger.info(f"TEST POST redirect to: /predict as {job_id}")
     results = {}
+
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
-            r = await ac.post(f"{url}/predict", json={"data": Data().data}, params={"id": job_id})
-            logger.info(f"{service} {job_id} {r.json()}")
+
+        async def req(ac, service, url, job_id):
+            response = await ac.post(f"{url}/predict", json={"data": Data().data}, params={"id": job_id})
+            return service, response
+
+        tasks = [req(ac, service, url, job_id) for service, url in ServiceConfigurations.services.items()]
+
+        responses = await asyncio.gather(*tasks)
+
+        for service, response in responses:
+            logger.info(f"{service} {job_id} {response.json()}")
             if not ServiceConfigurations.activates[service]:
                 continue
-            proba = r.json()["prediction"][0]
+            proba = response.json()["prediction"][0]
             if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
                 results[service] = 1
             else:
@@ -92,13 +117,22 @@ async def predict(data: Data) -> Dict[str, Any]:
     job_id = str(uuid.uuid4())[:6]
     logger.info(f"POST redirect to: /predict as {job_id}")
     results = {}
+
     async with httpx.AsyncClient() as ac:
-        for service, url in ServiceConfigurations.services.items():
-            r = await ac.post(f"{url}/predict", json={"data": data.data}, params={"id": job_id})
-            logger.info(f"{service} {job_id} {r.json()}")
+
+        async def req(ac, service, url, job_id, data):
+            response = await ac.post(f"{url}/predict", json={"data": data.data}, params={"id": job_id})
+            return service, response
+
+        tasks = [req(ac, service, url, job_id, data) for service, url in ServiceConfigurations.services.items()]
+
+        responses = await asyncio.gather(*tasks)
+
+        for service, response in responses:
+            logger.info(f"{service} {job_id} {response.json()}")
             if not ServiceConfigurations.activates[service]:
                 continue
-            proba = r.json()["prediction"][0]
+            proba = response.json()["prediction"][0]
             if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
                 results[service] = 1
             else:

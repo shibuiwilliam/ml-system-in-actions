@@ -58,8 +58,9 @@ async def health_all() -> Dict[str, Any]:
         tasks = [req(ac, service, url) for service, url in ServiceConfigurations.services.items()]
 
         responses = await asyncio.gather(*tasks)
-        for r in responses:
-            results[r[0]] = r[1].json()
+
+        for service, response in responses:
+            results[service] = response.json()
     return results
 
 
@@ -78,9 +79,9 @@ async def predict_get_test() -> Dict[str, Any]:
 
         responses = await asyncio.gather(*tasks)
 
-        for r in responses:
-            logger.info(f"{r[0]} {job_id} {r[1].json()}")
-            results[r[0]] = r[1].json()
+        for service, response in responses:
+            logger.info(f"{service} {job_id} {response.json()}")
+            results[service] = response.json()
     return results
 
 
@@ -99,9 +100,9 @@ async def predict_post_test() -> Dict[str, Any]:
 
         responses = await asyncio.gather(*tasks)
 
-        for r in responses:
-            logger.info(f"{r[0]} {job_id} {r[1].json()}")
-            results[r[0]] = r[1].json()
+        for service, response in responses:
+            logger.info(f"{service} {job_id} {response.json()}")
+            results[service] = response.json()
     return results
 
 
@@ -120,9 +121,9 @@ async def predict(data: Data) -> Dict[str, Any]:
 
         responses = await asyncio.gather(*tasks)
 
-        for r in responses:
-            logger.info(f"{r[0]} {job_id} {r[1].json()}")
-            results[r[0]] = r[1].json()
+        for service, response in responses:
+            logger.info(f"{service} {job_id} {response.json()}")
+            results[service] = response.json()
     return results
 
 
@@ -141,9 +142,9 @@ async def predict_label(data: Data) -> Dict[str, Any]:
 
         responses = await asyncio.gather(*tasks)
 
-        for r in responses:
-            logger.info(f"{r[0]} {job_id} {r[1].json()}")
-            proba = r[1].json()["prediction"][0]
+        for service, response in responses:
+            logger.info(f"{service} {job_id} {response.json()}")
+            proba = response.json()["prediction"][0]
             if results["prediction"]["proba"] < proba:
-                results["prediction"] = {"proba": r[1].json()["prediction"][0], "label": r[0]}
+                results["prediction"] = {"proba": response.json()["prediction"][0], "label": service}
     return results

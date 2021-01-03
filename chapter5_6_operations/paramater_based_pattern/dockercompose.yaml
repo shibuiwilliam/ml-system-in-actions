@@ -12,6 +12,12 @@ services:
       - SERVICE_SETOSA=service_setosa:8000
       - SERVICE_VERSICOLOR=service_versicolor:8001
       - SERVICE_VIRGINICA=service_virginica:8002
+      - THRESHOLD_SETOSA=0.9
+      - THRESHOLD_VERSICOLOR=0.85
+      - THRESHOLD_VIRGINICA=0.95
+      - ACTIVATE_SETOSA=1
+      - ACTIVATE_VERSICOLOR=1
+      - ACTIVATE_VIRGINICA=0
     ports:
       - "9000:9000"
     command: ./run.sh
