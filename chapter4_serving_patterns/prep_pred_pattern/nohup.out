@@ -1,0 +1,32 @@
+[I 06:12:34.476 NotebookApp] ローカルディレクトリからノートブックをサーブ: /Users/shibuiyuusuke/book/ml-system-in-actions/chapter4_serving_patterns/prep_pred_pattern
+[I 06:12:34.476 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 06:12:34.476 NotebookApp] http://localhost:8888/?token=790c1a27a0e10f5405094219d0f5be572689409dc9af7114
+[I 06:12:34.476 NotebookApp]  or http://127.0.0.1:8888/?token=790c1a27a0e10f5405094219d0f5be572689409dc9af7114
+[I 06:12:34.476 NotebookApp] サーバを停止し全てのカーネルをシャットダウンするには Control-C を使って下さい(確認をスキップするには2回)。
+[C 06:12:34.485 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///Users/shibuiyuusuke/Library/Jupyter/runtime/nbserver-80950-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=790c1a27a0e10f5405094219d0f5be572689409dc9af7114
+     or http://127.0.0.1:8888/?token=790c1a27a0e10f5405094219d0f5be572689409dc9af7114
+[I 06:12:40.189 NotebookApp] Creating new notebook in 
+[I 06:12:41.265 NotebookApp] Kernel started: 232ede05-0572-4840-a478-7e819e17d3ae, name: python3
+[I 06:14:41.192 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:18:41.227 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:20:41.222 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:26:41.225 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:28:41.238 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:30:41.231 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:32:41.240 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:38:41.243 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:40:41.248 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:42:41.245 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:44:41.246 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:46:41.230 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:54:41.240 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:55:02.609 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:56:41.246 NotebookApp] Saving file at /Untitled.ipynb
+[I 06:58:41.255 NotebookApp] Saving file at /Untitled.ipynb
+[I 07:00:41.254 NotebookApp] Saving file at /Untitled.ipynb
+[I 07:02:41.256 NotebookApp] Saving file at /Untitled.ipynb
