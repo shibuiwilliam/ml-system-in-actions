@@ -30,24 +30,24 @@ def label() -> Dict[int, str]:
 
 
 @router.get("/predict/test")
-async def predict_test(background_tasks: BackgroundTasks) -> Dict[str, List[float]]:
-    prediction = await classifier.predict(data=Data(), background_tasks=background_tasks)
+def predict_test(background_tasks: BackgroundTasks) -> Dict[str, List[float]]:
+    prediction = classifier.predict(data=Data(), background_tasks=background_tasks)
     return {"prediction": list(prediction)}
 
 
 @router.get("/predict/test/label")
-async def predict_test_label(background_tasks: BackgroundTasks) -> Dict[str, str]:
-    prediction = await classifier.predict_label(data=Data(), background_tasks=background_tasks)
+def predict_test_label(background_tasks: BackgroundTasks) -> Dict[str, str]:
+    prediction = classifier.predict_label(data=Data(), background_tasks=background_tasks)
     return {"prediction": prediction}
 
 
 @router.post("/predict")
-async def predict(data: Data, background_tasks: BackgroundTasks) -> Dict[str, List[float]]:
-    prediction = await classifier.predict(data=data, background_tasks=background_tasks)
+def predict(data: Data, background_tasks: BackgroundTasks) -> Dict[str, List[float]]:
+    prediction = classifier.predict(data=data, background_tasks=background_tasks)
     return {"prediction": list(prediction)}
 
 
 @router.post("/predict/label")
-async def predict_label(data: Data, background_tasks: BackgroundTasks) -> Dict[str, str]:
-    prediction = await classifier.predict_label(data=data, background_tasks=background_tasks)
+def predict_label(data: Data, background_tasks: BackgroundTasks) -> Dict[str, str]:
+    prediction = classifier.predict_label(data=data, background_tasks=background_tasks)
     return {"prediction": prediction}

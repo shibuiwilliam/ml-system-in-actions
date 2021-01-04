@@ -62,7 +62,7 @@ class Classifier(object):
             self.label = json.load(f)
         logger.info(f"label: {self.label}")
 
-    async def predict(self, data: Image) -> List[float]:
+    def predict(self, data: Image) -> List[float]:
         preprocessed = self.preprocess_transformer.transform(data)
 
         input_tensor = onnx_ml_pb2.TensorProto()
@@ -83,8 +83,8 @@ class Classifier(object):
         logger.info(f"predict proba {softmax}")
         return softmax
 
-    async def predict_label(self, data: Image) -> str:
-        softmax = await self.predict(data=data)
+    def predict_label(self, data: Image) -> str:
+        softmax = self.predict(data=data)
         argmax = int(np.argmax(np.array(softmax)[0]))
         return self.label[argmax]
 

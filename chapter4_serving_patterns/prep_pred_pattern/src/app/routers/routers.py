@@ -33,30 +33,30 @@ def label() -> Dict[int, str]:
 
 
 @router.get("/predict/test")
-async def predict_test() -> Dict[str, List[float]]:
-    prediction = await classifier.predict(data=Data().data)
+def predict_test() -> Dict[str, List[float]]:
+    prediction = classifier.predict(data=Data().data)
     return {"prediction": list(prediction)}
 
 
 @router.get("/predict/test/label")
-async def predict_test_label() -> Dict[str, str]:
-    prediction = await classifier.predict_label(data=Data().data)
+def predict_test_label() -> Dict[str, str]:
+    prediction = classifier.predict_label(data=Data().data)
     return {"prediction": prediction}
 
 
 @router.post("/predict")
-async def predict(data: Data) -> Dict[str, List[float]]:
+def predict(data: Data) -> Dict[str, List[float]]:
     image = base64.b64decode(str(data.data))
     io_bytes = io.BytesIO(image)
     image_data = Image.open(io_bytes)
-    prediction = await classifier.predict(data=image_data)
+    prediction = classifier.predict(data=image_data)
     return {"prediction": list(prediction)}
 
 
 @router.post("/predict/label")
-async def predict_label(data: Data) -> Dict[str, str]:
+def predict_label(data: Data) -> Dict[str, str]:
     image = base64.b64decode(str(data.data))
     io_bytes = io.BytesIO(image)
     image_data = Image.open(io_bytes)
-    prediction = await classifier.predict_label(data=image_data)
+    prediction = classifier.predict_label(data=image_data)
     return {"prediction": prediction}

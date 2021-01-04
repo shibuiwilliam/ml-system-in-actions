@@ -13,6 +13,17 @@ DATA_CACHE_PATTERN_PRED := pred
 DATA_CACHE_PATTERN_REST_PORT := 8001
 DATA_CACHE_PATTERN_GRPC_PORT := 50051
 
+.PHONY: proto
+proto:
+	python \
+		-m grpc_tools.protoc \
+		-I src/proto \
+		--python_out=src/proto \
+		--grpc_python_out=src/proto \
+		src/proto/onnx-ml.proto \
+		src/proto/predict.proto \
+		src/proto/prediction_service.proto
+
 .PHONY: build_proxy
 build_proxy:
 	docker build \

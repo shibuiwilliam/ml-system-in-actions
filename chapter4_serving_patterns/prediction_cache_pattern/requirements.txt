@@ -20,3 +20,4 @@ httptools>=0.1.1
 python-json-logger>=2.0.1
 loguru>=0.5.3
 requests>=2.25.0
+grpcio>=1.32.0
