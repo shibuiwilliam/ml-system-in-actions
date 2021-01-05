@@ -16,10 +16,6 @@ from logging import getLogger
 
 logger = getLogger(__name__)
 
-serving_address = f"{ModelConfigurations().api_address}:{ModelConfigurations().grpc_port}"
-channel = grpc.insecure_channel(serving_address)
-stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
-
 
 class Data(BaseModel):
     data: str = "0000"
@@ -28,18 +24,21 @@ class Data(BaseModel):
 class Classifier(object):
     def __init__(
         self,
-        stub: prediction_service_pb2_grpc.PredictionServiceStub,
         preprocess_transformer_path: str = "/data_cache_pattern/models/preprocess_transformer.pkl",
         softmax_transformer_path: str = "/data_cache_pattern/models/softmax_transformer.pkl",
         label_path: str = "/data_cache_pattern/data/image_net_labels.json",
+        serving_address: str = "localhost:50051",
         onnx_input_name: str = "input",
         onnx_output_name: str = "output",
     ):
-        self.stub = stub
         self.preprocess_transformer_path: str = preprocess_transformer_path
         self.softmax_transformer_path: str = softmax_transformer_path
         self.preprocess_transformer: PytorchImagePreprocessTransformer = None
         self.softmax_transformer: SoftmaxTransformer = None
+
+        self.serving_address = serving_address
+        self.channel = grpc.insecure_channel(self.serving_address)
+        self.stub = prediction_service_pb2_grpc.PredictionServiceStub(self.channel)
 
         self.label_path = label_path
         self.label: List[str] = []
@@ -75,7 +74,7 @@ class Classifier(object):
             logger.info(f"registering cache: {data.data}")
             image = Image.open(os.path.join("data/", f"{data.data}.jpg"))
             preprocessed = self.preprocess_transformer.transform(image)
-            await background_job.save_data_job(
+            background_job.save_data_job(
                 data=preprocessed.tolist(), item_id=data.data, background_tasks=background_tasks
             )
         else:
@@ -111,10 +110,10 @@ class Classifier(object):
 
 
 classifier = Classifier(
-    stub=stub,
     preprocess_transformer_path=ModelConfigurations().preprocess_transformer_path,
     softmax_transformer_path=ModelConfigurations().softmax_transformer_path,
     label_path=ModelConfigurations().label_path,
+    serving_address=f"{ModelConfigurations.api_address}:{ModelConfigurations.grpc_port}",
     onnx_input_name=ModelConfigurations().onnx_input_name,
     onnx_output_name=ModelConfigurations().onnx_output_name,
 )

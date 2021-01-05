@@ -41,7 +41,7 @@ class SaveDataRedisJob(SaveDataJob):
         logger.info(f"completed save data: {self.item_id}")
 
 
-async def save_data_job(data: Any, item_id: str, background_tasks: BackgroundTasks) -> str:
+def save_data_job(data: Any, item_id: str, background_tasks: BackgroundTasks) -> str:
     task = SaveDataRedisJob(item_id=item_id, data=data)
     background_tasks.add_task(task)
     return item_id
