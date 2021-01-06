@@ -32,7 +32,7 @@ class Classifier(object):
         self.output_name = self.classifier.get_outputs()[0].name
         logger.info(f"initialized model")
 
-    async def predict(self, data: List[List[float]]) -> List[float]:
+    def predict(self, data: List[List[float]]) -> List[float]:
         np_data = np.array(data).astype(np.float32)
         prediction = self.classifier.run(None, {self.input_name: np_data})
         return prediction[1][0].values()

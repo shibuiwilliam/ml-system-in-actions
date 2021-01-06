@@ -39,15 +39,15 @@ class Classifier(object):
             self.label = json.load(f)
         logger.info(f"label: {self.label}")
 
-    async def predict(self, data: List[List[int]]) -> np.ndarray:
+    def predict(self, data: List[List[int]]) -> np.ndarray:
         np_data = np.array(data).astype(np.float32)
         prediction = self.classifier.run(None, {self.input_name: np_data})
         output = np.array(list(prediction[1][0].values()))
         logger.info(f"predict proba {output}")
         return output
 
-    async def predict_label(self, data: List[List[int]]) -> str:
-        prediction = await self.predict(data=data)
+    def predict_label(self, data: List[List[int]]) -> str:
+        prediction = self.predict(data=data)
         argmax = int(np.argmax(np.array(prediction)[0]))
         return self.label[str(argmax)]
 

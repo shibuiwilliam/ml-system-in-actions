@@ -29,7 +29,7 @@ class OutlierDetector(object):
         self.outlier_output_name = self.outlier_detector.get_outputs()[0].name
         logger.info(f"initialized outlier model")
 
-    async def predict(self, data: List[List[int]]) -> Tuple[bool, float]:
+    def predict(self, data: List[List[int]]) -> Tuple[bool, float]:
         np_data = np.array(data).astype(np.float32)
         prediction = self.outlier_detector.run(None, {self.outlier_input_name: np_data})
         output = float(prediction[1][0][0])

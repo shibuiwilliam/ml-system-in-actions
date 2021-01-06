@@ -46,15 +46,20 @@ async def health_all() -> Dict[str, Any]:
     logger.info(f"GET redirect to: /health")
     results = {}
     async with httpx.AsyncClient() as ac:
-        for service, url in zip(
-            [ServiceConfigurations.mobilenet_v2, ServiceConfigurations.inception_v3],
-            [ServiceConfigurations.service_mobilenet_v2, ServiceConfigurations.service_inception_v3],
-        ):
-            serving_address = f"http://{url}/v1/models/{service}/versions/0/metadata"
-            logger.info(f"health all : {serving_address}")
-            r = await ac.get(serving_address)
-            logger.info(f"health all res: {r}")
-            results[service] = r.status_code
+
+        async def req(ac, service, url):
+            response = await ac.get(f"http://{url}/v1/models/{service}/versions/0/metadata")
+            return service, response
+
+        tasks = [
+            req(ac, ServiceConfigurations.mobilenet_v2, ServiceConfigurations.rest_mobilenet_v2),
+            req(ac, ServiceConfigurations.inception_v3, ServiceConfigurations.rest_inception_v3),
+        ]
+
+        responses = await asyncio.gather(*tasks)
+
+        for service, response in responses:
+            results[service] = response.json()
     return results
 
 

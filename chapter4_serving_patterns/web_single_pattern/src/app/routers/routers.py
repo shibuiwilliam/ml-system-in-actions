@@ -31,34 +31,34 @@ def label() -> Dict[int, str]:
 
 
 @router.get("/predict/test")
-async def predict_test() -> Dict[str, List[float]]:
+def predict_test() -> Dict[str, List[float]]:
     job_id = str(uuid.uuid4())
-    prediction = await classifier.predict(data=Data().data)
+    prediction = classifier.predict(data=Data().data)
     prediction_list = list(prediction)
     logger.info(f"test {job_id}: {prediction_list}")
     return {"prediction": prediction_list}
 
 
 @router.get("/predict/test/label")
-async def predict_test_label() -> Dict[str, str]:
+def predict_test_label() -> Dict[str, str]:
     job_id = str(uuid.uuid4())
-    prediction = await classifier.predict_label(data=Data().data)
+    prediction = classifier.predict_label(data=Data().data)
     logger.info(f"test {job_id}: {prediction}")
     return {"prediction": prediction}
 
 
 @router.post("/predict")
-async def predict(data: Data) -> Dict[str, List[float]]:
+def predict(data: Data) -> Dict[str, List[float]]:
     job_id = str(uuid.uuid4())
-    prediction = await classifier.predict(data.data)
+    prediction = classifier.predict(data.data)
     prediction_list = list(prediction)
     logger.info(f"{job_id}: {prediction_list}")
     return {"prediction": prediction_list}
 
 
 @router.post("/predict/label")
-async def predict_label(data: Data) -> Dict[str, str]:
+def predict_label(data: Data) -> Dict[str, str]:
     job_id = str(uuid.uuid4())
-    prediction = await classifier.predict_label(data.data)
+    prediction = classifier.predict_label(data.data)
     logger.info(f"test {job_id}: {prediction}")
     return {"prediction": prediction}

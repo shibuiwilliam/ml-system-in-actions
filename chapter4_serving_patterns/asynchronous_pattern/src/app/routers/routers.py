@@ -36,7 +36,7 @@ def label() -> Dict[int, str]:
 
 
 @router.get("/predict/test")
-async def predict_test(background_tasks: BackgroundTasks) -> Dict[str, str]:
+def predict_test(background_tasks: BackgroundTasks) -> Dict[str, str]:
     job_id = str(uuid.uuid4())[:6]
     data = Data()
     data.image_data = ModelConfigurations.sample_image
@@ -45,7 +45,7 @@ async def predict_test(background_tasks: BackgroundTasks) -> Dict[str, str]:
 
 
 @router.post("/predict")
-async def predict(data: Data, background_tasks: BackgroundTasks) -> Dict[str, str]:
+def predict(data: Data, background_tasks: BackgroundTasks) -> Dict[str, str]:
     image = base64.b64decode(str(data.image_data))
     io_bytes = io.BytesIO(image)
     data.image_data = Image.open(io_bytes)

@@ -8,8 +8,8 @@ services:
     environment:
       - PLATFORM=docker_compose
       - QUEUE_NAME=tfs_queue
-      - SERVICE_MOBILENET_V2=sync:8501
-      - SERVICE_INCEPTION_V3=async:8601
+      - REST_MOBILENET_V2=sync:8501
+      - REST_INCEPTION_V3=async:8601
       - GRPC_MOBILENET_V2=sync:8500
       - GRPC_INCEPTION_V3=async:8600
     ports:
@@ -52,8 +52,8 @@ services:
     environment:
       - PLATFORM=docker_compose
       - QUEUE_NAME=tfs_queue
-      - SERVICE_MOBILENET_V2=sync:8501
-      - SERVICE_INCEPTION_V3=async:8601
+      - REST_MOBILENET_V2=sync:8501
+      - REST_INCEPTION_V3=async:8601
       - GRPC_MOBILENET_V2=sync:8500
       - GRPC_INCEPTION_V3=async:8600
     entrypoint:

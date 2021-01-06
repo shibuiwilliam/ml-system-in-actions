@@ -29,8 +29,8 @@ class ServiceConfigurations:
     mobilenet_v2 = "mobilenet_v2"
     inception_v3 = "inception_v3"
 
-    service_mobilenet_v2 = os.getenv("SERVICE_MOBILENET_V2")
-    service_inception_v3 = os.getenv("SERVICE_INCEPTION_V3")
+    rest_mobilenet_v2 = os.getenv("REST_MOBILENET_V2")
+    rest_inception_v3 = os.getenv("REST_INCEPTION_V3")
 
     grpc_mobilenet_v2 = os.getenv("GRPC_MOBILENET_V2")
     grpc_inception_v3 = os.getenv("GRPC_INCEPTION_V3")

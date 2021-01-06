@@ -27,16 +27,16 @@ def metadata() -> Dict[str, Any]:
 
 
 @router.get("/predict/test")
-async def predict_test(id: str = str(uuid.uuid4())[:6]) -> Dict[str, List[float]]:
-    prediction = await classifier.predict(data=Data().data)
+def predict_test(id: str = str(uuid.uuid4())[:6]) -> Dict[str, List[float]]:
+    prediction = classifier.predict(data=Data().data)
     prediction_list = list(prediction)
     logger.info(f"{ModelConfigurations.mode_name} {id}: {prediction_list}")
     return {"prediction": prediction_list}
 
 
 @router.post("/predict")
-async def predict(data: Data, id: str = str(uuid.uuid4())[:6]) -> Dict[str, List[float]]:
-    prediction = await classifier.predict(data.data)
+def predict(data: Data, id: str = str(uuid.uuid4())[:6]) -> Dict[str, List[float]]:
+    prediction = classifier.predict(data.data)
     prediction_list = list(prediction)
     logger.info(f"{ModelConfigurations.mode_name} {id}: {prediction_list}")
     return {"prediction": prediction_list}
