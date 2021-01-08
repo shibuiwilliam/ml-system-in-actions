@@ -52,6 +52,7 @@ push_all: push_api push_loader push_client
 
 .PHONY: deploy
 deploy:
+	istioctl install -y
 	kubectl apply -f manifests/namespace.yml
 	kubectl apply -f manifests/
 

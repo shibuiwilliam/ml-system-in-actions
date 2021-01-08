@@ -61,7 +61,7 @@ async def health_pred() -> Dict[str, Any]:
 
 
 @router.get("/predict/test")
-async def predict_test() -> Dict[str, Any]:
+def predict_test() -> Dict[str, Any]:
     job_id = str(uuid.uuid4())[:6]
     logger.info(f"{job_id} TEST GET redirect to: /predict/test")
     image = Data().image_data
@@ -80,7 +80,7 @@ async def predict_test() -> Dict[str, Any]:
 
 
 @router.post("/predict")
-async def predict(data: Data) -> Dict[str, Any]:
+def predict(data: Data) -> Dict[str, Any]:
     job_id = str(uuid.uuid4())[:6]
     logger.info(f"{job_id} POST redirect to: /predict")
     image = base64.b64decode(str(data.image_data))

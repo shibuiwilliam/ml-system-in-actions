@@ -20,6 +20,11 @@ build:
 push:
 	docker push $(DOCKER_REPOSITORY):$(MODEL_IN_IMAGE_PATTERN)_$(IMAGE_VERSION)
 
+.PHONY: build_all
+build_all: build 
+
+.PHONY: push_all
+push_all: push
 
 .PHONY: deploy
 deploy:

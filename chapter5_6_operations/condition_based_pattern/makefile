@@ -119,3 +119,10 @@ predict:
 			-H "Content-Type: application/json" \
 			-d @- \
 			localhost:8000/predict
+
+.PHONY: deploy
+deploy:
+	istioctl install -y
+	kubectl apply -f manifests/namespace.yml
+	kubectl apply -f manifests/
+

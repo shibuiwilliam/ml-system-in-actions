@@ -48,7 +48,7 @@ class Classifier(object):
 
     def predict_label(self, data: List[List[int]]) -> str:
         prediction = self.predict(data=data)
-        argmax = int(np.argmax(np.array(prediction)[0]))
+        argmax = int(np.argmax(np.array(prediction)))
         return self.label[str(argmax)]
 
 

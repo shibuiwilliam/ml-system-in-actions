@@ -64,7 +64,7 @@ async def health_all() -> Dict[str, Any]:
 
 
 @router.get("/predict/test")
-async def predict_test(background_tasks: BackgroundTasks) -> Dict[str, Any]:
+def predict_test(background_tasks: BackgroundTasks) -> Dict[str, Any]:
     logger.info(f"TEST GET redirect to: /predict/test")
     job_id = str(uuid.uuid4())[:6]
     results = {"job_id": job_id}
@@ -93,7 +93,7 @@ async def predict_test(background_tasks: BackgroundTasks) -> Dict[str, Any]:
 
 
 @router.post("/predict")
-async def predict(data: Data, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+def predict(data: Data, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     logger.info(f"POST redirect to: /predict")
     job_id = str(uuid.uuid4())[:6]
     results = {"job_id": job_id}

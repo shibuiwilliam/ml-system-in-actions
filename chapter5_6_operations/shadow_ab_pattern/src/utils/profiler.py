@@ -22,9 +22,9 @@ def do_cprofile(func):
 
 def log_decorator(endpoint: str = "/", logger=logger):
     def _log_decorator(func):
-        async def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs):
             start = time.time()
-            res = await func(*args, **kwargs)
+            res = func(*args, **kwargs)
             elapsed = 1000 * (time.time() - start)
             job_id = kwargs.get("job_id")
             data = kwargs.get("data")

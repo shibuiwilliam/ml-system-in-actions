@@ -32,6 +32,15 @@ stop:
 push:
 	docker push $(DOCKER_REPOSITORY):$(WEB_SINGLE_PATTERN)_$(IMAGE_VERSION)
 
+.PHONY: build_all
+build_all: build
+
+.PHONY: run_all
+run_all: run
+
+.PHONY: push_all
+push_all: push
+
 .PHONY: health
 health:
 	curl localhost:8000/health
