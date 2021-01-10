@@ -31,6 +31,7 @@ def start_run(
     learning_rate: float,
     model_type: str,
 ):
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     writer = SummaryWriter(log_dir=tensorboard_directory)
 
     batch_size = batch_size
@@ -61,9 +62,9 @@ def start_run(
     )
 
     if model_type == MODEL_ENUM.SIMPLE_MODEL.value:
-        model = SimpleModel()
+        model = SimpleModel().to(device)
     elif model_type == MODEL_ENUM.VGG16.value:
-        model = VGG16()
+        model = VGG16().to(device)
     else:
         raise ValueError("Unknown model")
     model.eval()
@@ -82,6 +83,7 @@ def start_run(
         epochs=epochs,
         writer=writer,
         checkpoints_directory=downstream_directory,
+        device=device,
     )
 
     accuracy, loss = evaluate(
@@ -90,6 +92,7 @@ def start_run(
         criterion=criterion,
         writer=writer,
         epoch=epochs + 1,
+        device=device,
     )
     logger.info(f"Latest performance: Accuracy: {accuracy}, Loss: {loss}")
 

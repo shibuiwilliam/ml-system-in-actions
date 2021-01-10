@@ -160,6 +160,7 @@ def evaluate(
     criterion,
     writer: SummaryWriter,
     epoch: int,
+    device: str = "cpu",
 ) -> Tuple[float, float]:
     correct = 0
     total = 0
@@ -167,13 +168,13 @@ def evaluate(
     with torch.no_grad():
         for data in test_dataloader:
             images, labels = data
-            outputs = model(images)
+            outputs = model(images.to(device))
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
-            correct += (predicted == labels).sum().item()
+            correct += (predicted == labels.to(device)).sum().item()
             total_loss += criterion(outputs, labels)
 
-    accuracy = 100 * correct / total
+    accuracy = 100 * float(correct / total)
     loss = total_loss / 10000
 
     writer.add_scalar("Loss/test", loss, epoch)
@@ -191,13 +192,14 @@ def train(
     writer: SummaryWriter,
     epochs: int = 10,
     checkpoints_directory: str = "/opt/cifar10/model/",
+    device: str = "cpu",
 ):
     logger.info("start training...")
     for epoch in range(epochs):
         running_loss = 0.0
         logger.info(f"starting epoch: {epoch}")
-        for i, data in enumerate(train_dataloader):
-            images, labels = data
+        for i, data in enumerate(train_dataloader, 0):
+            images, labels = data[0].to(device), data[1].to(device)
 
             optimizer.zero_grad()
 
@@ -220,6 +222,7 @@ def train(
             criterion=criterion,
             writer=writer,
             epoch=epoch,
+            device=device,
         )
         checkpoints = os.path.join(checkpoints_directory, f"epoch_{epoch}_loss_{loss}.pth")
         logger.info(f"save checkpoints: {checkpoints}")
