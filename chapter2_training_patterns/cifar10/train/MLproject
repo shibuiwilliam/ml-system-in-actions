@@ -3,7 +3,6 @@ name: cifar10_initial
 docker_env:
   image: shibui/ml-system-in-actions:training_pattern_cifar10_initial_0.0.1
   volumes: ["$(pwd)/data:/opt/data", "/Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training_patterns/cifar10/mlruns:/tmp/mlruns"]
-  run_params: [['--gpus', 'all']]
 
 entry_points:
   train:
@@ -26,3 +25,4 @@ entry_points:
         --num_workers {num_workers} \
         --learning_rate {learning_rate} \
         --model_type {model_type}
+        

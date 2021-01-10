@@ -5,3 +5,4 @@ entry_points:
   main:
     command: |
       python -m main
+      

@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
 
-from src.model import Cifar10Dataset, SimpleModel, VGG16, evaluate, train
+from src.model import Cifar10Dataset, SimpleModel, VGG11, VGG16, evaluate, train
 from src.constants import MODEL_ENUM
 
 import mlflow
@@ -34,7 +34,6 @@ def start_run(
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     writer = SummaryWriter(log_dir=tensorboard_directory)
 
-    batch_size = batch_size
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))],
     )
@@ -63,6 +62,8 @@ def start_run(
 
     if model_type == MODEL_ENUM.SIMPLE_MODEL.value:
         model = SimpleModel().to(device)
+    elif model_type == MODEL_ENUM.VGG11.value:
+        model = VGG11().to(device)
     elif model_type == MODEL_ENUM.VGG16.value:
         model = VGG16().to(device)
     else:
@@ -119,6 +120,7 @@ def start_run(
     mlflow.log_param("learning_rate", learning_rate)
     mlflow.log_param("batch_size", batch_size)
     mlflow.log_param("num_workers", num_workers)
+    mlflow.log_param("device", device)
     mlflow.log_metric("accuracy", accuracy)
     mlflow.log_metric("loss", loss)
     mlflow.log_artifact(model_file_name)
@@ -177,8 +179,8 @@ def main():
         "--model_type",
         type=str,
         default=MODEL_ENUM.SIMPLE_MODEL.value,
-        choices=[MODEL_ENUM.SIMPLE_MODEL.value, MODEL_ENUM.VGG16.value],
-        help="simple or vgg",
+        choices=[MODEL_ENUM.SIMPLE_MODEL.value, MODEL_ENUM.VGG11.value, MODEL_ENUM.VGG16.value],
+        help="simple, vgg11 or vgg16",
     )
     args = parser.parse_args()
     mlflow_experiment_id = int(os.getenv("MLFLOW_EXPERIMENT_ID", 0))

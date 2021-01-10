@@ -15,26 +15,28 @@ logger = logging.getLogger(__name__)
 def main():
     with mlflow.start_run() as r:
         base_dir = "/opt/data/"
-        preprocess_run = mlflow.run(
-            "./preprocess",
-            "preprocess",
-            backend="local",
-            parameters={
-                "data": "cifar10",
-                "downstream": os.path.join(base_dir, "preprocess/"),
-            },
-        )
-        preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
+        # preprocess_run = mlflow.run(
+        #     "./preprocess",
+        #     "preprocess",
+        #     backend="local",
+        #     parameters={
+        #         "data": "cifar10",
+        #         "downstream": os.path.join(base_dir, "preprocess/"),
+        #     },
+        # )
+        # preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
 
         train_run = mlflow.run(
             "./train",
             "train",
             backend="local",
             parameters={
-                # "upstream": os.path.join(
-                #     "/tmp/mlruns/0", "624b8c80539c4de998d203890841f204", "artifacts/downstream_directory"
-                # ),
-                "upstream": os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),
+                "upstream": os.path.join(
+                    "/tmp/mlruns/0", "624b8c80539c4de998d203890841f204", "artifacts/downstream_directory"
+                ),
+                "epochs": 20,
+                "model_type": "vgg11"
+                # "upstream": os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),
             },
         )
         train_run = mlflow.tracking.MlflowClient().get_run(train_run.run_id)

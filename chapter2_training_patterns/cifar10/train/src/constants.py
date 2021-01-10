@@ -14,6 +14,7 @@ class PLATFORM_ENUM(enum.Enum):
 
 class MODEL_ENUM(enum.Enum):
     SIMPLE_MODEL = "simple_model"
+    VGG11 = "vgg11"
     VGG16 = "vgg16"
 
     @staticmethod
