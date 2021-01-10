@@ -16,6 +16,7 @@ class MODEL_ENUM(enum.Enum):
     SIMPLE_MODEL = "simple_model"
     VGG11 = "vgg11"
     VGG16 = "vgg16"
+    RESNET18 = "resnet18"
 
     @staticmethod
     def has_value(item):
