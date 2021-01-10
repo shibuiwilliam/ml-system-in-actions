@@ -31,10 +31,10 @@ def main():
             "train",
             backend="local",
             parameters={
-                "upstream": os.path.join(
-                    "/tmp/mlruns/0", "624b8c80539c4de998d203890841f204", "artifacts/downstream_directory"
-                ),
-                # "upstream": os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),
+                # "upstream": os.path.join(
+                #     "/tmp/mlruns/0", "624b8c80539c4de998d203890841f204", "artifacts/downstream_directory"
+                # ),
+                "upstream": os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),
             },
         )
         train_run = mlflow.tracking.MlflowClient().get_run(train_run.run_id)
