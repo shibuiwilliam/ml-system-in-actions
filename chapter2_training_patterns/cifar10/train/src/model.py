@@ -1,6 +1,7 @@
 import logging
 import os
 from typing import Tuple
+import time
 
 import numpy as np
 import torch
@@ -268,6 +269,8 @@ def train(
     for epoch in range(epochs):
         running_loss = 0.0
         logger.info(f"starting epoch: {epoch}")
+        epoch_start = time.time()
+        start = time.time()
         for i, data in enumerate(train_dataloader, 0):
             images, labels = data[0].to(device), data[1].to(device)
 
@@ -283,8 +286,12 @@ def train(
             writer.add_scalar("Loss/train", float(running_loss / (i + 1)), (epoch + 1) * i)
 
             if i % 200 == 199:
-                logger.info(f"[{epoch}, {i}] loss: {running_loss / 200}")
+                end = time.time()
+                logger.info(f"[{epoch}, {i}] loss: {running_loss / 200} duration: {end - start}")
                 running_loss = 0.0
+                start = time.time()
+        epoch_end = time.time()
+        logger.info(f"[{epoch}] duration in seconds: {epoch_end - epoch_start}")
 
         _, loss = evaluate(
             model=model,

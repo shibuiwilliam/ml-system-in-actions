@@ -25,4 +25,3 @@ entry_points:
         --num_workers {num_workers} \
         --learning_rate {learning_rate} \
         --model_type {model_type}
-        

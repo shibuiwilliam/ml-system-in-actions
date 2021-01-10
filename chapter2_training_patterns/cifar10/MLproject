@@ -3,6 +3,27 @@ name: cifar10_initial
 
 entry_points:
   main:
+    parameters:
+      preprocess_data: {type: string, default: cifar10}
+      preprocess_downstream: {type: string, default: /opt/data/preprocess/}
+      preprocess_cached_data_id: {type: string, default: 624b8c80539c4de998d203890841f204}
+      train_upstream: {type: string, default: /opt/data/preprocess/}
+      train_downstream: {type: string, default: /opt/data/model/}
+      train_tensorboard: {type: string, default: /opt/data/tensorboard/}
+      train_epochs: {type: int, default: 100}
+      train_batch_size: {type: int, default: 32}
+      train_num_workers: {type: int, default: 4}
+      train_learning_rate: {type: float, default: 0.001}
+      train_model_type: {type: string, default: vgg16}
     command: |
-      python -m main
-      
+      python -m main \
+        --preprocess_data {preprocess_data} \
+        --preprocess_downstream {preprocess_downstream} \
+        --preprocess_cached_data_id {preprocess_cached_data_id} \
+        --train_downstream {train_downstream} \
+        --train_tensorboard {train_tensorboard} \
+        --train_epochs {train_epochs} \
+        --train_batch_size {train_batch_size} \
+        --train_num_workers {train_num_workers} \
+        --train_learning_rate {train_learning_rate} \
+        --train_model_type {train_model_type} 

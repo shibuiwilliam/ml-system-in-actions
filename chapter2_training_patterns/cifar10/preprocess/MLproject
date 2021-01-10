@@ -2,14 +2,17 @@ name: cifar10_initial
 
 docker_env:
   image: shibui/ml-system-in-actions:training_pattern_cifar10_initial_0.0.1
-  volumes: ["$(pwd)/data:/opt/data"]
+  volumes: ["$(pwd)/data:/opt/data", "/Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training_patterns/cifar10/mlruns:/tmp/mlruns"]
 
 entry_points:
   preprocess:
     parameters:
       data: {type: string, default: cifar10}
       downstream: {type: string, default: /opt/data/preprocess/}
+      cached_data_id: {type: string, default: ""}
     command: |
       python -m src.preprocess \
         --data {data} \
-        --downstream {downstream}
+        --downstream {downstream} \
+        --cached_data_id {cached_data_id}
+  
