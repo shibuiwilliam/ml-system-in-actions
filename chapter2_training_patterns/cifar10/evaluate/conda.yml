@@ -1,0 +1,15 @@
+name: evaluate
+channels:
+  - defaults
+  - pytorch
+  - anaconda
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pip
+  - pip:
+      - mlflow
+      - grpcio
+      - Pillow
+      - scikit-learn
+      - numpy

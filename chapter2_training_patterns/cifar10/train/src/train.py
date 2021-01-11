@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
 
-from src.model import Cifar10Dataset, SimpleModel, VGG11, VGG16, ResNet18, evaluate, train
+from src.model import Cifar10Dataset, SimpleModel, VGG11, VGG16, evaluate, train
 from src.constants import MODEL_ENUM
 
 import mlflow
@@ -66,8 +66,6 @@ def start_run(
         model = VGG11().to(device)
     elif model_type == MODEL_ENUM.VGG16.value:
         model = VGG16().to(device)
-    elif model_type == MODEL_ENUM.RESNET18.value:
-        model = ResNet18().to(device)
     else:
         raise ValueError("Unknown model")
     model.eval()
@@ -185,9 +183,8 @@ def main():
             MODEL_ENUM.SIMPLE_MODEL.value,
             MODEL_ENUM.VGG11.value,
             MODEL_ENUM.VGG16.value,
-            MODEL_ENUM.RESNET18.value,
         ],
-        help="simple, vgg11, vgg16 or resnet18",
+        help="simple, vgg11 or vgg16",
     )
     args = parser.parse_args()
     mlflow_experiment_id = int(os.getenv("MLFLOW_EXPERIMENT_ID", 0))

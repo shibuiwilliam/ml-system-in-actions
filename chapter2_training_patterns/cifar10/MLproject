@@ -7,14 +7,21 @@ entry_points:
       preprocess_data: {type: string, default: cifar10}
       preprocess_downstream: {type: string, default: /opt/data/preprocess/}
       preprocess_cached_data_id: {type: string, default: 624b8c80539c4de998d203890841f204}
-      train_upstream: {type: string, default: /opt/data/preprocess/}
+
       train_downstream: {type: string, default: /opt/data/model/}
       train_tensorboard: {type: string, default: /opt/data/tensorboard/}
-      train_epochs: {type: int, default: 100}
+      train_epochs: {type: int, default: 1}
       train_batch_size: {type: int, default: 32}
       train_num_workers: {type: int, default: 4}
       train_learning_rate: {type: float, default: 0.001}
-      train_model_type: {type: string, default: vgg16}
+      train_model_type: {type: string, default: vgg11}
+
+      evaluate_downstream: {type: string, default: /opt/data/evaluate/}
+      evaluate_test_data_directory: {type: string, default: /Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training_patterns/cifar10/mlruns/0/08b61240b59843968b7412bedf994d29/artifacts/downstream_directory/test}
+      evaluate_dockerfile_path: {type: string, default: /Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training_patterns/cifar10/evaluate/Dockerfile}
+      evaluate_model_filename: {type: string, default: cifar10_0.onnx}
+      evaluate_model_directory: {type: string, default: /Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training_patterns/cifar10/mlruns/0/43b3c07c316e487b97c194d043e14c49/artifacts}
+      evaluate_entrypoint_path: {type: string, default: /Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training_patterns/cifar10/evaluate/onnx_runtime_server_entrypoint.sh}
     command: |
       python -m main \
         --preprocess_data {preprocess_data} \
@@ -26,4 +33,10 @@ entry_points:
         --train_batch_size {train_batch_size} \
         --train_num_workers {train_num_workers} \
         --train_learning_rate {train_learning_rate} \
-        --train_model_type {train_model_type} 
+        --train_model_type {train_model_type} \
+        --evaluate_downstream {evaluate_downstream} \
+        --evaluate_test_data_directory {evaluate_test_data_directory} \
+        --evaluate_dockerfile_path {evaluate_dockerfile_path} \
+        --evaluate_model_filename {evaluate_model_filename} \
+        --evaluate_model_directory {evaluate_model_directory} \
+        --evaluate_entrypoint_path {evaluate_entrypoint_path} 

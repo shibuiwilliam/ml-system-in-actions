@@ -1,0 +1,24 @@
+name: cifar10_initial
+
+conda_env: conda.yml
+
+entry_points:
+  evaluate:
+    parameters:
+      upstream: {type: string, default: /opt/data/train/}
+      downstream: {type: string, default: /opt/data/evaluate/}
+      test_data_directory: {type: string, default: /opt/data/preprocess/test}
+      dockerfile_path: {type: string, default: /opt/data/evaluate/Dockerfile}
+      model_filename: {type: string, default: vgg11.onnx}
+      model_directory: {type: string, default: /opt/mlruns/0/abc/artifaces/downstream_directory/}
+      entrypoint_path: {type: string, default: /opt/data/evaluate/onnx_runtime_server_entrypoint.sh}
+    command: |
+      python -m evaluate.src.evaluate \
+        --upstream {upstream} \
+        --downstream {downstream} \
+        --test_data_directory {test_data_directory} \
+        --dockerfile_path {dockerfile_path} \
+        --model_filename {model_filename} \
+        --model_directory {model_directory} \
+        --entrypoint_path {entrypoint_path}
+        
