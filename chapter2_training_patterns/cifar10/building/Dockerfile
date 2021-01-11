@@ -10,7 +10,7 @@ WORKDIR /${PROJECT_DIR}
 
 COPY ${model_directory}/${model_filename} /${PROJECT_DIR}/${model_filename}
 
-ENV MODEL_PATH /${PROJECT_DIR}/vgg11.onnx
+ENV MODEL_PATH /${PROJECT_DIR}/${model_filename}
 
 WORKDIR /onnxruntime/server/
 COPY ./${entrypoint_path} ./onnx_runtime_server_entrypoint.sh

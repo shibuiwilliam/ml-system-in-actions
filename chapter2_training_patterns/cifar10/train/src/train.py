@@ -110,12 +110,12 @@ def start_run(
         dummy_input,
         onnx_file_name,
         verbose=True,
-        input_names=["input1"],
-        output_names=["output1"],
+        input_names=["input"],
+        output_names=["output"],
     )
 
     mlflow.log_param("optimizer", "Adam")
-    mlflow.log_param("preprocess", "Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))")
+    mlflow.log_param("preprocess", "Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))")
     mlflow.log_param("epochs", epochs)
     mlflow.log_param("learning_rate", learning_rate)
     mlflow.log_param("batch_size", batch_size)

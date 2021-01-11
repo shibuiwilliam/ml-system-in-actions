@@ -8,7 +8,7 @@ from PIL import Image
 import json
 import time
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score
 from typing import Tuple, List, Union, Dict
 import grpc
 from src.proto import predict_pb2, onnx_ml_pb2, prediction_service_pb2_grpc
@@ -152,7 +152,7 @@ def evaluate(
             end = time.time()
             duration = end - start
             predicted.append(x)
-            labels.append(c)
+            labels.append(int(c))
             durations.append(duration)
             predictions[p] = {"label": c, "prediction": x}
             logger.info(f"{p} label: {c} predicted: {x} duration: {duration} seconds")
@@ -160,12 +160,10 @@ def evaluate(
     total_tested = len(predicted)
     average_duration_second = total_time / total_tested
     accuracy = accuracy_score(labels, predicted)
-    cm = confusion_matrix(labels, predicted)
 
     evaluation = {
         "total_tested": total_tested,
         "accuracy": accuracy,
-        "confusion_matrix": cm,
         "total_time": total_time,
         "average_duration_second": average_duration_second,
     }
@@ -213,7 +211,6 @@ def main():
     mlflow.log_metric("total_tested", result["evaluation"]["total_tested"])
     mlflow.log_metric("total_time", result["evaluation"]["total_time"])
     mlflow.log_metric("accuracy", result["evaluation"]["accuracy"])
-    mlflow.log_metric("confusion_matrix", result["evaluation"]["confusion_matrix"])
     mlflow.log_metric("average_duration_second", result["evaluation"]["average_duration_second"])
     mlflow.log_artifact(log_file)
 

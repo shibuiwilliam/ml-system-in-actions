@@ -141,8 +141,8 @@ def main():
         train_run = mlflow.tracking.MlflowClient().get_run(train_run.run_id)
 
         building_run = mlflow.run(
-            "./evaluate",
-            "evaluate",
+            "./building",
+            "building",
             backend="local",
             parameters={
                 "dockerfile_path": args.building_dockerfile_path,
