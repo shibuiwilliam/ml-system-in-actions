@@ -125,7 +125,7 @@ def start_run(
     mlflow.log_metric("loss", loss)
     mlflow.log_artifact(model_file_name)
     mlflow.log_artifact(onnx_file_name)
-    mlflow.log_artifacts(tensorboard_directory, artifact_path="events")
+    mlflow.log_artifacts(tensorboard_directory, artifact_path="tensorboard")
 
 
 def main():

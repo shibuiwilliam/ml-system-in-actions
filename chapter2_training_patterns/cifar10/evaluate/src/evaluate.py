@@ -120,33 +120,6 @@ class Classifier(object):
         return argmax
 
 
-def build_prediction_image(
-    dockerfile: str,
-    dockerimage: str,
-    model_filename: str,
-    model_directory: str,
-    entrypoint_path: str,
-):
-    command = f"docker build -t {dockerfile} -f {dockerimage} . --build-arg model_filename={model_filename} model_path={model_directory} entrypoint_path={entrypoint_path}"
-    proc = subprocess.run(command, shell=True, stdout=PIPE, stderr=PIPE, text=True)
-    result = proc.stdout
-    logger.info(result)
-
-
-def run_onnx_runtime(container_name: str, dockerimage: str):
-    command = f"docker run -it -d --name {container_name} -p 50051:50051 {dockerimage}"
-    proc = subprocess.run(command, shell=True, stdout=PIPE, stderr=PIPE, text=True)
-    result = proc.stdout
-    logger.info(result)
-
-
-def stop_onnx_runtime(container_name: str):
-    command = f"docker rm -f {container_name}"
-    proc = subprocess.run(command, shell=True, stdout=PIPE, stderr=PIPE, text=True)
-    result = proc.stdout
-    logger.info(result)
-
-
 def evaluate(
     test_data_directory: str,
     preprocess_transformer: BaseEstimator = PytorchImagePreprocessTransformer,
@@ -223,48 +196,14 @@ def main():
         default="/opt/data/preprocess/test",
         help="test data directory",
     )
-    parser.add_argument(
-        "--dockerfile_path",
-        type=str,
-        default="/opt/data/evaluate/Dockerfile",
-        help="Dockerfile path",
-    )
-    parser.add_argument(
-        "--model_filename",
-        type=str,
-        default="vgg11.onnx",
-        help="model file name",
-    )
-    parser.add_argument(
-        "--model_directory",
-        type=str,
-        default="/opt/mlruns/0/abc/artifaces/downstream_directory/",
-        help="model file directory",
-    )
-    parser.add_argument(
-        "--entrypoint_path",
-        type=str,
-        default="/opt/data/evaluate/onnx_runtime_server_entrypoint.sh",
-        help="entrypoint path",
-    )
     args = parser.parse_args()
     mlflow_experiment_id = int(os.getenv("MLFLOW_EXPERIMENT_ID", 0))
-    dockerimage = f"shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_{mlflow_experiment_id}"
 
     upstream_directory = args.upstream
     downstream_directory = args.downstream
     os.makedirs(upstream_directory, exist_ok=True)
     os.makedirs(downstream_directory, exist_ok=True)
 
-    build_prediction_image(
-        dockerfile=args.dockerfile_path,
-        dockerimage=dockerimage,
-        model_filename=args.model_filename,
-        model_directory=args.model_directory,
-        entrypoint_path=args.entrypoint_path,
-    )
-
-    run_onnx_runtime(container_name=mlflow_experiment_id, dockerimage=dockerimage)
     result = evaluate(test_data_directory=args.test_data_directory)
 
     log_file = os.path.join(downstream_directory, f"{mlflow_experiment_id}.json")
@@ -277,8 +216,6 @@ def main():
     mlflow.log_metric("confusion_matrix", result["evaluation"]["confusion_matrix"])
     mlflow.log_metric("average_duration_second", result["evaluation"]["average_duration_second"])
     mlflow.log_artifact(log_file)
-
-    stop_onnx_runtime(container_name=mlflow_experiment_id)
 
 
 if __name__ == "__main__":

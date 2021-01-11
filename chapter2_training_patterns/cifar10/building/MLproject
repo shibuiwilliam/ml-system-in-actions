@@ -1,0 +1,20 @@
+name: cifar10_initial
+
+conda_env: conda.yml
+
+entry_points:
+  building:
+    parameters:
+      dockerfile_path: {type: string, default: /ml-system-in-actions/chapter2_training_patterns/cifar10/building/Dockerfile}
+      model_filename: {type: string, default: vgg11.onnx}
+      model_directory: {type: string, default: /ml-system-in-actions/chapter2_training_patterns/cifar10/mlruns/0/abc/artifaces/downstream_directory}
+      entrypoint_path: {type: string, default: /ml-system-in-actions/chapter2_training_patterns/cifar10/building/onnx_runtime_server_entrypoint.sh}
+      dockerimage: {type: string, default: shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0.0.1}
+    command: |
+      docker build \
+        -t {dockerimage} \
+        -f {dockerfile_path} \
+        --build-arg  model_filename={model_filename} \
+        --build-arg  model_directory={model_directory} \
+        --build-arg  entrypoint_path={entrypoint_path} \
+        .

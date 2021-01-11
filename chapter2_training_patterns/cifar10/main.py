@@ -22,10 +22,7 @@ def main():
         help="cifar10 or cifar100; default cifar10",
     )
     parser.add_argument(
-        "--preprocess_downstream",
-        type=str,
-        default="/opt/cifar10/preprocess/",
-        help="preprocess downstream directory",
+        "--preprocess_downstream", type=str, default="/opt/cifar10/preprocess/", help="preprocess downstream directory"
     )
     parser.add_argument(
         "--preprocess_cached_data_id",
@@ -85,43 +82,33 @@ def main():
     )
 
     parser.add_argument(
+        "--building_dockerfile_path",
+        type=str,
+        default="/opt/data/building/Dockerfile",
+        help="building Dockerfile path",
+    )
+    parser.add_argument(
+        "--building_model_filename",
+        type=str,
+        default="vgg11.onnx",
+        help="building model file name",
+    )
+    parser.add_argument(
+        "--building_entrypoint_path",
+        type=str,
+        default="/opt/data/building/onnx_runtime_server_entrypoint.sh",
+        help="building entrypoint path",
+    )
+
+    parser.add_argument(
         "--evaluate_downstream",
         type=str,
         default="/opt/data/evaluate/",
         help="evaluate downstream directory",
     )
-    parser.add_argument(
-        "--evaluate_test_data_directory",
-        type=str,
-        default="/opt/data/preprocess/test",
-        help="evaluate test data directory",
-    )
-    parser.add_argument(
-        "--evaluate_dockerfile_path",
-        type=str,
-        default="/opt/data/evaluate/Dockerfile",
-        help="evaluate Dockerfile path",
-    )
-    parser.add_argument(
-        "--evaluate_model_filename",
-        type=str,
-        default="vgg11.onnx",
-        help="evaluate model file name",
-    )
-    parser.add_argument(
-        "--evaluate_model_directory",
-        type=str,
-        default="/opt/mlruns/0/abc/artifaces/downstream_directory/",
-        help="evaluate model file directory",
-    )
-    parser.add_argument(
-        "--evaluate_entrypoint_path",
-        type=str,
-        default="/opt/data/evaluate/onnx_runtime_server_entrypoint.sh",
-        help="evaluate entrypoint path",
-    )
 
     args = parser.parse_args()
+    mlflow_experiment_id = int(os.getenv("MLFLOW_EXPERIMENT_ID", 0))
 
     with mlflow.start_run() as r:
         preprocess_run = mlflow.run(
@@ -141,6 +128,7 @@ def main():
             "train",
             backend="local",
             parameters={
+                "upstream": os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),
                 "downstream": args.train_downstream,
                 "tensorboard": args.train_tensorboard,
                 "epochs": args.train_epochs,
@@ -148,42 +136,39 @@ def main():
                 "num_workers": args.train_num_workers,
                 "learning_rate": args.train_learning_rate,
                 "model_type": args.train_model_type,
-                "upstream": os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),
             },
         )
         train_run = mlflow.tracking.MlflowClient().get_run(train_run.run_id)
+
+        building_run = mlflow.run(
+            "./evaluate",
+            "evaluate",
+            backend="local",
+            parameters={
+                "dockerfile_path": args.building_dockerfile_path,
+                "model_filename": args.building_model_filename,
+                "model_directory": os.path.join("/tmp/mlruns/0", train_run.info.run_id, "artifacts"),
+                "entrypoint_path": args.building_entrypoint_path,
+                "dockerimage": f"shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_{mlflow_experiment_id}",
+            },
+        )
+        building_run = mlflow.tracking.MlflowClient().get_run(building_run.run_id)
+
         evaluate_run = mlflow.run(
             "./evaluate",
             "evaluate",
             backend="local",
             parameters={
+                "upstream": os.path.join("/tmp/mlruns/0", train_run.info.run_id, "artifacts"),
                 "downstream": args.evaluate_downstream,
-                "test_data_directory": args.evaluate_test_data_directory,
-                "dockerfile_path": args.evaluate_dockerfile_path,
-                "model_filename": args.evaluate_model_filename,
-                "model_directory": args.evaluate_model_directory,
-                "entrypoint_path": args.evaluate_entrypoint_path,
-                "upstream": os.path.join("/tmp/mlruns/0", train_run.info.run_id, "artifacts/downstream_directory"),
+                "test_data_directory": os.path.join(
+                    "/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory/test"
+                ),
+                "dockerimage": f"shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_{mlflow_experiment_id}",
+                "container_name": f"training_pattern_cifar10_evaluate_{mlflow_experiment_id}",
             },
         )
         evaluate_run = mlflow.tracking.MlflowClient().get_run(evaluate_run.run_id)
-
-        # train_run = "43b3c07c316e487b97c194d043e14c49"
-        # evaluate_run = mlflow.run(
-        #     "./evaluate",
-        #     "evaluate",
-        #     backend="local",
-        #     parameters={
-        #         "downstream": args.evaluate_downstream,
-        #         "test_data_directory": args.evaluate_test_data_directory,
-        #         "dockerfile_path": args.evaluate_dockerfile_path,
-        #         "model_filename": args.evaluate_model_filename,
-        #         "model_directory": args.evaluate_model_directory,
-        #         "entrypoint_path": args.evaluate_entrypoint_path,
-        #         "upstream": os.path.join("/tmp/mlruns/0", train_run, "artifacts/downstream_directory"),
-        #     },
-        # )
-        # evaluate_run = mlflow.tracking.MlflowClient().get_run(evaluate_run.run_id)
 
 
 if __name__ == "__main__":
