@@ -17,11 +17,11 @@ entry_points:
       train_model_type: {type: string, default: vgg11}
 
       evaluate_downstream: {type: string, default: /opt/data/evaluate/}
-      evaluate_test_data_directory: {type: string, default: /Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training_patterns/cifar10/mlruns/0/08b61240b59843968b7412bedf994d29/artifacts/downstream_directory/test}
-      evaluate_dockerfile_path: {type: string, default: /Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training_patterns/cifar10/evaluate/Dockerfile}
-      evaluate_model_filename: {type: string, default: cifar10_0.onnx}
-      evaluate_model_directory: {type: string, default: /Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training_patterns/cifar10/mlruns/0/43b3c07c316e487b97c194d043e14c49/artifacts}
-      evaluate_entrypoint_path: {type: string, default: /Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training_patterns/cifar10/evaluate/onnx_runtime_server_entrypoint.sh}
+      evaluate_test_data_directory: {type: string, default: /opt/data/preprocess/test}
+      evaluate_dockerfile_path: {type: string, default: /opt/data/evaluate/Dockerfile}
+      evaluate_model_filename: {type: string, default: vgg11.onnx}
+      evaluate_model_directory: {type: string, default: /opt/mlruns/0/abc/artifaces/downstream_directory/}
+      evaluate_entrypoint_path: {type: string, default: /opt/data/evaluate/onnx_runtime_server_entrypoint.sh}
     command: |
       python -m main \
         --preprocess_data {preprocess_data} \

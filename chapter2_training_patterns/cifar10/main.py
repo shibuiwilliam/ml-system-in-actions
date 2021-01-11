@@ -124,51 +124,34 @@ def main():
     args = parser.parse_args()
 
     with mlflow.start_run() as r:
-        # preprocess_run = mlflow.run(
-        #     "./preprocess",
-        #     "preprocess",
-        #     backend="local",
-        #     parameters={
-        #         "data": args.preprocess_data,
-        #         "downstream": args.preprocess_downstream,
-        #         "cached_data_id": args.preprocess_cached_data_id,
-        #     },
-        # )
-        # preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
+        preprocess_run = mlflow.run(
+            "./preprocess",
+            "preprocess",
+            backend="local",
+            parameters={
+                "data": args.preprocess_data,
+                "downstream": args.preprocess_downstream,
+                "cached_data_id": args.preprocess_cached_data_id,
+            },
+        )
+        preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
 
-        # train_run = mlflow.run(
-        #     "./train",
-        #     "train",
-        #     backend="local",
-        #     parameters={
-        #         "downstream": args.train_downstream,
-        #         "tensorboard": args.train_tensorboard,
-        #         "epochs": args.train_epochs,
-        #         "batch_size": args.train_batch_size,
-        #         "num_workers": args.train_num_workers,
-        #         "learning_rate": args.train_learning_rate,
-        #         "model_type": args.train_model_type,
-        #         "upstream": os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),
-        #     },
-        # )
-        # train_run = mlflow.tracking.MlflowClient().get_run(train_run.run_id)
-        # evaluate_run = mlflow.run(
-        #     "./evaluate",
-        #     "evaluate",
-        #     backend="local",
-        #     parameters={
-        #         "downstream": args.evaluate_downstream,
-        #         "test_data_directory": args.evaluate_test_data_directory,
-        #         "dockerfile_path": args.evaluate_dockerfile_path,
-        #         "model_filename": args.evaluate_model_filename,
-        #         "model_directory": args.evaluate_model_directory,
-        #         "entrypoint_path": args.evaluate_entrypoint_path,
-        #         "upstream": os.path.join("/tmp/mlruns/0", train_run.info.run_id, "artifacts/downstream_directory"),
-        #     },
-        # )
-        # evaluate_run = mlflow.tracking.MlflowClient().get_run(evaluate_run.run_id)
-
-        train_run = "43b3c07c316e487b97c194d043e14c49"
+        train_run = mlflow.run(
+            "./train",
+            "train",
+            backend="local",
+            parameters={
+                "downstream": args.train_downstream,
+                "tensorboard": args.train_tensorboard,
+                "epochs": args.train_epochs,
+                "batch_size": args.train_batch_size,
+                "num_workers": args.train_num_workers,
+                "learning_rate": args.train_learning_rate,
+                "model_type": args.train_model_type,
+                "upstream": os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),
+            },
+        )
+        train_run = mlflow.tracking.MlflowClient().get_run(train_run.run_id)
         evaluate_run = mlflow.run(
             "./evaluate",
             "evaluate",
@@ -180,10 +163,27 @@ def main():
                 "model_filename": args.evaluate_model_filename,
                 "model_directory": args.evaluate_model_directory,
                 "entrypoint_path": args.evaluate_entrypoint_path,
-                "upstream": os.path.join("/tmp/mlruns/0", train_run, "artifacts/downstream_directory"),
+                "upstream": os.path.join("/tmp/mlruns/0", train_run.info.run_id, "artifacts/downstream_directory"),
             },
         )
         evaluate_run = mlflow.tracking.MlflowClient().get_run(evaluate_run.run_id)
+
+        # train_run = "43b3c07c316e487b97c194d043e14c49"
+        # evaluate_run = mlflow.run(
+        #     "./evaluate",
+        #     "evaluate",
+        #     backend="local",
+        #     parameters={
+        #         "downstream": args.evaluate_downstream,
+        #         "test_data_directory": args.evaluate_test_data_directory,
+        #         "dockerfile_path": args.evaluate_dockerfile_path,
+        #         "model_filename": args.evaluate_model_filename,
+        #         "model_directory": args.evaluate_model_directory,
+        #         "entrypoint_path": args.evaluate_entrypoint_path,
+        #         "upstream": os.path.join("/tmp/mlruns/0", train_run, "artifacts/downstream_directory"),
+        #     },
+        # )
+        # evaluate_run = mlflow.tracking.MlflowClient().get_run(evaluate_run.run_id)
 
 
 if __name__ == "__main__":
