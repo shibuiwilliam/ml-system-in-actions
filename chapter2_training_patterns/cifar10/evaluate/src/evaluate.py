@@ -1,8 +1,6 @@
 import argparse
 import logging
 import os
-import subprocess
-from subprocess import PIPE
 import numpy as np
 from PIL import Image
 import json

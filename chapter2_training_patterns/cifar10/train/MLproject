@@ -7,10 +7,10 @@ docker_env:
 entry_points:
   train:
     parameters:
-      upstream: {type: string, default: /opt/data/preprocess/}
+      upstream: {type: string, default: ""}
       downstream: {type: string, default: /opt/data/model/}
       tensorboard: {type: string, default: /opt/data/tensorboard/}
-      epochs: {type: int, default: 100}
+      epochs: {type: int, default: 1}
       batch_size: {type: int, default: 32}
       num_workers: {type: int, default: 4}
       learning_rate: {type: float, default: 0.001}

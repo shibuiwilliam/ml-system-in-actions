@@ -5,7 +5,7 @@ conda_env: conda.yml
 entry_points:
   evaluate:
     parameters:
-      upstream: {type: string, default: /opt/data/train/}
+      upstream: {type: string, default: ""}
       downstream: {type: string, default: /opt/data/evaluate/}
       test_data_directory: {type: string, default: /opt/data/preprocess/test}
       dockerimage: {type: string, default: shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0.0.1}

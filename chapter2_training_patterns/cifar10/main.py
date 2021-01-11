@@ -112,8 +112,8 @@ def main():
 
     with mlflow.start_run() as r:
         preprocess_run = mlflow.run(
-            "./preprocess",
-            "preprocess",
+            uri="./preprocess",
+            entry_point="preprocess",
             backend="local",
             parameters={
                 "data": args.preprocess_data,
@@ -124,8 +124,8 @@ def main():
         preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
 
         train_run = mlflow.run(
-            "./train",
-            "train",
+            uri="./train",
+            entry_point="train",
             backend="local",
             parameters={
                 "upstream": os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),
@@ -141,8 +141,8 @@ def main():
         train_run = mlflow.tracking.MlflowClient().get_run(train_run.run_id)
 
         building_run = mlflow.run(
-            "./building",
-            "building",
+            uri="./building",
+            entry_point="building",
             backend="local",
             parameters={
                 "dockerfile_path": args.building_dockerfile_path,
@@ -155,8 +155,8 @@ def main():
         building_run = mlflow.tracking.MlflowClient().get_run(building_run.run_id)
 
         evaluate_run = mlflow.run(
-            "./evaluate",
-            "evaluate",
+            uri="./evaluate",
+            entry_point="evaluate",
             backend="local",
             parameters={
                 "upstream": os.path.join("/tmp/mlruns/0", train_run.info.run_id, "artifacts"),

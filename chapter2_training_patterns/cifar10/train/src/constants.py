@@ -13,7 +13,7 @@ class PLATFORM_ENUM(enum.Enum):
 
 
 class MODEL_ENUM(enum.Enum):
-    SIMPLE_MODEL = "simple_model"
+    SIMPLE_MODEL = "simple"
     VGG11 = "vgg11"
     VGG16 = "vgg16"
 
