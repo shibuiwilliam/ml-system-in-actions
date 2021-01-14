@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:13.1
+    container_name: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres/init:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=model_db
+      - POSTGRES_INITDB_ARGS="--encoding=UTF-8"
+    hostname: postgres
+    restart: always
+    stdin_open: true
+
+  model_db:
+    container_name: model_db
+    image: shibui/ml-system-in-actions:model_db_0.0.1
+    restart: always
+    environment:
+      - POSTGRES_SERVER=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=model_db
+    entrypoint: ["./run.sh"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
