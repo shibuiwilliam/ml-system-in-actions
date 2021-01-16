@@ -13,6 +13,6 @@ class DBConfigurations:
 
 
 class APIConfigurations:
-    title = os.getenv("API_TITLE", "ServingPattern")
-    description = os.getenv("API_DESCRIPTION", "machine learning system serving patterns")
+    title = os.getenv("API_TITLE", "Model_DB_Service")
+    description = os.getenv("API_DESCRIPTION", "machine learning system training patterns")
     version = os.getenv("API_VERSION", "0.1")

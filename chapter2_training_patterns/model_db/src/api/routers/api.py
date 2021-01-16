@@ -25,7 +25,7 @@ def project_by_name(project_name: str, db: Session = Depends(get_db)):
 
 
 @router.post("/projects")
-def add_project(project: schemas.Project, db: Session = Depends(get_db)):
+def add_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)):
     return cruds.add_project(
         db=db,
         project_name=project.project_name,
@@ -60,7 +60,7 @@ def model_by_project_name(project_name: str, db: Session = Depends(get_db)):
 
 
 @router.post("/models")
-def add_model(model: schemas.Model, db: Session = Depends(get_db)):
+def add_model(model: schemas.ModelCreate, db: Session = Depends(get_db)):
     return cruds.add_model(
         db=db,
         project_id=model.project_id,
@@ -91,7 +91,7 @@ def experiment_by_project_id(project_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/experiments")
-def add_experiment(experiment: schemas.Experiment, db: Session = Depends(get_db)):
+def add_experiment(experiment: schemas.ExperimentCreate, db: Session = Depends(get_db)):
     return cruds.add_experiment(
         db=db,
         model_id=experiment.model_id,
