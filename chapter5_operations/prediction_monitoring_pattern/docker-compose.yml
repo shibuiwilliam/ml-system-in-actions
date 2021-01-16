@@ -52,7 +52,6 @@ services:
       ]
     restart: always
     depends_on:
-      - mysql
       - api
 
   monitor:
@@ -67,4 +66,4 @@ services:
       - MYSQL_SERVER=mysql
     entrypoint: ["python", "-m", "src.monitor.main"]
     depends_on:
-      - mysql
+      - api

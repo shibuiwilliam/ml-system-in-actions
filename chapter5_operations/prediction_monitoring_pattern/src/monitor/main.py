@@ -1,13 +1,20 @@
 import time
 import click
 import datetime
-from logging import getLogger, INFO
+from logging import getLogger, DEBUG, Formatter, StreamHandler
 
 from src.db import cruds, schemas
 from src.db.database import get_context_db
 
+
 logger = getLogger(__name__)
-logger.setLevel(INFO)
+logger.setLevel(DEBUG)
+formatter = Formatter("[%(asctime)s] [%(process)d] [%(name)s] [%(levelname)s] %(message)s")
+
+handler = StreamHandler()
+handler.setLevel(DEBUG)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 @click.command(name="request job")
@@ -33,6 +40,7 @@ def main(
     threshold_max_petal_width: float,
     outlier_rate_threshold: float,
 ):
+    logger.info("start monitoring...")
     with get_context_db() as db:
         while True:
             now = datetime.datetime.now()

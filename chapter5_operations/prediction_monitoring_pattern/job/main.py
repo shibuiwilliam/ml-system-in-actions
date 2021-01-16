@@ -3,10 +3,16 @@ import csv
 import time
 import requests
 import json
-from logging import getLogger, INFO
+from logging import getLogger, DEBUG, Formatter, StreamHandler
 
 logger = getLogger(__name__)
-logger.setLevel(INFO)
+logger.setLevel(DEBUG)
+formatter = Formatter("[%(asctime)s] [%(process)d] [%(name)s] [%(levelname)s] %(message)s")
+
+handler = StreamHandler()
+handler.setLevel(DEBUG)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 def read_csv(data_file: str):
@@ -30,7 +36,7 @@ def main(data_file: str, rate_per_second: int, target_url: str):
         data_json = json.dumps({"data": [d]})
         headers = {"Content-Type": "application/json", "accept": "application/json"}
         response = requests.post(target_url, data_json, headers=headers)
-        logger.info(f"response: {response}")
+        logger.info(f"response: {response.json()}")
         time.sleep(interval_second)
 
 
