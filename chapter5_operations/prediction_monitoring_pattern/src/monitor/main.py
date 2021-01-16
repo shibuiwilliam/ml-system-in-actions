@@ -41,17 +41,17 @@ def main(
     outlier_rate_threshold: float,
 ):
     logger.info("start monitoring...")
-    with get_context_db() as db:
-        while True:
-            now = datetime.datetime.now()
-            interval_ago = now - datetime.timedelta(minutes=interval)
-            time_later = now.strftime("%Y-%m-%d %H:%M:%S")
-            time_before = interval_ago.strftime("%Y-%m-%d %H:%M:%S")
+    while True:
+        now = datetime.datetime.now()
+        interval_ago = now - datetime.timedelta(minutes=interval)
+        time_later = now.strftime("%Y-%m-%d %H:%M:%S")
+        time_before = interval_ago.strftime("%Y-%m-%d %H:%M:%S")
+        with get_context_db() as db:
             prediction_logs = cruds.select_prediction_log_betwenn(db=db, time_before=time_before, time_later=time_later)
             outlier_logs = cruds.select_outlier_log_betwenn(db=db, time_before=time_before, time_later=time_later)
-            logger.info(prediction_logs)
-            logger.info(outlier_logs)
-            time.sleep(interval * 60)
+        logger.info(f"prediction_logs between {time_before} and {time_later}: {len(prediction_logs)}")
+        logger.info(f"outlier_logs between {time_before} and {time_later}: {len(outlier_logs)}")
+        time.sleep(interval * 60)
 
 
 if __name__ == "__main__":

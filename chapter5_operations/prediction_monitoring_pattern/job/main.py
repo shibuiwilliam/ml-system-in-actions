@@ -24,7 +24,7 @@ def read_csv(data_file: str):
 
 @click.command(name="request job")
 @click.option("--data_file", type=str, default="job/rand_iris.csv")
-@click.option("--rate_per_second", type=int, default=50)
+@click.option("--rate_per_second", type=int, default=10)
 @click.option("--target_url", type=str, default="http://localhost:8000/predict")
 def main(data_file: str, rate_per_second: int, target_url: str):
     logger.info("starting job...")

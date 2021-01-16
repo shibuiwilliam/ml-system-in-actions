@@ -46,7 +46,7 @@ services:
         "--data_file",
         "job/rand_iris.csv",
         "--rate_per_second",
-        "50",
+        "10",
         "--target_url",
         "http://api:8000/predict",
       ]
