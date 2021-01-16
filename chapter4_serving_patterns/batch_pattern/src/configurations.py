@@ -37,6 +37,5 @@ class ModelConfigurations:
     label_filepath = os.getenv("LABEL_FILEPATH")
 
 
-logger.info(f"{PlatformConfigurations.__name__}: {PlatformConfigurations.__dict__}")
 logger.info(f"{APIConfigurations.__name__}: {APIConfigurations.__dict__}")
 logger.info(f"{ModelConfigurations.__name__}: {ModelConfigurations.__dict__}")

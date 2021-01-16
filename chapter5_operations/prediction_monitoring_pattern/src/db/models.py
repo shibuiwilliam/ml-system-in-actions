@@ -1,11 +1,7 @@
-from logging import INFO, getLogger
-
 from sqlalchemy import Column, DateTime, String
 from sqlalchemy.sql.functions import current_timestamp
 from sqlalchemy.types import JSON
 from src.db.database import Base
-
-logger = getLogger(__name__)
 
 
 class PredictionLog(Base):

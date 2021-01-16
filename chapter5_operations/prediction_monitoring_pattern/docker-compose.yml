@@ -37,7 +37,34 @@ services:
 
   job:
     container_name: job
-    image: shibui/ml-system-in-actions:prediction_monitoring_pattern_client_0.0.1
+    image: shibui/ml-system-in-actions:prediction_monitoring_pattern_job_0.0.1
+    entrypoint:
+      [
+        "python",
+        "-m",
+        "job.main",
+        "--data_file",
+        "job/rand_iris.csv",
+        "--rate_per_second",
+        "50",
+        "--target_url",
+        "http://api:8000/predict",
+      ]
     restart: always
+    depends_on:
       - mysql
       - api
+
+  monitor:
+    container_name: monitor
+    image: shibui/ml-system-in-actions:prediction_monitoring_pattern_api_0.0.1
+    restart: always
+    environment:
+      - MYSQL_DATABASE=sample_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_PORT=3306
+      - MYSQL_SERVER=mysql
+    entrypoint: ["python", "-m", "src.monitor.main"]
+    depends_on:
+      - mysql

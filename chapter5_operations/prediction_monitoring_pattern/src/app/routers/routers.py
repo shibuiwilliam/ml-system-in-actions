@@ -92,7 +92,7 @@ def _predict(data: Data, job_id: str) -> Dict[str, Any]:
 
     return {
         "job_id": job_id,
-        "prediction": prediction,
+        "prediction": list(prediction),
         "prediction_elapsed": prediction_elapsed,
         "is_outlier": is_outlier,
         "outlier_score": outlier_score,
@@ -122,7 +122,7 @@ def predict_label(data: Data, background_tasks: BackgroundTasks) -> Dict[str, An
     job_id = str(uuid.uuid4())[:6]
 
     result = _predict(data=data, job_id=job_id)
-    argmax = int(np.argmax(result["prediction"]))
+    argmax = int(np.argmax(np.array(result["prediction"])))
     result["prediction_label"] = classifier.label[str(argmax)]
 
     background_tasks.add_task(
@@ -147,7 +147,7 @@ def register_log(
 ):
     with get_context_db() as db:
         prediction_log = {
-            "prediction": list(prediction),
+            "prediction": prediction,
             "prediction_elapsed": prediction_elapsed,
             "data": data.data,
         }
