@@ -1,4 +1,3 @@
-import datetime
 from typing import Dict, List
 
 from sqlalchemy.orm import Session
@@ -11,8 +10,8 @@ def select_prediction_log_all(db: Session) -> List[schemas.PredictionLog]:
 
 def select_prediction_log_betwenn(
     db: Session,
-    time_before: datetime.datetime,
-    time_later: datetime.datetime,
+    time_before: str,
+    time_later: str,
 ) -> List[schemas.PredictionLog]:
     return (
         db.query(models.PredictionLog)
@@ -28,8 +27,8 @@ def select_outlier_log_all(db: Session) -> List[schemas.OutlierLog]:
 
 def select_outlier_log_betwenn(
     db: Session,
-    time_before: datetime.datetime,
-    time_later: datetime.datetime,
+    time_before: str,
+    time_later: str,
 ) -> List[schemas.OutlierLog]:
     return (
         db.query(models.OutlierLog)

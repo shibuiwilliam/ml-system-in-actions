@@ -45,8 +45,10 @@ def main(
         while True:
             now = datetime.datetime.now()
             interval_ago = now - datetime.timedelta(minutes=interval)
-            prediction_logs = cruds.select_prediction_log_betwenn(db=db, time_before=interval_ago, time_later=now)
-            outlier_logs = cruds.select_outlier_log_betwenn(db=db, time_before=interval_ago, time_later=now)
+            time_later = now.strftime("%Y-%m-%d %H:%M:%S")
+            time_before = interval_ago.strftime("%Y-%m-%d %H:%M:%S")
+            prediction_logs = cruds.select_prediction_log_betwenn(db=db, time_before=time_before, time_later=time_later)
+            outlier_logs = cruds.select_outlier_log_betwenn(db=db, time_before=time_before, time_later=time_later)
             logger.info(prediction_logs)
             logger.info(outlier_logs)
             time.sleep(interval * 60)

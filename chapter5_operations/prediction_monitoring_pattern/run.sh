@@ -2,6 +2,8 @@
 
 set -eu
 
+sleep 20s
+
 HOST=${HOST:-"0.0.0.0"}
 PORT=${PORT:-8000}
 WORKERS=${WORKERS:-4}
