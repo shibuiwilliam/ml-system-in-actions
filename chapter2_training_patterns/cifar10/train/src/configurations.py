@@ -11,6 +11,8 @@ class PlatformConfigurations:
     if not PLATFORM_ENUM.has_value(platform):
         raise ValueError(f"PLATFORM must be one of {[v.value for v in PLATFORM_ENUM.__members__.values()]}")
 
+    model_db_service_url = os.getenv("MODEL_DB_SERVICE_URL", "localhost:8000")
+
 
 class PreprocessConfigurations:
     train_files = [

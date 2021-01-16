@@ -114,28 +114,56 @@ def select_experiment_by_project_id(db: Session, project_id: str) -> List[schema
 
 def add_experiment(
     db: Session,
+    model_version_id: str,
     model_id: str,
     parameters: Optional[Dict] = None,
     training_dataset: Optional[str] = None,
     validation_dataset: Optional[str] = None,
     test_dataset: Optional[str] = None,
     evaluations: Optional[Dict] = None,
-    model_file_path: Optional[str] = None,
+    artifact_file_paths: Optional[Dict] = None,
     commit: bool = True,
 ) -> schemas.Experiment:
     experiment_id = str(uuid.uuid4())[:6]
     data = models.Experiment(
         experiment_id=experiment_id,
+        model_version_id=model_version_id,
         model_id=model_id,
         parameters=parameters,
         training_dataset=training_dataset,
         validation_dataset=validation_dataset,
         test_dataset=test_dataset,
         evaluations=evaluations,
-        model_file_path=model_file_path,
+        artifact_file_paths=artifact_file_paths,
     )
     db.add(data)
     if commit:
         db.commit()
         db.refresh(data)
+    return data
+
+
+def update_experiment_evaluation(db: Session, experiment_id: str, evaluations: Dict) -> schemas.Experiment:
+    data = select_experiment_by_id(db=db, experiment_id=experiment_id)
+    if data.evaluations is None:
+        data.evaluations = evaluations
+    else:
+        for k, v in evaluations.items():
+            data.evaluations[k] = v
+    db.commit()
+    db.refresh(data)
+    return data
+
+
+def update_experiment_artifact_file_paths(
+    db: Session, experiment_id: str, artifact_file_paths: Dict
+) -> schemas.Experiment:
+    data = select_experiment_by_id(db=db, experiment_id=experiment_id)
+    if data.artifact_file_paths is None:
+        data.artifact_file_paths = artifact_file_paths
+    else:
+        for k, v in artifact_file_paths.items():
+            data.artifact_file_paths[k] = v
+    db.commit()
+    db.refresh(data)
     return data

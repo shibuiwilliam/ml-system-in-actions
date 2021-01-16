@@ -47,11 +47,19 @@ class ExperimentBase(BaseModel):
     validation_dataset: Optional[str]
     test_dataset: Optional[str]
     evaluations: Optional[Dict]
-    model_file_path: Optional[str]
+    artifact_file_paths: Optional[Dict]
 
 
 class ExperimentCreate(ExperimentBase):
     pass
+
+
+class ExperimentEvaluations(BaseModel):
+    evaluations: Dict
+
+
+class ExperimentArtifactFilePaths(BaseModel):
+    artifact_file_paths: Dict
 
 
 class Experiment(ExperimentBase):

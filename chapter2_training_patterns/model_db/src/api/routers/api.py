@@ -99,12 +99,27 @@ def experiment_by_project_id(project_id: str, db: Session = Depends(get_db)):
 def add_experiment(experiment: schemas.ExperimentCreate, db: Session = Depends(get_db)):
     return cruds.add_experiment(
         db=db,
+        model_version_id=experiment.model_version_id,
         model_id=experiment.model_id,
         parameters=experiment.parameters,
         training_dataset=experiment.training_dataset,
         validation_dataset=experiment.validation_dataset,
         test_dataset=experiment.test_dataset,
         evaluations=experiment.evaluations,
-        model_file_path=experiment.model_file_path,
+        artifact_file_paths=experiment.artifact_file_paths,
         commit=True,
+    )
+
+
+@router.post("/experiments/evaluations/{experiment_id}")
+def update_evaluations(experiment_id: str, evaluations: schemas.ExperimentEvaluations, db: Session = Depends(get_db)):
+    return cruds.update_experiment_evaluation(db=db, experiment_id=experiment_id, evaluations=evaluations.evaluations)
+
+
+@router.post("/experiments/artifact-file-paths/{experiment_id}")
+def update_artifact_file_paths(
+    experiment_id: str, artifact_file_paths: schemas.ExperimentArtifactFilePaths, db: Session = Depends(get_db)
+):
+    return cruds.update_experiment_artifact_file_paths(
+        db=db, experiment_id=experiment_id, artifact_file_paths=artifact_file_paths.artifact_file_paths
     )

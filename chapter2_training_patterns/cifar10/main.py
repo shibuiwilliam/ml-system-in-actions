@@ -1,6 +1,9 @@
 import argparse
 import logging
 import os
+from typing import Dict
+import requests
+import json
 
 import mlflow
 from mlflow.utils import mlflow_tags
@@ -12,8 +15,57 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+def register_project(project_name: str, description: str = "") -> Dict:
+    url = f"http://localhost:8000/v0.1/api/projects"
+    response = requests.post(
+        url,
+        json.dumps({"project_name": project_name, "description": description}),
+        headers={"Content-Type": "application/json", "accept": "application/json"},
+    )
+    return response.json()
+
+
+def register_model(project_id: str, model_name: str, description: str = "") -> Dict:
+    url = f"http://localhost:8000/v0.1/api/models"
+    response = requests.post(
+        url,
+        json.dumps({"project_id": project_id, "model_name": model_name, "description": description}),
+        headers={"Content-Type": "application/json", "accept": "application/json"},
+    )
+    return response.json()
+
+
+def register_experiment(
+    model_id: str,
+    model_version_id: str,
+    parameters: Dict = None,
+    training_dataset: str = None,
+    validation_dataset: str = None,
+    test_dataset: str = None,
+) -> Dict:
+    url = f"http://localhost:8000/v0.1/api/experiments"
+    payload = {"model_id": model_id, "model_version_id": model_version_id}
+    if parameters is not None:
+        payload["parameters"] = parameters
+    if training_dataset is not None:
+        payload["training_dataset"] = training_dataset
+    if validation_dataset is not None:
+        payload["validation_dataset"] = validation_dataset
+    if test_dataset is not None:
+        payload["test_dataset"] = test_dataset
+
+    response = requests.post(
+        url,
+        json.dumps(payload),
+        headers={"Content-Type": "application/json", "accept": "application/json"},
+    )
+    return response.json()
+
+
 def main():
     parser = argparse.ArgumentParser(description="Runner", formatter_class=argparse.RawTextHelpFormatter)
+
+    parser.add_argument("--commit_hash", type=str, default="000000", help="code commit hash")
 
     parser.add_argument(
         "--preprocess_data",
@@ -109,6 +161,16 @@ def main():
 
     args = parser.parse_args()
     mlflow_experiment_id = int(os.getenv("MLFLOW_EXPERIMENT_ID", 0))
+
+    ml_project = register_project(project_name="cifar10", description="cifar10 classification example project")
+    ml_model = register_model(
+        project_id=ml_project["project_id"],
+        model_name="cifar10 classification",
+        description="cifar10 classification model",
+    )
+    ml_experiment = register_experiment(
+        model_id=ml_model["model_id"], model_version_id=f"cifar10_{args.commit_hash}_{mlflow_experiment_id}"
+    )
 
     with mlflow.start_run() as r:
         preprocess_run = mlflow.run(

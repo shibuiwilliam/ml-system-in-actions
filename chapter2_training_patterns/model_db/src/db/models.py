@@ -47,5 +47,5 @@ class Experiment(Base):
     validation_dataset = Column(Text, nullable=True)
     test_dataset = Column(Text, nullable=True)
     evaluations = Column(JSON, nullable=True)
-    model_file_path = Column(Text, nullable=True)
+    artifact_file_paths = Column(JSON, nullable=True)
     created_datetime = Column(DateTime(timezone=True), server_default=current_timestamp(), nullable=False)
