@@ -80,6 +80,11 @@ def experiment_by_id(experiment_id: str, db: Session = Depends(get_db)):
     return cruds.select_experiment_by_id(db=db, experiment_id=experiment_id)
 
 
+@router.get("/experiments/model-version-id/{model_version_id}")
+def experiment_by_model_version_id(model_version_id: str, db: Session = Depends(get_db)):
+    return cruds.select_experiment_by_model_version_id(db=db, model_version_id=model_version_id)
+
+
 @router.get("/experiments/model-id/{model_id}")
 def experiment_by_model_id(model_id: str, db: Session = Depends(get_db)):
     return cruds.select_experiment_by_model_id(db=db, model_id=model_id)

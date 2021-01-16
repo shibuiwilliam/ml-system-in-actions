@@ -36,6 +36,7 @@ class Experiment(Base):
     __tablename__ = "experiments"
 
     experiment_id = Column(String(255), primary_key=True)
+    model_version_id = Column(String(255), nullable=False)
     model_id = Column(
         String(255),
         ForeignKey("models.model_id"),

@@ -95,6 +95,10 @@ def select_experiment_by_id(db: Session, experiment_id: str) -> schemas.Experime
     return db.query(models.Experiment).filter(models.Experiment.experiment_id == experiment_id).first()
 
 
+def select_experiment_by_model_version_id(db: Session, model_version_id: str) -> schemas.Experiment:
+    return db.query(models.Experiment).filter(models.Experiment.model_version_id == model_version_id).first()
+
+
 def select_experiment_by_model_id(db: Session, model_id: str) -> List[schemas.Experiment]:
     return db.query(models.Experiment).filter(models.Experiment.model_id == model_id).all()
 

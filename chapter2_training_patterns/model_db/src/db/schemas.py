@@ -41,6 +41,7 @@ class Model(ModelBase):
 
 class ExperimentBase(BaseModel):
     model_id: str
+    model_version_id: str
     parameters: Optional[Dict]
     training_dataset: Optional[str]
     validation_dataset: Optional[str]
