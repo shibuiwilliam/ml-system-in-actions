@@ -3,7 +3,7 @@ DOCKER_REPOSITORY := shibui/ml-system-in-actions
 ABSOLUTE_PATH := $(shell pwd)
 
 DOCKERFILE := Dockerfile
-DOCKER_COMPOSE := dockercompose.yaml
+DOCKER_COMPOSE := docker-compose.yml
 IMAGE_VERSION := 0.0.1
 
 ASYNCHRONOUS_PATTERN := asynchronous_pattern

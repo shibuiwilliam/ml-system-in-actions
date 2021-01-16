@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql/db/data:/var/lib/mysql
+      - ./mysql/db/initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql/conf.d:/etc/mysql/conf.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=sample_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    hostname: mysql
+    restart: always
+    stdin_open: true
+
+  api:
+    container_name: api
+    image: shibui/ml-system-in-actions:prediction_monitoring_pattern_api_0.0.1
+    restart: always
+    environment:
+      - MYSQL_DATABASE=sample_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_PORT=3306
+      - MYSQL_SERVER=mysql
+    entrypoint: ["./run.sh"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+
+  job:
+    container_name: job
+    image: shibui/ml-system-in-actions:prediction_monitoring_pattern_client_0.0.1
+    restart: always
+      - mysql
+      - api

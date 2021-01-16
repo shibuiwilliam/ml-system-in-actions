@@ -1,0 +1,41 @@
+import datetime
+import uuid
+from logging import getLogger
+from typing import Dict, List, Optional
+
+from sqlalchemy.orm import Session
+from src.db import models, schemas
+
+logger = getLogger(__name__)
+
+
+def select_prediction_log_all(db: Session) -> List[schemas.PredictionLog]:
+    return db.query(models.PredictionLog).all()
+
+
+def select_outlier_log_all(db: Session) -> List[schemas.OutlierLog]:
+    return db.query(models.OutlierLog).all()
+
+
+def add_prediction_log(db: Session, log_id: str, log: Dict, commit: bool = True) -> schemas.PredictionLog:
+    data = models.PredictionLog(
+        log_id=log_id,
+        log=log,
+    )
+    db.add(data)
+    if commit:
+        db.commit()
+        db.refresh(data)
+    return data
+
+
+def add_outlier_log(db: Session, log_id: str, log: Dict, commit: bool = True) -> schemas.OutlierLog:
+    data = models.OutlierLog(
+        log_id=log_id,
+        log=log,
+    )
+    db.add(data)
+    if commit:
+        db.commit()
+        db.refresh(data)
+    return data
