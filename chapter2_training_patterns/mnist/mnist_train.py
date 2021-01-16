@@ -1,12 +1,12 @@
-import pytorch_lightning as pl
-import mlflow.pytorch
 import os
-import torch
-import click
 from argparse import ArgumentParser
+
+import click
+import mlflow.pytorch
+import pytorch_lightning as pl
+import torch
+from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from pytorch_lightning.callbacks import ModelCheckpoint
-from pytorch_lightning.callbacks import LearningRateMonitor
 from pytorch_lightning.metrics.functional import accuracy
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, random_split

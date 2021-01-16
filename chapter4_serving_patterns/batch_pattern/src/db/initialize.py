@@ -1,7 +1,8 @@
+from logging import getLogger
+
 from src.configurations import PlatformConfigurations
 from src.db import cruds, models, schemas
 from src.db.database import get_context_db
-from logging import getLogger
 
 logger = getLogger(__name__)
 

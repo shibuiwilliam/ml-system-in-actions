@@ -1,10 +1,11 @@
-from fastapi import APIRouter
-from typing import Dict, List, Any
 import base64
 import io
-from PIL import Image
 from logging import getLogger
-from src.ml.prediction import classifier, Data
+from typing import Any, Dict, List
+
+from fastapi import APIRouter
+from PIL import Image
+from src.ml.prediction import Data, classifier
 
 logger = getLogger(__name__)
 router = APIRouter()

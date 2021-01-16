@@ -16,6 +16,7 @@ sync:
 
 .PHONY: fmt
 fmt:
+	pipenv run sort
 	pipenv run fmt
 	npx prettier --write .
 

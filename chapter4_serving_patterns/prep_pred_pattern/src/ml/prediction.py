@@ -1,15 +1,15 @@
-from typing import List, Any
-import numpy as np
 import json
-import joblib
-from PIL import Image
-import grpc
-from src.proto import predict_pb2, onnx_ml_pb2, prediction_service_pb2_grpc
+from logging import getLogger
+from typing import Any, List
 
+import grpc
+import joblib
+import numpy as np
+from PIL import Image
 from pydantic import BaseModel
 from src.configurations import ModelConfigurations
 from src.ml.transformers import PytorchImagePreprocessTransformer, SoftmaxTransformer
-from logging import getLogger
+from src.proto import onnx_ml_pb2, predict_pb2, prediction_service_pb2_grpc
 
 logger = getLogger(__name__)
 

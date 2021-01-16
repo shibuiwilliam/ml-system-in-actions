@@ -1,7 +1,8 @@
-from sklearn.base import BaseEstimator, TransformerMixin
-from typing import Tuple, List, Union
+from typing import List, Tuple, Union
+
 import numpy as np
 from PIL import Image
+from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class PytorchImagePreprocessTransformer(BaseEstimator, TransformerMixin):

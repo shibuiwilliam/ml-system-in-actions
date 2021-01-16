@@ -1,10 +1,9 @@
+from logging import INFO, getLogger
+
 from sqlalchemy import Column, DateTime, ForeignKey, String, Text
 from sqlalchemy.sql.functions import current_timestamp
 from sqlalchemy.types import JSON
-
-from logging import INFO, getLogger
 from src.db.database import Base
-
 
 logger = getLogger(__name__)
 

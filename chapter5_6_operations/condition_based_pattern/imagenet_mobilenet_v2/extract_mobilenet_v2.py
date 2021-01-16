@@ -1,8 +1,9 @@
 import json
 from typing import Dict, List
+
 import tensorflow as tf
-from tensorflow import keras
 import tensorflow_hub as hub
+from tensorflow import keras
 
 
 def get_label(json_path: str = "./data/image_net_labels.json") -> List[str]:
@@ -12,7 +13,9 @@ def get_label(json_path: str = "./data/image_net_labels.json") -> List[str]:
 
 
 def load_hub_model() -> tf.keras.Model:
-    model = tf.keras.Sequential([hub.KerasLayer("https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/4")])
+    model = tf.keras.Sequential(
+        [hub.KerasLayer("https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/4")]
+    )
     model.build([None, 224, 224, 3])
     return model
 

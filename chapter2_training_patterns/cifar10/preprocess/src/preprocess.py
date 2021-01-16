@@ -4,12 +4,11 @@ import logging
 import os
 from distutils.dir_util import copy_tree
 
+import mlflow
 import torch
 import torchvision
 import torchvision.transforms as transforms
-import mlflow
-
-from src.configurations import PreprocessConfigurations, PlatformConfigurations
+from src.configurations import PlatformConfigurations, PreprocessConfigurations
 from src.extract_data import parse_pickle, unpickle
 
 logging.basicConfig(level=logging.INFO)

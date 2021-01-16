@@ -1,10 +1,9 @@
-from fastapi import FastAPI
 import logging
 
-from src.api_composition_proxy.routers import routers
+from fastapi import FastAPI
 from src.api_composition_proxy.configurations import APIConfigurations
+from src.api_composition_proxy.routers import routers
 from src.configurations import PlatformConfigurations
-
 
 logger = logging.getLogger(__name__)
 logger.info(f"starts {APIConfigurations.title}:{APIConfigurations.version}")

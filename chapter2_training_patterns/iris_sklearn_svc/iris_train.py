@@ -1,18 +1,18 @@
-from typing import Tuple
-import numpy as np
 import os
 from argparse import ArgumentParser
-from sklearn import metrics
-from sklearn.svm import SVC
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.datasets import load_iris
-from skl2onnx.common.data_types import FloatTensorType
-from skl2onnx import convert_sklearn
+from typing import Tuple
 
 import mlflow
 import mlflow.sklearn
+import numpy as np
+from skl2onnx import convert_sklearn
+from skl2onnx.common.data_types import FloatTensorType
+from sklearn import metrics
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
 
 
 def get_data(test_size: float = 0.3) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:

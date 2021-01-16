@@ -1,5 +1,6 @@
-from pydantic import BaseModel
 from typing import Any
+
+from pydantic import BaseModel
 from src.api_composition_proxy.configurations import ModelConfigurations
 
 

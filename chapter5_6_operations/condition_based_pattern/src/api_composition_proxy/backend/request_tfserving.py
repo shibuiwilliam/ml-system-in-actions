@@ -1,13 +1,12 @@
-import click
 import base64
 import json
-import numpy as np
 
-import requests
+import click
 import grpc
+import numpy as np
+import requests
 import tensorflow as tf
-from tensorflow_serving.apis import predict_pb2
-from tensorflow_serving.apis import prediction_service_pb2_grpc
+from tensorflow_serving.apis import predict_pb2, prediction_service_pb2_grpc
 
 
 def request_grpc(

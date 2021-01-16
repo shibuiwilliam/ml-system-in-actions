@@ -1,15 +1,15 @@
-from typing import Tuple
-import numpy as np
 import os
-from sklearn.svm import OneClassSVM
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.datasets import load_iris
-from skl2onnx.common.data_types import FloatTensorType
-from skl2onnx import convert_sklearn
+from typing import Tuple
 
 import mlflow
 import mlflow.sklearn
+import numpy as np
+from skl2onnx import convert_sklearn
+from skl2onnx.common.data_types import FloatTensorType
+from sklearn.datasets import load_iris
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import OneClassSVM
 
 
 def get_data() -> Tuple[np.ndarray]:

@@ -1,18 +1,18 @@
-from fastapi import APIRouter
-import logging
 import asyncio
-import io
-import httpx
-from typing import Dict, Any, List
-import uuid
 import base64
-from PIL import Image
-import grpc
-from tensorflow_serving.apis import prediction_service_pb2_grpc
+import io
+import logging
+import uuid
+from typing import Any, Dict, List
 
-from src.api_composition_proxy.configurations import ServiceConfigurations, ModelConfigurations
-from src.api_composition_proxy.backend.data import Data
+import grpc
+import httpx
+from fastapi import APIRouter
+from PIL import Image
 from src.api_composition_proxy.backend import request_tfserving
+from src.api_composition_proxy.backend.data import Data
+from src.api_composition_proxy.configurations import ModelConfigurations, ServiceConfigurations
+from tensorflow_serving.apis import prediction_service_pb2_grpc
 
 logger = logging.getLogger(__name__)
 

@@ -1,8 +1,9 @@
-import os
 import json
-from typing import List
-from PIL import Image
+import os
 from logging import getLogger
+from typing import List
+
+from PIL import Image
 from src.constants import CONSTANTS, PLATFORM_ENUM
 
 logger = getLogger(__name__)

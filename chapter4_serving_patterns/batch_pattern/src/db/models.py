@@ -1,9 +1,10 @@
+from logging import getLogger
+
 from sqlalchemy import Boolean, Column, Integer
 from sqlalchemy.dialects.mysql import TIMESTAMP
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.functions import current_timestamp
 from sqlalchemy.types import JSON
-from logging import getLogger
 
 logger = getLogger(__name__)
 

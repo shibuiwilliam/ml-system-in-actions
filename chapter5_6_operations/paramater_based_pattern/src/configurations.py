@@ -1,7 +1,7 @@
 import os
-
-from src.constants import CONSTANTS, PLATFORM_ENUM, IRIS
 from logging import getLogger
+
+from src.constants import CONSTANTS, IRIS, PLATFORM_ENUM
 
 logger = getLogger(__name__)
 

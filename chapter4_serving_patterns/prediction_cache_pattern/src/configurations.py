@@ -1,5 +1,6 @@
 import os
 from logging import getLogger
+
 from src.constants import PLATFORM_ENUM
 
 logger = getLogger(__name__)
@@ -34,8 +35,12 @@ class ModelConfigurations:
     rest_api_port = int(os.getenv("REST_API_PORT", 8001))
     label_path = os.getenv("LABEL_PATH", "/prediction_cache_pattern/data/image_net_labels.json")
 
-    preprocess_transformer_path = os.getenv("PREPROCESS_TRANSFORMER_PATH", "/prediction_cache_pattern/models/preprocess_transformer.pkl")
-    softmax_transformer_path = os.getenv("SOFTMAX_TRANSFORMER_PATH", "/prediction_cache_pattern/models/softmax_transformer.pkl")
+    preprocess_transformer_path = os.getenv(
+        "PREPROCESS_TRANSFORMER_PATH", "/prediction_cache_pattern/models/preprocess_transformer.pkl"
+    )
+    softmax_transformer_path = os.getenv(
+        "SOFTMAX_TRANSFORMER_PATH", "/prediction_cache_pattern/models/softmax_transformer.pkl"
+    )
 
     onnx_input_name = os.getenv("ONNX_INPUT_NAME", "input")
     onnx_output_name = os.getenv("ONNX_OUTPUT_NAME", "output")

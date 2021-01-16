@@ -1,16 +1,15 @@
-import logging
-from time import sleep
 import asyncio
-import os
 import base64
 import io
+import logging
+import os
 from concurrent.futures import ProcessPoolExecutor
+from time import sleep
+
 import grpc
-from tensorflow_serving.apis import prediction_service_pb2_grpc
-
+from src.api_composition_proxy.backend import request_tfserving, store_data_job
 from src.api_composition_proxy.configurations import CacheConfigurations, ModelConfigurations, ServiceConfigurations
-from src.api_composition_proxy.backend import store_data_job, request_tfserving
-
+from tensorflow_serving.apis import prediction_service_pb2_grpc
 
 log_format = logging.Formatter("%(asctime)s %(name)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("prediction_batch")

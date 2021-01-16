@@ -1,18 +1,18 @@
+import json
+import os
+from logging import getLogger
 from typing import List
+
+import grpc
+import joblib
 import numpy as np
 from fastapi import BackgroundTasks
-import json
-import joblib
-import os
 from PIL import Image
-import grpc
-from src.proto import predict_pb2, onnx_ml_pb2, prediction_service_pb2_grpc
-
 from pydantic import BaseModel
-from src.configurations import ModelConfigurations
 from src.app.backend import background_job
+from src.configurations import ModelConfigurations
 from src.ml.transformers import PytorchImagePreprocessTransformer, SoftmaxTransformer
-from logging import getLogger
+from src.proto import onnx_ml_pb2, predict_pb2, prediction_service_pb2_grpc
 
 logger = getLogger(__name__)
 

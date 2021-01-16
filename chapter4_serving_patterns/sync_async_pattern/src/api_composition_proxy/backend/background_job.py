@@ -1,13 +1,12 @@
-from typing import Dict, Any
-from fastapi import BackgroundTasks
 import logging
-from pydantic import BaseModel
+from typing import Any, Dict
+
+from fastapi import BackgroundTasks
 from PIL import Image
-
-from src.api_composition_proxy.constants import CONSTANTS
+from pydantic import BaseModel
+from src.api_composition_proxy.backend.store_data_job import left_push_queue, save_image_redis_job
 from src.api_composition_proxy.configurations import CacheConfigurations
-from src.api_composition_proxy.backend.store_data_job import save_image_redis_job, left_push_queue
-
+from src.api_composition_proxy.constants import CONSTANTS
 
 logger = logging.getLogger(__name__)
 

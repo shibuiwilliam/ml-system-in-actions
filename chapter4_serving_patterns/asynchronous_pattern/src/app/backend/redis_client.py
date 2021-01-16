@@ -1,7 +1,5 @@
 import redis
-
 from src.configurations import RedisCacheConfigurations
-
 
 redis_client = redis.Redis(
     host=RedisCacheConfigurations.cache_host,

@@ -1,15 +1,14 @@
 import argparse
+import json
 import logging
 import os
-from typing import Dict
-import requests
-import json
+from typing import Dict, Optional
 
 import mlflow
-from mlflow.utils import mlflow_tags
+import requests
 from mlflow.entities import RunStatus
-
 from mlflow.tracking.fluent import _get_experiment_id
+from mlflow.utils import mlflow_tags
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -38,21 +37,22 @@ def register_model(project_id: str, model_name: str, description: str = "") -> D
 def register_experiment(
     model_id: str,
     model_version_id: str,
-    parameters: Dict = None,
-    training_dataset: str = None,
-    validation_dataset: str = None,
-    test_dataset: str = None,
+    training_dataset: str,
+    validation_dataset: str,
+    test_dataset: str,
+    parameters: Optional[Dict] = None,
 ) -> Dict:
     url = f"http://localhost:8000/v0.1/api/experiments"
-    payload = {"model_id": model_id, "model_version_id": model_version_id}
+    payload = {
+        "model_id": model_id,
+        "model_version_id": model_version_id,
+        "training_dataset": training_dataset,
+        "validation_dataset": validation_dataset,
+        "test_dataset": test_dataset,
+    }
+
     if parameters is not None:
         payload["parameters"] = parameters
-    if training_dataset is not None:
-        payload["training_dataset"] = training_dataset
-    if validation_dataset is not None:
-        payload["validation_dataset"] = validation_dataset
-    if test_dataset is not None:
-        payload["test_dataset"] = test_dataset
 
     response = requests.post(
         url,
@@ -168,9 +168,6 @@ def main():
         model_name="cifar10 classification",
         description="cifar10 classification model",
     )
-    ml_experiment = register_experiment(
-        model_id=ml_model["model_id"], model_version_id=f"cifar10_{args.commit_hash}_{mlflow_experiment_id}"
-    )
 
     with mlflow.start_run() as r:
         preprocess_run = mlflow.run(
@@ -185,12 +182,21 @@ def main():
         )
         preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
 
+        dataset = os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory")
+        ml_experiment = register_experiment(
+            model_id=ml_model["model_id"],
+            model_version_id=f"cifar10_{args.commit_hash}_{mlflow_experiment_id}",
+            training_dataset=os.path.join(dataset, "train"),
+            validation_dataset=os.path.join(dataset, "test"),
+            test_dataset=os.path.join(dataset, "test"),
+        )
+
         train_run = mlflow.run(
             uri="./train",
             entry_point="train",
             backend="local",
             parameters={
-                "upstream": os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),
+                "upstream": dataset,
                 "downstream": args.train_downstream,
                 "tensorboard": args.train_tensorboard,
                 "epochs": args.train_epochs,

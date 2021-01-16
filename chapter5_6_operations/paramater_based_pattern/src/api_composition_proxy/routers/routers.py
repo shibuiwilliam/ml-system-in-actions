@@ -1,11 +1,11 @@
-from fastapi import APIRouter
-import logging
 import asyncio
+import logging
 import uuid
-import httpx
-from typing import Dict, Any, List
-from pydantic import BaseModel
+from typing import Any, Dict, List
 
+import httpx
+from fastapi import APIRouter
+from pydantic import BaseModel
 from src.api_composition_proxy.configurations import ServiceConfigurations
 
 logger = logging.getLogger(__name__)

@@ -1,8 +1,8 @@
 import os
+from logging import DEBUG, Formatter, StreamHandler, getLogger
+
 import click
 from google.cloud import storage
-
-from logging import getLogger, DEBUG, StreamHandler, Formatter
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)

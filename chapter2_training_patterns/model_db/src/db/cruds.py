@@ -1,9 +1,9 @@
 import datetime
 import uuid
-from typing import List, Dict, Optional
-from sqlalchemy.orm import Session
 from logging import getLogger
+from typing import Dict, List, Optional
 
+from sqlalchemy.orm import Session
 from src.db import models, schemas
 
 logger = getLogger(__name__)

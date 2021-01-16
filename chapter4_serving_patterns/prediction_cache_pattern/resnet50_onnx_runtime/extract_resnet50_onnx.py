@@ -1,17 +1,17 @@
-import onnxruntime as rt
-import os
-import click
-from PIL import Image
-import requests
-import joblib
 import json
+import os
+from typing import List, Tuple, Union
+
+import click
+import joblib
 import numpy as np
-from typing import Tuple, List, Union
+import onnxruntime as rt
+import requests
 import torch
 import torch.nn as nn
-from torchvision.models.resnet import resnet50
-
+from PIL import Image
 from src.ml.transformers import PytorchImagePreprocessTransformer, SoftmaxTransformer
+from torchvision.models.resnet import resnet50
 
 
 def dump_sklearn(model, name: str):

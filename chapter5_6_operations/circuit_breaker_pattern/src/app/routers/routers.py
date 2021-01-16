@@ -1,11 +1,11 @@
-from fastapi import APIRouter
-from typing import Dict, List, Any
 import uuid
 from logging import getLogger
+from typing import Any, Dict, List
 
-from src.utils.profiler import wrap_time
-from src.ml.prediction import classifier, Data
+from fastapi import APIRouter
 from src.configurations import ModelConfigurations
+from src.ml.prediction import Data, classifier
+from src.utils.profiler import wrap_time
 
 logger = getLogger(__name__)
 router = APIRouter()

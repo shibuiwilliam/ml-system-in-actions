@@ -1,21 +1,51 @@
 import argparse
+import json
 import logging
 import os
-import numpy as np
-from PIL import Image
-import json
 import time
+from typing import Dict, List, Tuple, Union
+
+import grpc
+import mlflow
+import numpy as np
+import requests
+from PIL import Image
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.metrics import accuracy_score
-from typing import Tuple, List, Union, Dict
-import grpc
-from src.proto import predict_pb2, onnx_ml_pb2, prediction_service_pb2_grpc
-
-import mlflow
-
+from src.proto import onnx_ml_pb2, predict_pb2, prediction_service_pb2_grpc
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+def update_experiment_evaluation(
+    experiment_id: str,
+    evaluations: Dict,
+) -> Dict:
+    url = f"http://localhost:8000/v0.1/api/experiments/evaluations/{experiment_id}"
+    payload = {"evaluations": evaluations}
+
+    response = requests.post(
+        url,
+        json.dumps(payload),
+        headers={"Content-Type": "application/json", "accept": "application/json"},
+    )
+    return response.json()
+
+
+def update_experiment_artifact_file_paths(
+    experiment_id: str,
+    artifact_file_paths: Dict,
+) -> Dict:
+    url = f"http://localhost:8000/v0.1/api/experiments/artifact-file-paths/{experiment_id}"
+    payload = {"artifact_file_paths": artifact_file_paths}
+
+    response = requests.post(
+        url,
+        json.dumps(payload),
+        headers={"Content-Type": "application/json", "accept": "application/json"},
+    )
+    return response.json()
 
 
 class PytorchImagePreprocessTransformer(BaseEstimator, TransformerMixin):
@@ -192,6 +222,12 @@ def main():
         default="/opt/data/preprocess/test",
         help="test data directory",
     )
+    parser.add_argument(
+        "--model_experiment_id",
+        type=str,
+        default="abc000",
+        help="experiment id for model db",
+    )
     args = parser.parse_args()
     mlflow_experiment_id = int(os.getenv("MLFLOW_EXPERIMENT_ID", 0))
 
@@ -205,6 +241,12 @@ def main():
     log_file = os.path.join(downstream_directory, f"{mlflow_experiment_id}.json")
     with open(log_file, "w") as f:
         json.dump(log_file, f)
+
+    update_experiment_evaluation(experiment_id=args.model_experiment_id, evaluations=result)
+    update_experiment_artifact_file_paths(
+        experiment_id=args.model_experiment_id,
+        artifact_file_paths={"log_file": log_file},
+    )
 
     mlflow.log_metric("total_tested", result["evaluation"]["total_tested"])
     mlflow.log_metric("total_time", result["evaluation"]["total_time"])

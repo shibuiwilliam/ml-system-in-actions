@@ -1,19 +1,19 @@
-from fastapi import APIRouter, BackgroundTasks
-import logging
 import asyncio
-import io
-import httpx
-import grpc
-from tensorflow_serving.apis import prediction_service_pb2_grpc
-import os
-from typing import Dict, Any
-import uuid
 import base64
-from PIL import Image
+import io
+import logging
+import os
+import uuid
+from typing import Any, Dict
 
-from src.api_composition_proxy.configurations import ServiceConfigurations, ModelConfigurations
+import grpc
+import httpx
+from fastapi import APIRouter, BackgroundTasks
+from PIL import Image
+from src.api_composition_proxy.backend import background_job, request_tfserving, store_data_job
 from src.api_composition_proxy.backend.data import Data
-from src.api_composition_proxy.backend import background_job, store_data_job, request_tfserving
+from src.api_composition_proxy.configurations import ModelConfigurations, ServiceConfigurations
+from tensorflow_serving.apis import prediction_service_pb2_grpc
 
 logger = logging.getLogger(__name__)
 

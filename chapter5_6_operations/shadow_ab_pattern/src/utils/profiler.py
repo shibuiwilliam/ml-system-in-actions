@@ -1,6 +1,7 @@
 import cProfile
 import time
 from logging import getLogger
+
 from src.configurations import ModelConfigurations
 
 logger = getLogger(__name__)

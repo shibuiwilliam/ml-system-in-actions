@@ -3,8 +3,7 @@ import json
 
 import requests
 import tensorflow as tf
-from tensorflow_serving.apis import predict_pb2
-from tensorflow_serving.apis import prediction_service_pb2_grpc
+from tensorflow_serving.apis import predict_pb2, prediction_service_pb2_grpc
 
 
 def request_grpc(

@@ -1,7 +1,7 @@
 import logging
 import os
-from typing import Tuple
 import time
+from typing import Tuple
 
 import numpy as np
 import torch
@@ -11,7 +11,6 @@ import torchvision
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from torch.utils.tensorboard import SummaryWriter
-
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

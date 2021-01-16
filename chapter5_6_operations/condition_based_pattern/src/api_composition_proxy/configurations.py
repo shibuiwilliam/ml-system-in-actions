@@ -1,9 +1,10 @@
-import os
-import logging
-from typing import Dict, List
 import json
-from PIL import Image
+import logging
+import os
 from logging import getLogger
+from typing import Dict, List
+
+from PIL import Image
 from src.api_composition_proxy.constants import CONSTANTS, PLATFORM_ENUM
 
 logger = logging.getLogger(__name__)

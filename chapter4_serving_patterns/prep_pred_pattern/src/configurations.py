@@ -1,8 +1,9 @@
-import os
 import json
-from typing import List
-from PIL import Image
+import os
 from logging import getLogger
+from typing import List
+
+from PIL import Image
 from src.constants import CONSTANTS, PLATFORM_ENUM
 
 logger = getLogger(__name__)
@@ -40,8 +41,12 @@ class ModelConfigurations:
     sample_image_path = os.getenv("SAMPLE_IMAGE_PATH", "/prep_pred_pattern/data/cat.jpg")
     sample_image = Image.open(sample_image_path)
 
-    preprocess_transformer_path = os.getenv("PREPROCESS_TRANSFORMER_PATH", "/prep_pred_pattern/models/preprocess_transformer.pkl")
-    softmax_transformer_path = os.getenv("SOFTMAX_TRANSFORMER_PATH", "/prep_pred_pattern/models/softmax_transformer.pkl")
+    preprocess_transformer_path = os.getenv(
+        "PREPROCESS_TRANSFORMER_PATH", "/prep_pred_pattern/models/preprocess_transformer.pkl"
+    )
+    softmax_transformer_path = os.getenv(
+        "SOFTMAX_TRANSFORMER_PATH", "/prep_pred_pattern/models/softmax_transformer.pkl"
+    )
 
     onnx_input_name = os.getenv("ONNX_INPUT_NAME", "input")
     onnx_output_name = os.getenv("ONNX_OUTPUT_NAME", "output")

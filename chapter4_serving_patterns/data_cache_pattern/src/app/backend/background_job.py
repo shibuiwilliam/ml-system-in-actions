@@ -1,11 +1,10 @@
 import json
-from typing import Dict, List, Any, Union
-from fastapi import BackgroundTasks
 import logging
+from typing import Any, Dict, List, Union
+
+from fastapi import BackgroundTasks
 from pydantic import BaseModel
-
 from src.app.backend.redis_client import redis_client
-
 
 logger = logging.getLogger(__name__)
 

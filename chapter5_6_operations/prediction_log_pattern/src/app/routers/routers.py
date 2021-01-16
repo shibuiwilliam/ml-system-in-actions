@@ -1,10 +1,11 @@
-from fastapi import APIRouter, HTTPException
-from typing import Dict, List, Any
 import uuid
 from logging import getLogger
-from src.ml.prediction import classifier
-from src.ml.outlier_detection import outlier_detector
+from typing import Any, Dict, List
+
+from fastapi import APIRouter, HTTPException
 from src.ml.data import Data
+from src.ml.outlier_detection import outlier_detector
+from src.ml.prediction import classifier
 from src.utils.profiler import log_decorator
 
 logger = getLogger(__name__)

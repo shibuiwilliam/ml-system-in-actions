@@ -1,9 +1,10 @@
-from fastapi import APIRouter
-from typing import Dict, List, Any
 import uuid
 from logging import getLogger
+from typing import Any, Dict, List
+
+from fastapi import APIRouter
+from src.ml.prediction import Data, classifier
 from src.utils.profiler import log_decorator
-from src.ml.prediction import classifier, Data
 
 logger = getLogger(__name__)
 router = APIRouter()

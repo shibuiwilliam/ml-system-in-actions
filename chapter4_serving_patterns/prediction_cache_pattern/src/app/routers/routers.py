@@ -1,7 +1,8 @@
-from typing import Dict, List, Any
-from fastapi import APIRouter, BackgroundTasks
-from src.ml.prediction import classifier, Data
 from logging import getLogger
+from typing import Any, Dict, List
+
+from fastapi import APIRouter, BackgroundTasks
+from src.ml.prediction import Data, classifier
 
 logger = getLogger(__name__)
 router = APIRouter()

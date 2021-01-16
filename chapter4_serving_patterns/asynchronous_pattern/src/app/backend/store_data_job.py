@@ -1,13 +1,12 @@
-from typing import Dict, Any
-import logging
-import json
-import numpy as np
-import io
 import base64
+import io
+import json
+import logging
+from typing import Any, Dict
+
+import numpy as np
 from PIL import Image
-
 from src.app.backend.redis_client import redis_client
-
 
 logger = logging.getLogger(__name__)
 

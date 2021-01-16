@@ -1,9 +1,9 @@
-from fastapi import APIRouter
-from src.db.database import get_db
-from fastapi import Depends
+from logging import getLogger
+
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from src.db import cruds
-from logging import getLogger
+from src.db.database import get_db
 
 logger = getLogger(__name__)
 router = APIRouter()

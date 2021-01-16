@@ -1,23 +1,38 @@
 import argparse
+import json
 import logging
 import os
+from typing import Dict
 
+import mlflow
+import mlflow.pytorch
+import requests
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from src.constants import MODEL_ENUM
+from src.model import VGG11, VGG16, Cifar10Dataset, SimpleModel, evaluate, train
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
 
-from src.model import Cifar10Dataset, SimpleModel, VGG11, VGG16, evaluate, train
-from src.constants import MODEL_ENUM
-
-import mlflow
-import mlflow.pytorch
-
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+def update_experiment_artifact_file_paths(
+    experiment_id: str,
+    artifact_file_paths: Dict,
+) -> Dict:
+    url = f"http://localhost:8000/v0.1/api/experiments/artifact-file-paths/{experiment_id}"
+    payload = {"artifact_file_paths": artifact_file_paths}
+
+    response = requests.post(
+        url,
+        json.dumps(payload),
+        headers={"Content-Type": "application/json", "accept": "application/json"},
+    )
+    return response.json()
 
 
 def start_run(
@@ -30,6 +45,7 @@ def start_run(
     epochs: int,
     learning_rate: float,
     model_type: str,
+    model_experiment_id: str,
 ):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     writer = SummaryWriter(log_dir=tensorboard_directory)
@@ -114,6 +130,11 @@ def start_run(
         output_names=["output"],
     )
 
+    update_experiment_artifact_file_paths(
+        experiment_id=model_experiment_id,
+        artifact_file_paths={"model_file": model_file_name, "onnx_file": onnx_file_name},
+    )
+
     mlflow.log_param("optimizer", "Adam")
     mlflow.log_param("preprocess", "Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))")
     mlflow.log_param("epochs", epochs)
@@ -186,6 +207,12 @@ def main():
         ],
         help="simple, vgg11 or vgg16",
     )
+    parser.add_argument(
+        "--model_experiment_id",
+        type=str,
+        default="abc000",
+        help="experiment id for model db",
+    )
     args = parser.parse_args()
     mlflow_experiment_id = int(os.getenv("MLFLOW_EXPERIMENT_ID", 0))
 
@@ -205,6 +232,7 @@ def main():
         epochs=args.epochs,
         learning_rate=args.learning_rate,
         model_type=args.model_type,
+        model_experiment_id=args.model_experiment_id,
     )
 
 

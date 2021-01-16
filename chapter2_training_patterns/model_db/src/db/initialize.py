@@ -1,4 +1,5 @@
 from logging import getLogger
+
 from src.db.database import Base
 
 logger = getLogger(__name__)

@@ -1,16 +1,15 @@
-from logging import getLogger, StreamHandler, Formatter, DEBUG
-from time import sleep
 import asyncio
-import os
 import base64
 import io
+import os
 from concurrent.futures import ProcessPoolExecutor
+from logging import DEBUG, Formatter, StreamHandler, getLogger
+from time import sleep
+
 import grpc
-from tensorflow_serving.apis import prediction_service_pb2_grpc
-
+from src.app.backend import request_inception_v3, store_data_job
 from src.configurations import CacheConfigurations, ModelConfigurations
-from src.app.backend import store_data_job, request_inception_v3
-
+from tensorflow_serving.apis import prediction_service_pb2_grpc
 
 log_format = Formatter("%(asctime)s %(name)s [%(levelname)s] %(message)s")
 logger = getLogger("prediction_batch")

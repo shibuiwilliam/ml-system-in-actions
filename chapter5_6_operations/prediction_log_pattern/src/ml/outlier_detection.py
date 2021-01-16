@@ -1,10 +1,11 @@
-from typing import Tuple, List
+from logging import getLogger
+from typing import List, Tuple
+
 import numpy as np
 import onnxruntime as rt
 from pydantic import BaseModel
 from src.configurations import ModelConfigurations
 from src.ml.data import Data
-from logging import getLogger
 
 logger = getLogger(__name__)
 

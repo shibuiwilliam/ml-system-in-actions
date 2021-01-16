@@ -14,7 +14,6 @@ _sym_db = _symbol_database.Default()
 
 import src.proto.predict_pb2 as predict__pb2
 
-
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="prediction_service.proto",
     package="onnxruntime.server",

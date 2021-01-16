@@ -1,14 +1,14 @@
-from fastapi import APIRouter, BackgroundTasks
-from logging import getLogger
-from typing import Dict, Any
-from PIL import Image
-import io
 import base64
+import io
 import uuid
-import requests
+from logging import getLogger
+from typing import Any, Dict
 
-from src.app.backend.data import Data
+import requests
+from fastapi import APIRouter, BackgroundTasks
+from PIL import Image
 from src.app.backend import background_job, store_data_job
+from src.app.backend.data import Data
 from src.configurations import ModelConfigurations
 
 logger = getLogger(__name__)

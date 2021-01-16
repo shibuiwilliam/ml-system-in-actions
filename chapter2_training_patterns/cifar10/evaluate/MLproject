@@ -10,6 +10,7 @@ entry_points:
       test_data_directory: {type: string, default: /opt/data/preprocess/test}
       dockerimage: {type: string, default: shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0.0.1}
       container_name: {type: string, default: test}
+      model_experiment_id: {type: string, default: abc000}
     command: |
       docker run \
         -it -d \
@@ -18,5 +19,6 @@ entry_points:
       python -m src.evaluate \
         --upstream {upstream} \
         --downstream {downstream} \
-        --test_data_directory {test_data_directory} 
+        --test_data_directory {test_data_directory} \
+        --model_experiment_id {model_experiment_id}
         

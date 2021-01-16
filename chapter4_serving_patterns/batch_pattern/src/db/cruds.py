@@ -1,8 +1,7 @@
 import datetime
-from typing import List, Dict
+from typing import Dict, List
 
 from sqlalchemy.orm import Session
-
 from src.db import models, schemas
 
 

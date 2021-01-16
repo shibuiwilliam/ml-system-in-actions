@@ -1,13 +1,12 @@
-import numpy as np
 import time
-from typing import Tuple
 from concurrent.futures import ThreadPoolExecutor
+from logging import DEBUG, Formatter, StreamHandler, getLogger
+from typing import Tuple
 
-from src.ml.prediction import classifier
+import numpy as np
 from src.db import cruds, schemas
 from src.db.database import get_context_db
-
-from logging import getLogger, DEBUG, StreamHandler, Formatter
+from src.ml.prediction import classifier
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
