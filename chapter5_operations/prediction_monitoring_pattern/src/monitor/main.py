@@ -1,12 +1,11 @@
-import time
-import click
 import datetime
+import time
+from logging import DEBUG, Formatter, StreamHandler, getLogger
 from typing import List
-from logging import getLogger, DEBUG, Formatter, StreamHandler
 
+import click
 from src.db import cruds, schemas
 from src.db.database import get_context_db
-
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
