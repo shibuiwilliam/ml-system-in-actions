@@ -110,6 +110,7 @@ def predict(data: Data, background_tasks: BackgroundTasks) -> Dict[str, Any]:
         job_id=job_id,
         prediction_elapsed=result["prediction_elapsed"],
         prediction=result["prediction"],
+        is_outlier=result["is_outlier"],
         outlier_elapsed=result["outlier_elapsed"],
         outlier_score=result["outlier_score"],
         data=data,
@@ -130,6 +131,7 @@ def predict_label(data: Data, background_tasks: BackgroundTasks) -> Dict[str, An
         job_id=job_id,
         prediction_elapsed=result["prediction_elapsed"],
         prediction=result["prediction"],
+        is_outlier=result["is_outlier"],
         outlier_elapsed=result["outlier_elapsed"],
         outlier_score=result["outlier_score"],
         data=data,
@@ -141,6 +143,7 @@ def register_log(
     job_id: str,
     prediction_elapsed: float,
     prediction: np.ndarray,
+    is_outlier: bool,
     outlier_elapsed: float,
     outlier_score: float,
     data: Data,
@@ -154,6 +157,7 @@ def register_log(
         cruds.add_prediction_log(db=db, log_id=job_id, log=prediction_log, commit=True)
 
         outlier_log = {
+            "is_outlier": is_outlier,
             "outlier_score": outlier_score,
             "outlier_elapsed": outlier_elapsed,
             "data": data.data,

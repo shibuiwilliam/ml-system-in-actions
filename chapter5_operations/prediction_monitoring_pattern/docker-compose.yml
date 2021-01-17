@@ -57,6 +57,26 @@ services:
   monitor:
     container_name: monitor
     image: shibui/ml-system-in-actions:prediction_monitoring_pattern_api_0.0.1
+    entrypoint:
+      [
+        "python",
+        "-m",
+        "src.monitor.main",
+        "--interval",
+        "1",
+        "--outlier_threshold",
+        "0.2",
+        "--average_sepal_length",
+        "5.84",
+        "--average_sepal_width",
+        "3.06",
+        "--average_petal_length",
+        "3.76",
+        "--average_petal_width",
+        "1.20",
+        "--threshold",
+        "0.05",
+      ]
     restart: always
     environment:
       - MYSQL_DATABASE=sample_db
@@ -64,6 +84,5 @@ services:
       - MYSQL_PASSWORD=password
       - MYSQL_PORT=3306
       - MYSQL_SERVER=mysql
-    entrypoint: ["python", "-m", "src.monitor.main"]
     depends_on:
       - api
