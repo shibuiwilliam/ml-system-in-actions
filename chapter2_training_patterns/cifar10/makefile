@@ -6,6 +6,10 @@ IMAGE_VERSION := 0.0.1
 
 DOCKERFILE := Dockerfile
 
+.PHONY: dev
+dev:
+	pip install -r requirements.txt
+
 .PHONY: d_build
 d_build:
 	docker build \
