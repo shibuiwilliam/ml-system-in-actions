@@ -16,10 +16,27 @@
    
 ```sh
 $ make build_all
+docker build \
+    -t shibui/ml-system-in-actions:model_load_pattern_api_0.0.1 \
+    -f Dockerfile \
+    .
+docker build \
+    -t shibui/ml-system-in-actions:model_load_pattern_loader_0.0.1 \
+    -f model_loader/Dockerfile \
+    .
 ```
 
 2. 推論器とサイドカーをKubernetesクラスターにデプロイ
 
 ```sh
 $ make deploy
+kubectl apply -f manifests/namespace.yml
+kubectl apply -f manifests/deployment.yml
+```
+
+3. Kubernetesのmodel-loadを削除
+
+```sh
+$ make delete
+kubectl delete ns model-load
 ```

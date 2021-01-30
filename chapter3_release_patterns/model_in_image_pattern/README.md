@@ -16,10 +16,23 @@
    
 ```sh
 $ make build_all
+docker build \
+    -t shibui/ml-system-in-actions:model_in_image_pattern_0.0.1 \
+    -f Dockerfile \
+    .
 ```
 
 2. 推論器をKubernetesクラスターにデプロイ
 
 ```sh
 $ make deploy
+kubectl apply -f manifests/namespace.yml
+kubectl apply -f manifests/deployment.yml
+```
+
+3. Kubernetesのmodel-in-imageを削除
+
+```sh
+$ make delete
+kubectl delete ns model-in-image
 ```

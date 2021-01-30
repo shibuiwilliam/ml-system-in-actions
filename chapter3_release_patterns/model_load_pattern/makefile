@@ -43,4 +43,3 @@ deploy:
 	kubectl apply -f manifests/namespace.yml
 	kubectl apply -f manifests/deployment.yml
 
-

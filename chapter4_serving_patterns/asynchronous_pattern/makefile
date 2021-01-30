@@ -93,12 +93,12 @@ predict_test:
 
 .PHONY: predict
 predict:
-	(echo -n '{"image_data": "'; base64 imagenet_inception_v3/data/cat.jpg; echo '"}') \
-	| curl \
-		-X POST \
-			-H "Content-Type: application/json" \
-			-d @- \
-			localhost:8000/predict
+	(echo -n '{"image_data": "'; base64 imagenet_inception_v3/data/cat.jpg; echo '"}') | \
+    curl \
+        -X POST \
+        -H "Content-Type: application/json" \
+        -d @- \
+        localhost:8000/predict
 
 JOB_ID = aaaaaa
 

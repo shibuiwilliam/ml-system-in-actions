@@ -16,12 +16,16 @@ MLFlowを用いたIrisデータセットのSVM分類モデル学習パイプラ�
 
 ```sh
 $ make dev
+pip install -r requirements.txt
 ```
 
 2. 学習用Dockerイメージのビルド
 
 ```sh
 $ make d_build
+docker build \
+    -t shibui/ml-system-in-actions:training_pattern_iris_sklearn_svc_0.0.1 \
+    -f Dockerfile .
 ```
 
 3. 学習パイプラインの実行

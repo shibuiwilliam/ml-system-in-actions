@@ -30,3 +30,7 @@ push_all: push
 deploy:
 	kubectl apply -f $(MANIFESTS)/namespace.yml
 	kubectl apply -f $(MANIFESTS)/deployment.yml
+
+.PHONY: delete
+delete:
+	kubectl delete ns model-in-image
