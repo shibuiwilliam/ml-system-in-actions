@@ -6,11 +6,10 @@ MLFlowを用いたCifar10データセットの学習パイプラインです。
 
 ## 前提
 
-先に[model_db](../model_db)を構築し、利用可能な状態にしてください。
-
 - Python 3.8以上
 - Docker
 - MLFlow
+- Anaconda
 
 ## 使い方
 
@@ -38,6 +37,3 @@ mlflow run . --no-conda
 ```
 
 学習が完了するまで、数分から数十分かかることがあります。
-
-
-

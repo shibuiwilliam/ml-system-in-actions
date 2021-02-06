@@ -8,7 +8,7 @@ import mlflow
 import torch
 import torchvision
 import torchvision.transforms as transforms
-from src.configurations import PlatformConfigurations, PreprocessConfigurations
+from src.configurations import PreprocessConfigurations
 from src.extract_data import parse_pickle, unpickle
 
 logging.basicConfig(level=logging.INFO)

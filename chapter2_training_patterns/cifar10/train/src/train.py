@@ -6,7 +6,6 @@ from typing import Dict
 
 import mlflow
 import mlflow.pytorch
-import requests
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -18,21 +17,6 @@ from torchvision import transforms
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-
-def update_experiment_artifact_file_paths(
-    experiment_id: str,
-    artifact_file_paths: Dict,
-) -> Dict:
-    url = f"http://localhost:8000/v0.1/api/experiments/artifact-file-paths/{experiment_id}"
-    payload = {"artifact_file_paths": artifact_file_paths}
-
-    response = requests.post(
-        url,
-        json.dumps(payload),
-        headers={"Content-Type": "application/json", "accept": "application/json"},
-    )
-    return response.json()
 
 
 def start_run(
@@ -130,11 +114,6 @@ def start_run(
         output_names=["output"],
     )
 
-    update_experiment_artifact_file_paths(
-        experiment_id=model_experiment_id,
-        artifact_file_paths={"model_file": model_file_name, "onnx_file": onnx_file_name},
-    )
-
     mlflow.log_param("optimizer", "Adam")
     mlflow.log_param("preprocess", "Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))")
     mlflow.log_param("epochs", epochs)
@@ -175,7 +154,7 @@ def main():
     parser.add_argument(
         "--epochs",
         type=int,
-        default=100,
+        default=1,
         help="epochs",
     )
     parser.add_argument(

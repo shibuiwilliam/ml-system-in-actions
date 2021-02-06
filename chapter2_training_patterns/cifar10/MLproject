@@ -1,6 +1,5 @@
 name: cifar10_initial
 
-
 entry_points:
   main:
     parameters:
