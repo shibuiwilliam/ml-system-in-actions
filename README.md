@@ -39,7 +39,9 @@ $ make c_up
 ```sh
 # ヘルスチェック
 $ curl localhost:8000/health
-{"health":"ok"}
+{
+  "health":"ok"
+}
 
 # メタデータ
 $ make metadata
@@ -48,13 +50,12 @@ curl localhost:8000/metadata
 
 
 # ラベル一覧
-$ curl localhost:8000/label | jq
+$ curl localhost:8000/label
 
 
 
 # テストデータで推論リクエスト
-$ curl localhost:8000/predict/test | jq .
-
+$ curl localhost:8000/predict/test
 
 
 
