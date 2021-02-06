@@ -43,8 +43,7 @@ $ curl localhost:8000/health
 {"health":"ok"}
 
 # メタデータ
-$ make metadata
-curl localhost:8000/metadata
+$ curl localhost:8000/metadata
 {
   "data_type": "str",
   "data_structure": "(1,1)",

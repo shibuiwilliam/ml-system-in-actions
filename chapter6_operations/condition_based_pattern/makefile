@@ -90,38 +90,6 @@ c_down:
 
 .PHONY: deploy
 deploy:
-	kubectl apply -f manifests/namespace.yml
-	kubectl apply -f manifests
-
-.PHONY: health
-health:
-	curl localhost:8000/health
-
-.PHONY: health_pred
-health_pred:
-	curl localhost:8000/health/pred
-
-.PHONY: metadata
-metadata:
-	curl localhost:8000/metadata
-
-
-.PHONY: predict_get_test
-predict_get_test:
-	curl localhost:8000/predict/test
-
-
-.PHONY: predict
-predict:
-	(echo -n '{"image_data": "'; base64 data/cat.jpg; echo '"}') \
-	| curl \
-		-X POST \
-			-H "Content-Type: application/json" \
-			-d @- \
-			localhost:8000/predict
-
-.PHONY: deploy
-deploy:
 	istioctl install -y
 	kubectl apply -f manifests/namespace.yml
 	kubectl apply -f manifests/

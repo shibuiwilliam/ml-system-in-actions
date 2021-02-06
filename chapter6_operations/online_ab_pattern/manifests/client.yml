@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: vegeta
+  name: client
   namespace: online-ab
   annotations:
     sidecar.istio.io/inject: "true"
@@ -10,7 +10,7 @@ metadata:
     proxy.istio.io/config: "{'concurrency':'16'}"
 spec:
   containers:
-    - name: vegeta
+    - name: client
       image: shibui/ml-system-in-actions:online_ab_pattern_client_0.0.1
       imagePullPolicy: Always
       command:
@@ -22,19 +22,19 @@ spec:
           cpu: 200m
           memory: "200Mi"
       volumeMounts:
-        - name: vegeta
+        - name: client
           mountPath: "/opt/vegeta"
           readOnly: true
   volumes:
-    - name: vegeta
+    - name: client
       configMap:
-        name: vegeta
+        name: client
 
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: vegeta
+  name: client
   namespace: online-ab
 data:
   get-target: "GET http://iris.online-ab.svc.cluster.local:8000/predict/test"

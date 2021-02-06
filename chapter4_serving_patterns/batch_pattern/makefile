@@ -63,7 +63,6 @@ c_down:
 		down
 
 	
-
 .PHONY: deploy
 deploy:
 	kubectl apply -f manifests/namespace.yml

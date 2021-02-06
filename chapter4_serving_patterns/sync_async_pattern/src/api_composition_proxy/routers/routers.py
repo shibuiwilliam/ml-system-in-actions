@@ -59,7 +59,10 @@ async def health_all() -> Dict[str, Any]:
         responses = await asyncio.gather(*tasks)
 
         for service, response in responses:
-            results[service] = response.json()
+            if response.status_code == 200:
+                results[service] = "ok"
+            else:
+                results[service] = "ng"
     return results
 
 

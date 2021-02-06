@@ -42,13 +42,3 @@ run_all: run
 
 .PHONY: push_all
 push_all: push
-
-.PHONY: metadata
-metadata:
-	 curl localhost:8501/v1/models/inception_v3/versions/0/metadata
-
-.PHONY: predict
-predict:
-	python \
-		-m client.request_inception_v3 \
-		--image_file ./cat.jpg

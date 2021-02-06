@@ -6,7 +6,7 @@ metadata:
   labels:
     app: iris-svc
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: iris
@@ -72,7 +72,7 @@ metadata:
   labels:
     app: iris-rf
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: iris
@@ -142,7 +142,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: iris-svc
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 10
   metrics:
     - type: Resource
@@ -165,7 +165,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: iris-rf
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 10
   metrics:
     - type: Resource

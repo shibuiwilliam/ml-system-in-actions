@@ -15,6 +15,7 @@ machine learning system examples
 - Python 3.8以上
 - Docker
 - Docker compose
+- Kubernetesクラスターまたはminikube
 
 ## 使い方
 
@@ -44,8 +45,7 @@ $ curl localhost:8000/health
 }
 
 # メタデータ
-$ make metadata
-curl localhost:8000/metadata
+$ curl localhost:8000/metadata
 
 
 
