@@ -9,18 +9,30 @@ def select_project_all(db: Session) -> List[schemas.Project]:
     return db.query(models.Project).all()
 
 
-def select_project_by_id(db: Session, project_id: str) -> schemas.Project:
+def select_project_by_id(
+    db: Session,
+    project_id: str,
+) -> schemas.Project:
     return db.query(models.Project).filter(models.Project.project_id == project_id).first()
 
 
-def select_project_by_name(db: Session, project_name: str) -> schemas.Project:
+def select_project_by_name(
+    db: Session,
+    project_name: str,
+) -> schemas.Project:
     return db.query(models.Project).filter(models.Project.project_name == project_name).first()
 
 
 def add_project(
-    db: Session, project_name: str, description: Optional[str] = None, commit: bool = True
+    db: Session,
+    project_name: str,
+    description: Optional[str] = None,
+    commit: bool = True,
 ) -> schemas.Project:
-    exists = select_project_by_name(db=db, project_name=project_name)
+    exists = select_project_by_name(
+        db=db,
+        project_name=project_name,
+    )
     if exists:
         return exists
     else:
@@ -41,20 +53,35 @@ def select_model_all(db: Session) -> List[schemas.Model]:
     return db.query(models.Model).all()
 
 
-def select_model_by_id(db: Session, model_id: str) -> schemas.Model:
+def select_model_by_id(
+    db: Session,
+    model_id: str,
+) -> schemas.Model:
     return db.query(models.Model).filter(models.Model.model_id == model_id).first()
 
 
-def select_model_by_project_id(db: Session, project_id: str) -> List[schemas.Model]:
+def select_model_by_project_id(
+    db: Session,
+    project_id: str,
+) -> List[schemas.Model]:
     return db.query(models.Model).filter(models.Model.project_id == project_id).all()
 
 
-def select_model_by_project_name(db: Session, project_name: str) -> List[schemas.Model]:
-    project = select_project_by_name(db=db, project_name=project_name)
+def select_model_by_project_name(
+    db: Session,
+    project_name: str,
+) -> List[schemas.Model]:
+    project = select_project_by_name(
+        db=db,
+        project_name=project_name,
+    )
     return db.query(models.Model).filter(models.Model.project_id == project.project_id).all()
 
 
-def select_model_by_name(db: Session, model_name: str) -> List[schemas.Model]:
+def select_model_by_name(
+    db: Session,
+    model_name: str,
+) -> List[schemas.Model]:
     return db.query(models.Model).filter(models.Model.model_name == model_name).all()
 
 
@@ -65,7 +92,10 @@ def add_model(
     description: Optional[str] = None,
     commit: bool = True,
 ) -> schemas.Model:
-    models_in_project = select_model_by_project_id(db=db, project_id=project_id)
+    models_in_project = select_model_by_project_id(
+        db=db,
+        project_id=project_id,
+    )
     for model in models_in_project:
         if model.model_name == model_name:
             return model
@@ -87,19 +117,31 @@ def select_experiment_all(db: Session) -> List[schemas.Experiment]:
     return db.query(models.Experiment).all()
 
 
-def select_experiment_by_id(db: Session, experiment_id: str) -> schemas.Experiment:
+def select_experiment_by_id(
+    db: Session,
+    experiment_id: str,
+) -> schemas.Experiment:
     return db.query(models.Experiment).filter(models.Experiment.experiment_id == experiment_id).first()
 
 
-def select_experiment_by_model_version_id(db: Session, model_version_id: str) -> schemas.Experiment:
+def select_experiment_by_model_version_id(
+    db: Session,
+    model_version_id: str,
+) -> schemas.Experiment:
     return db.query(models.Experiment).filter(models.Experiment.model_version_id == model_version_id).first()
 
 
-def select_experiment_by_model_id(db: Session, model_id: str) -> List[schemas.Experiment]:
+def select_experiment_by_model_id(
+    db: Session,
+    model_id: str,
+) -> List[schemas.Experiment]:
     return db.query(models.Experiment).filter(models.Experiment.model_id == model_id).all()
 
 
-def select_experiment_by_project_id(db: Session, project_id: str) -> List[schemas.Experiment]:
+def select_experiment_by_project_id(
+    db: Session,
+    project_id: str,
+) -> List[schemas.Experiment]:
     return (
         db.query(models.Experiment, models.Model)
         .filter(models.Model.project_id == project_id)
@@ -139,8 +181,15 @@ def add_experiment(
     return data
 
 
-def update_experiment_evaluation(db: Session, experiment_id: str, evaluations: Dict) -> schemas.Experiment:
-    data = select_experiment_by_id(db=db, experiment_id=experiment_id)
+def update_experiment_evaluation(
+    db: Session,
+    experiment_id: str,
+    evaluations: Dict,
+) -> schemas.Experiment:
+    data = select_experiment_by_id(
+        db=db,
+        experiment_id=experiment_id,
+    )
     if data.evaluations is None:
         data.evaluations = evaluations
     else:
@@ -152,9 +201,14 @@ def update_experiment_evaluation(db: Session, experiment_id: str, evaluations: D
 
 
 def update_experiment_artifact_file_paths(
-    db: Session, experiment_id: str, artifact_file_paths: Dict
+    db: Session,
+    experiment_id: str,
+    artifact_file_paths: Dict,
 ) -> schemas.Experiment:
-    data = select_experiment_by_id(db=db, experiment_id=experiment_id)
+    data = select_experiment_by_id(
+        db=db,
+        experiment_id=experiment_id,
+    )
     if data.artifact_file_paths is None:
         data.artifact_file_paths = artifact_file_paths
     else:
