@@ -1,4 +1,10 @@
-from sqlalchemy import Column, DateTime, ForeignKey, String, Text
+from sqlalchemy import (
+    Column,
+    DateTime,
+    ForeignKey,
+    String,
+    Text,
+)
 from sqlalchemy.sql.functions import current_timestamp
 from sqlalchemy.types import JSON
 from src.db.database import Base
