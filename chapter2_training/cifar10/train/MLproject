@@ -15,7 +15,6 @@ entry_points:
       num_workers: {type: int, default: 4}
       learning_rate: {type: float, default: 0.001}
       model_type: {type: string, default: vgg16}
-      model_experiment_id: {type: string, default: abc000}
     command: |
       python -m src.train \
         --upstream {upstream} \
@@ -25,5 +24,4 @@ entry_points:
         --batch_size {batch_size} \
         --num_workers {num_workers} \
         --learning_rate {learning_rate} \
-        --model_type {model_type} \
-        --model_experiment_id {model_experiment_id}
+        --model_type {model_type}

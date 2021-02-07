@@ -17,7 +17,7 @@ entry_points:
       docker build \
         -t {dockerimage} \
         -f {dockerfile_path} \
-        --build-arg  model_filename={model_filename} \
-        --build-arg  model_directory=./ \
-        --build-arg  entrypoint_path={entrypoint_path} \
+        --build-arg model_filename={model_filename} \
+        --build-arg model_directory=./ \
+        --build-arg entrypoint_path={entrypoint_path} \
         .

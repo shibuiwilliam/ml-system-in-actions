@@ -17,7 +17,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-class PytorchImagePreprocessTransformer(BaseEstimator, TransformerMixin):
+class PytorchImagePreprocessTransformer(
+    BaseEstimator,
+    TransformerMixin,
+):
     def __init__(
         self,
         image_size: Tuple[int, int] = (32, 32),
@@ -52,14 +55,20 @@ class PytorchImagePreprocessTransformer(BaseEstimator, TransformerMixin):
         return norm_image_data
 
 
-class SoftmaxTransformer(BaseEstimator, TransformerMixin):
+class SoftmaxTransformer(
+    BaseEstimator,
+    TransformerMixin,
+):
     def __init__(self):
         pass
 
     def fit(self, X, y=None):
         return self
 
-    def transform(self, X: Union[np.ndarray, List[float], List[List[float]]]) -> np.ndarray:
+    def transform(
+        self,
+        X: Union[np.ndarray, List[float], List[List[float]]],
+    ) -> np.ndarray:
         if isinstance(X, List):
             X = np.array(X)
         x = X.reshape(-1)
@@ -191,12 +200,6 @@ def main():
         default="/opt/data/preprocess/test",
         help="test data directory",
     )
-    parser.add_argument(
-        "--model_experiment_id",
-        type=str,
-        default="abc000",
-        help="experiment id for model db",
-    )
     args = parser.parse_args()
     mlflow_experiment_id = int(os.getenv("MLFLOW_EXPERIMENT_ID", 0))
 
@@ -205,16 +208,30 @@ def main():
     os.makedirs(upstream_directory, exist_ok=True)
     os.makedirs(downstream_directory, exist_ok=True)
 
-    result = evaluate(test_data_directory=args.test_data_directory)
+    result = evaluate(
+        test_data_directory=args.test_data_directory,
+    )
 
     log_file = os.path.join(downstream_directory, f"{mlflow_experiment_id}.json")
     with open(log_file, "w") as f:
         json.dump(log_file, f)
 
-    mlflow.log_metric("total_tested", result["evaluation"]["total_tested"])
-    mlflow.log_metric("total_time", result["evaluation"]["total_time"])
-    mlflow.log_metric("accuracy", result["evaluation"]["accuracy"])
-    mlflow.log_metric("average_duration_second", result["evaluation"]["average_duration_second"])
+    mlflow.log_metric(
+        "total_tested",
+        result["evaluation"]["total_tested"],
+    )
+    mlflow.log_metric(
+        "total_time",
+        result["evaluation"]["total_time"],
+    )
+    mlflow.log_metric(
+        "accuracy",
+        result["evaluation"]["accuracy"],
+    )
+    mlflow.log_metric(
+        "average_duration_second",
+        result["evaluation"]["average_duration_second"],
+    )
     mlflow.log_artifact(log_file)
 
 

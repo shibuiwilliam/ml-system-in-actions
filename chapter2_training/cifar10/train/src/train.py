@@ -1,8 +1,6 @@
 import argparse
-import json
 import logging
 import os
-from typing import Dict
 
 import mlflow
 import mlflow.pytorch
@@ -10,7 +8,14 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from src.constants import MODEL_ENUM
-from src.model import VGG11, VGG16, Cifar10Dataset, SimpleModel, evaluate, train
+from src.model import (
+    VGG11,
+    VGG16,
+    Cifar10Dataset,
+    SimpleModel,
+    evaluate,
+    train,
+)
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
@@ -29,13 +34,28 @@ def start_run(
     epochs: int,
     learning_rate: float,
     model_type: str,
-    model_experiment_id: str,
 ):
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device(
+        "cuda:0" if torch.cuda.is_available() else "cpu",
+    )
     writer = SummaryWriter(log_dir=tensorboard_directory)
 
     transform = transforms.Compose(
-        [transforms.ToTensor(), transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))],
+        [
+            transforms.ToTensor(),
+            transforms.Normalize(
+                (
+                    0.4914,
+                    0.4822,
+                    0.4465,
+                ),
+                (
+                    0.2023,
+                    0.1994,
+                    0.2010,
+                ),
+            ),
+        ],
     )
 
     train_dataset = Cifar10Dataset(
@@ -99,8 +119,14 @@ def start_run(
 
     writer.close()
 
-    model_file_name = os.path.join(downstream_directory, f"cifar10_{mlflow_experiment_id}.pth")
-    onnx_file_name = os.path.join(downstream_directory, f"cifar10_{mlflow_experiment_id}.onnx")
+    model_file_name = os.path.join(
+        downstream_directory,
+        f"cifar10_{mlflow_experiment_id}.pth",
+    )
+    onnx_file_name = os.path.join(
+        downstream_directory,
+        f"cifar10_{mlflow_experiment_id}.onnx",
+    )
 
     torch.save(model.state_dict(), model_file_name)
 
@@ -115,7 +141,10 @@ def start_run(
     )
 
     mlflow.log_param("optimizer", "Adam")
-    mlflow.log_param("preprocess", "Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))")
+    mlflow.log_param(
+        "preprocess",
+        "Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))",
+    )
     mlflow.log_param("epochs", epochs)
     mlflow.log_param("learning_rate", learning_rate)
     mlflow.log_param("batch_size", batch_size)
@@ -186,12 +215,6 @@ def main():
         ],
         help="simple, vgg11 or vgg16",
     )
-    parser.add_argument(
-        "--model_experiment_id",
-        type=str,
-        default="abc000",
-        help="experiment id for model db",
-    )
     args = parser.parse_args()
     mlflow_experiment_id = int(os.getenv("MLFLOW_EXPERIMENT_ID", 0))
 
@@ -211,7 +234,6 @@ def main():
         epochs=args.epochs,
         learning_rate=args.learning_rate,
         model_type=args.model_type,
-        model_experiment_id=args.model_experiment_id,
     )
 
 
