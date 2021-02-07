@@ -1,11 +1,7 @@
-from logging import INFO, getLogger
-
 from sqlalchemy import Column, DateTime, ForeignKey, String, Text
 from sqlalchemy.sql.functions import current_timestamp
 from sqlalchemy.types import JSON
 from src.db.database import Base
-
-logger = getLogger(__name__)
 
 
 class Project(Base):
@@ -14,7 +10,11 @@ class Project(Base):
     project_id = Column(String(255), primary_key=True)
     project_name = Column(String(255), nullable=False, unique=True)
     description = Column(Text, nullable=True)
-    created_datetime = Column(DateTime(timezone=True), server_default=current_timestamp(), nullable=False)
+    created_datetime = Column(
+        DateTime(timezone=True),
+        server_default=current_timestamp(),
+        nullable=False,
+    )
 
 
 class Model(Base):
@@ -28,7 +28,11 @@ class Model(Base):
     )
     model_name = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
-    created_datetime = Column(DateTime(timezone=True), server_default=current_timestamp(), nullable=False)
+    created_datetime = Column(
+        DateTime(timezone=True),
+        server_default=current_timestamp(),
+        nullable=False,
+    )
 
 
 class Experiment(Base):
@@ -47,4 +51,8 @@ class Experiment(Base):
     test_dataset = Column(Text, nullable=True)
     evaluations = Column(JSON, nullable=True)
     artifact_file_paths = Column(JSON, nullable=True)
-    created_datetime = Column(DateTime(timezone=True), server_default=current_timestamp(), nullable=False)
+    created_datetime = Column(
+        DateTime(timezone=True),
+        server_default=current_timestamp(),
+        nullable=False,
+    )
