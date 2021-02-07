@@ -1,12 +1,8 @@
-import datetime
 import uuid
-from logging import getLogger
 from typing import Dict, List, Optional
 
 from sqlalchemy.orm import Session
 from src.db import models, schemas
-
-logger = getLogger(__name__)
 
 
 def select_project_all(db: Session) -> List[schemas.Project]:
