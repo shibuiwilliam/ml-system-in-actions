@@ -17,17 +17,17 @@
 ```sh
 $ make build_all
 docker build \
-		-t shibui/ml-system-in-actions:circuit_breaker_pattern_api_0.0.1 \
-		-f Dockerfile \
-		.
+	-t shibui/ml-system-in-actions:circuit_breaker_pattern_api_0.0.1 \
+	-f Dockerfile \
+	.
 docker build \
-		-t shibui/ml-system-in-actions:circuit_breaker_pattern_loader_0.0.1 \
-		-f model_loader/Dockerfile \
-		.
+	-t shibui/ml-system-in-actions:circuit_breaker_pattern_loader_0.0.1 \
+	-f model_loader/Dockerfile \
+	.
 docker build \
-		-t shibui/ml-system-in-actions:circuit_breaker_pattern_client_0.0.1 \
-		-f Dockerfile.client \
-		.
+	-t shibui/ml-system-in-actions:circuit_breaker_pattern_client_0.0.1 \
+	-f Dockerfile.client \
+	.
 ```
 
 2. KubernetesにIstioをインストールし、各サービスを起動

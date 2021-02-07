@@ -17,21 +17,21 @@
 ```sh
 $ make build_all
 docker build \
-		-t shibui/ml-system-in-actions:condition_based_pattern_proxy_0.0.1 \
-		-f ./Dockerfile.proxy \
-		.
+	-t shibui/ml-system-in-actions:condition_based_pattern_proxy_0.0.1 \
+	-f ./Dockerfile.proxy \
+	.
 docker build \
-		-t shibui/ml-system-in-actions:condition_based_pattern_imagenet_mobilenet_v2_0.0.1 \
-		-f ./imagenet_mobilenet_v2/Dockerfile \
-        .
+	-t shibui/ml-system-in-actions:condition_based_pattern_imagenet_mobilenet_v2_0.0.1 \
+	-f ./imagenet_mobilenet_v2/Dockerfile \
+	.
 docker build \
-		-t shibui/ml-system-in-actions:condition_based_pattern_plant_0.0.1 \
-		-f ./plant/Dockerfile \
-        .
+	-t shibui/ml-system-in-actions:condition_based_pattern_plant_0.0.1 \
+	-f ./plant/Dockerfile \
+	.
 docker build \
-		-t shibui/ml-system-in-actions:condition_based_pattern_client_0.0.1 \
-		-f Dockerfile.client \
-		.
+	-t shibui/ml-system-in-actions:condition_based_pattern_client_0.0.1 \
+	-f Dockerfile.client \
+	.
 ```
 
 2. Kubernetesでサービスを起動

@@ -64,7 +64,7 @@ $ docker logs job -f
 ```sh
 $ make c_down
 docker-compose \
-		-f ./docker-compose.yml \
-		down
+    -f ./docker-compose.yml \
+    down
 ```
 

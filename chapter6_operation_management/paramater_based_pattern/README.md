@@ -17,25 +17,25 @@
 ```sh
 $ make build_all
 docker build \
-		-t shibui/ml-system-in-actions:parameter_based_pattern_setosa_0.0.1 \
-		-f ./Dockerfile.service.setosa \
-		.
+	-t shibui/ml-system-in-actions:parameter_based_pattern_setosa_0.0.1 \
+	-f ./Dockerfile.service.setosa \
+	.
 docker build \
-		-t shibui/ml-system-in-actions:parameter_based_pattern_versicolor_0.0.1 \
-		-f ./Dockerfile.service.versicolor \
-		.
+	-t shibui/ml-system-in-actions:parameter_based_pattern_versicolor_0.0.1 \
+	-f ./Dockerfile.service.versicolor \
+	.
 docker build \
-		-t shibui/ml-system-in-actions:parameter_based_pattern_virginica_0.0.1 \
-		-f ./Dockerfile.service.virginica \
-		.
+	-t shibui/ml-system-in-actions:parameter_based_pattern_virginica_0.0.1 \
+	-f ./Dockerfile.service.virginica \
+	.
 docker build \
-		-t shibui/ml-system-in-actions:parameter_based_pattern_proxy_0.0.1 \
-		-f ./Dockerfile.proxy \
-		.
+	-t shibui/ml-system-in-actions:parameter_based_pattern_proxy_0.0.1 \
+	-f ./Dockerfile.proxy \
+	.
 docker build \
-		-t shibui/ml-system-in-actions:parameter_based_pattern_client_0.0.1 \
-		-f ./Dockerfile.client \
-		.
+	-t shibui/ml-system-in-actions:parameter_based_pattern_client_0.0.1 \
+	-f ./Dockerfile.client \
+	.
 ```
 
 2. Kubernetesでサービスを起動
