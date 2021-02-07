@@ -1,17 +1,21 @@
 import argparse
-import logging
 import os
 
 import mlflow
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 
 def main():
-    parser = argparse.ArgumentParser(description="Runner", formatter_class=argparse.RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description="Runner",
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
 
-    parser.add_argument("--commit_hash", type=str, default="000000", help="code commit hash")
+    parser.add_argument(
+        "--commit_hash",
+        type=str,
+        default="000000",
+        help="code commit hash",
+    )
 
     parser.add_argument(
         "--preprocess_data",
@@ -20,7 +24,10 @@ def main():
         help="cifar10 or cifar100; default cifar10",
     )
     parser.add_argument(
-        "--preprocess_downstream", type=str, default="/opt/cifar10/preprocess/", help="preprocess downstream directory"
+        "--preprocess_downstream",
+        type=str,
+        default="/opt/cifar10/preprocess/",
+        help="preprocess downstream directory",
     )
     parser.add_argument(
         "--preprocess_cached_data_id",
@@ -121,7 +128,7 @@ def main():
         )
         preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
 
-        dataset = os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory")
+        dataset = (os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),)
 
         train_run = mlflow.run(
             uri="./train",
@@ -147,7 +154,11 @@ def main():
             parameters={
                 "dockerfile_path": args.building_dockerfile_path,
                 "model_filename": args.building_model_filename,
-                "model_directory": os.path.join("/tmp/mlruns/0", train_run.info.run_id, "artifacts"),
+                "model_directory": os.path.join(
+                    "/tmp/mlruns/0",
+                    train_run.info.run_id,
+                    "artifacts",
+                ),
                 "entrypoint_path": args.building_entrypoint_path,
                 "dockerimage": f"shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_{mlflow_experiment_id}",
             },
@@ -159,7 +170,11 @@ def main():
             entry_point="evaluate",
             backend="local",
             parameters={
-                "upstream": os.path.join("/tmp/mlruns/0", train_run.info.run_id, "artifacts"),
+                "upstream": os.path.join(
+                    "/tmp/mlruns/0",
+                    train_run.info.run_id,
+                    "artifacts",
+                ),
                 "downstream": args.evaluate_downstream,
                 "test_data_directory": os.path.join(
                     "/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory/test"
