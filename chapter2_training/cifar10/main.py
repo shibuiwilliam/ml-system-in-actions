@@ -128,7 +128,7 @@ def main():
         )
         preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
 
-        dataset = (os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory"),)
+        dataset = os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory")
 
         train_run = mlflow.run(
             uri="./train",
