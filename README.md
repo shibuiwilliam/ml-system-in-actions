@@ -14,11 +14,20 @@ machine learning system examples
 - （一部）Kubernetesまたはminikube
 - （一部）Android Studio
 
+本レポジトリではプログラムの実行環境としてDocker、Docker-compose、（一部）Kubernetes/minikube、（一部）Android Studioを使用します。
+各種ミドルウェアおよび開発環境は以下公式ドキュメントを参考にインストールしてください。
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker-compose](https://docs.docker.jp/compose/toc.html)
+- [Kubernetesクラスター構築](https://kubernetes.io/ja/docs/setup/)
+- [minikube](https://kubernetes.io/ja/docs/setup/learning-environment/minikube/)
+- [Android Studio](https://developer.android.com/studio/install)
+
+## コード一覧
+
 本レポジトリが提供するプログラムは以下に示す各プログラムのディレクトリで実行されることを想定して開発されています。
 各プログラムを実行する際は目的のディレクトリに移動してください。
 各プログラムの実行方法は各プログラムディレクトリ配下のREADMEに示してあります。
-
-## コード一覧
 
 .</br>
 ├── [chapter2_training](./chapter2_training/)</br>

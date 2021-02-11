@@ -17,34 +17,50 @@ Kubernetesクラスターは独自に構築するか、各クラウドのマネ�
 - [Kubernetesクラスター構築](https://kubernetes.io/ja/docs/setup/)
 - [minikube](https://kubernetes.io/ja/docs/setup/learning-environment/minikube/)
 
-
 ## 使い方
 
 1. 推論用Dockerイメージおよびモデルロード用Dockerイメージのビルド
    
 ```sh
 $ make build_all
-docker build \
-    -t shibui/ml-system-in-actions:model_load_pattern_api_0.0.1 \
-    -f Dockerfile \
-    .
-docker build \
-    -t shibui/ml-system-in-actions:model_load_pattern_loader_0.0.1 \
-    -f model_loader/Dockerfile \
-    .
+# 実行されるコマンド
+# docker build \
+#     -t shibui/ml-system-in-actions:model_load_pattern_api_0.0.1 \
+#     -f Dockerfile \
+#     .
+# docker build \
+#     -t shibui/ml-system-in-actions:model_load_pattern_loader_0.0.1 \
+#     -f model_loader/Dockerfile \
+#     .
 ```
 
 2. 推論器とサイドカーをKubernetesクラスターにデプロイ
 
 ```sh
 $ make deploy
-kubectl apply -f manifests/namespace.yml
-kubectl apply -f manifests/deployment.yml
+# 実行されるコマンド
+# kubectl apply -f manifests/namespace.yml
+# kubectl apply -f manifests/deployment.yml
+
+# デプロイの確認
+$ kubectl -n model-load get pods,deploy,svc
+# NAME                              READY   STATUS    RESTARTS   AGE
+# pod/model-load-6b4bb6f96c-b95f2   1/1     Running   0          33s
+# pod/model-load-6b4bb6f96c-kntxk   1/1     Running   0          33s
+# pod/model-load-6b4bb6f96c-s8zjx   1/1     Running   0          33s
+# pod/model-load-6b4bb6f96c-zdwqj   1/1     Running   0          33s
+
+# NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+# deployment.apps/model-load   4/4     4            4           33s
+
+# NAME                 TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+# service/model-load   ClusterIP   10.84.11.108   <none>        8000/TCP   33s
 ```
 
 3. Kubernetesのmodel-loadを削除
 
 ```sh
 $ make delete
-kubectl delete ns model-load
+# 実行されるコマンド
+# kubectl delete ns model-load
 ```

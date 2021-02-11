@@ -44,6 +44,20 @@ $ make deploy
 # 実行されるコマンド
 # kubectl apply -f manifests/namespace.yml
 # kubectl apply -f manifests/deployment.yml
+
+# デプロイの確認
+$ kubectl -n model-in-image get pods,deploy,svc
+# NAME                                  READY   STATUS    RESTARTS   AGE
+# pod/model-in-image-5c64988c5d-5phxn   1/1     Running   0          28s
+# pod/model-in-image-5c64988c5d-lljmg   1/1     Running   0          28s
+# pod/model-in-image-5c64988c5d-qhpms   1/1     Running   0          28s
+# pod/model-in-image-5c64988c5d-rgwlx   1/1     Running   0          28s
+
+# NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+# deployment.apps/model-in-image   4/4     4            4           28s
+
+# NAME                     TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
+# service/model-in-image   ClusterIP   10.84.9.167   <none>        8000/TCP   28s
 ```
 
 3. Kubernetesのmodel-in-imageを削除
