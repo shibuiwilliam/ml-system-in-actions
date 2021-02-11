@@ -2,7 +2,7 @@
 
 ## 目的
 
-...
+バッチで推論を実行
 
 ## 前提
 
@@ -19,7 +19,7 @@ $ pwd
 ~/ml-system-in-actions/chapter4_serving_patterns/batch_pattern
 ```
 
-1. ...
+1. Dockerイメージをビルド
 
 ```sh
 $ make build_all

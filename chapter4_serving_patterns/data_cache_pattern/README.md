@@ -19,7 +19,7 @@ $ pwd
 ~/ml-system-in-actions/chapter4_serving_patterns/data_cache_pattern
 ```
 
-1. ...
+1. Dockerイメージをビルド
 
 ```sh
 $ make build_all
