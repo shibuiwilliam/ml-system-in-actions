@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  {{name}}:
+    container_name: {{name}}
+    image: shibui/ml-system-in-actions:{{name}}_0.0.1
+    restart: always
+    environment:
+      - PLATFORM=docker_compose
+    ports:
+      - "8000:8000"
+    command: ./run.sh
