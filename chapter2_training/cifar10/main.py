@@ -155,7 +155,7 @@ def main():
                 "dockerfile_path": args.building_dockerfile_path,
                 "model_filename": args.building_model_filename,
                 "model_directory": os.path.join(
-                    "/tmp/mlruns/0",
+                    "./mlruns/0",
                     train_run.info.run_id,
                     "artifacts",
                 ),

@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: org.pytorch:pytorch_android_fbjni:1.4.0@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/417b3fe576e81484967ea383fe8f39de/jetified-pytorch_android_fbjni-1.4.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/17857a264a71475f2887b6ee507077a8/jetified-pytorch_android_fbjni-1.4.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/417b3fe576e81484967ea383fe8f39de/jetified-pytorch_android_fbjni-1.4.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/417b3fe576e81484967ea383fe8f39de/jetified-pytorch_android_fbjni-1.4.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pytorch/pytorch_android_fbjni/1.4.0/67234dd895e2f31f0b4b7ea3e6370d20e9e440dd/pytorch_android_fbjni-1.4.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pytorch/pytorch_android_fbjni/1.4.0/734b43bf411d488976bc0fbca44576bfab1664d9/pytorch_android_fbjni-1.4.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

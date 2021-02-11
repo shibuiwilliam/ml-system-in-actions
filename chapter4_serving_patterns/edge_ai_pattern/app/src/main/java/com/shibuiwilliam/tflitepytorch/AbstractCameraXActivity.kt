@@ -100,7 +100,7 @@ abstract class AbstractCameraXActivity : AppCompatActivity(){
         val imageAnalysisConfig = ImageAnalysisConfig
             .Builder()
             .apply {
-                setCallbackHandler(mBackgroundHandler)
+                setCallbackHandler(mBackgroundHandler!!)
                 setImageReaderMode(ImageAnalysis.ImageReaderMode.ACQUIRE_LATEST_IMAGE)
             }
             .build()

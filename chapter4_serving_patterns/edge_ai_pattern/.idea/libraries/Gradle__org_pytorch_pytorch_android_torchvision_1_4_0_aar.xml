@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: org.pytorch:pytorch_android_torchvision:1.4.0@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e4159d14dee35c3dcfcacfb3f3dd369c/jetified-pytorch_android_torchvision-1.4.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e4159d14dee35c3dcfcacfb3f3dd369c/jetified-pytorch_android_torchvision-1.4.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e4159d14dee35c3dcfcacfb3f3dd369c/jetified-pytorch_android_torchvision-1.4.0/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pytorch/pytorch_android_torchvision/1.4.0/5cd63e17c15f98d0e3072bde1831d152345a84e7/pytorch_android_torchvision-1.4.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.pytorch/pytorch_android_torchvision/1.4.0/a9bb33f10d3d6263a8f57a6e3d16fb18d9c115fc/pytorch_android_torchvision-1.4.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
