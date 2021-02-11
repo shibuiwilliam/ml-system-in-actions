@@ -15,9 +15,9 @@ entry_points:
       train_learning_rate: {type: float, default: 0.001}
       train_model_type: {type: string, default: vgg11}
 
-      building_dockerfile_path: {type: string, default: /ml-system-in-actions/chapter2_training_patterns/cifar10/building/Dockerfile}
+      building_dockerfile_path: {type: string, default: /ml-system-in-actions/chapter2_training/cifar10/building/Dockerfile}
       building_model_filename: {type: string, default: vgg11.onnx}
-      building_entrypoint_path: {type: string, default: /ml-system-in-actions/chapter2_training_patterns/cifar10/building/onnx_runtime_server_entrypoint.sh}
+      building_entrypoint_path: {type: string, default: /ml-system-in-actions/chapter2_training/cifar10/building/onnx_runtime_server_entrypoint.sh}
 
       evaluate_downstream: {type: string, default: /opt/data/evaluate/}
     command: |

@@ -10,29 +10,46 @@
 - Docker
 - Kubernetesクラスターまたはminikube
 
+本プログラムではKubernetesクラスターまたはminikubeが必要になります。
+Kubernetesクラスターは独自に構築するか、各クラウドのマネージドサービス（GCP GKE、AWS EKS、MS Azure AKS等）をご利用ください。
+なお、作者はGCP GKEクラスターで稼働確認を取っております。
+
+- [Kubernetesクラスター構築](https://kubernetes.io/ja/docs/setup/)
+- [minikube](https://kubernetes.io/ja/docs/setup/learning-environment/minikube/)
+
 ## 使い方
+
+0. カレントディレクトリ
+
+```sh
+$ pwd
+~/ml-system-in-actions/chapter3_release_patterns/model_in_image_pattern
+```
 
 1. 推論用Dockerイメージのビルド
    
 ```sh
 $ make build_all
-docker build \
-    -t shibui/ml-system-in-actions:model_in_image_pattern_0.0.1 \
-    -f Dockerfile \
-    .
+# 実行されるコマンド
+# docker build \
+#     -t shibui/ml-system-in-actions:model_in_image_pattern_0.0.1 \
+#     -f Dockerfile \
+#     .
 ```
 
 2. 推論器をKubernetesクラスターにデプロイ
 
 ```sh
 $ make deploy
-kubectl apply -f manifests/namespace.yml
-kubectl apply -f manifests/deployment.yml
+# 実行されるコマンド
+# kubectl apply -f manifests/namespace.yml
+# kubectl apply -f manifests/deployment.yml
 ```
 
 3. Kubernetesのmodel-in-imageを削除
 
 ```sh
 $ make delete
-kubectl delete ns model-in-image
+# 実行されるコマンド
+# kubectl delete ns model-in-image
 ```

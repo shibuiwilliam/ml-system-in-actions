@@ -18,7 +18,7 @@ d_build:
 
 .PHONY: train
 train:
-	mlflow run
+	mlflow run . --no-conda
 
 .PHONY: ui
 ui:
