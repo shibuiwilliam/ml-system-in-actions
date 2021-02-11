@@ -10,6 +10,14 @@
 - Docker
 - Kubernetesクラスターまたはminikube
 
+本プログラムではKubernetesクラスターまたはminikubeが必要になります。
+Kubernetesクラスターは独自に構築するか、各クラウドのマネージドサービス（GCP GKE、AWS EKS、MS Azure AKS等）をご利用ください。
+なお、作者はGCP GKEクラスターで稼働確認を取っております。
+
+- [Kubernetesクラスター構築](https://kubernetes.io/ja/docs/setup/)
+- [minikube](https://kubernetes.io/ja/docs/setup/learning-environment/minikube/)
+
+
 ## 使い方
 
 1. 推論用Dockerイメージおよびモデルロード用Dockerイメージのビルド
