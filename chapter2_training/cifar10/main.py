@@ -128,7 +128,12 @@ def main():
         )
         preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
 
-        dataset = os.path.join("./mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory")
+        dataset = os.path.join(
+            "./mlruns/",
+            mlflow_experiment_id,
+            preprocess_run.info.run_id,
+            "artifacts/downstream_directory",
+        )
 
         train_run = mlflow.run(
             uri="./train",
@@ -172,14 +177,16 @@ def main():
             backend="local",
             parameters={
                 "upstream": os.path.join(
-                    "../mlruns/0",
+                    "../mlruns/",
+                    mlflow_experiment_id,
                     train_run.info.run_id,
                     # "7bd827fdb3d848f287ba4ed4f2a027e4",
                     "artifacts",
                 ),
                 "downstream": args.evaluate_downstream,
                 "test_data_directory": os.path.join(
-                    "../mlruns/0",
+                    "../mlruns/",
+                    mlflow_experiment_id,
                     preprocess_run.info.run_id,
                     # "38b47c5490ef4de4a6929c98b65eb76a",
                     "artifacts/downstream_directory/test",

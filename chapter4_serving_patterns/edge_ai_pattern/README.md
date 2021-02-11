@@ -19,7 +19,7 @@ Android Studioは以下より入手してください。
 1. Android Studioを起動し、本ディレクトリを読み込みます。
 
 Android Studio起動画面。
-![img](./img/start.png]
+![img](./img/start.png)
 
 ディレクトリの選択
 
@@ -31,3 +31,5 @@ Android Studio起動画面。
 Android Studioからアプリケーションを選択すると以下のような画面になります。
 
 ![img](./img/install.png)
+
+上部にある
