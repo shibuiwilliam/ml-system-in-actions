@@ -9,7 +9,7 @@ TensorflowLiteおよびPytorch Mobileの画像認識モデルを使い、Android
 
 ## 前提
 
-- Android Studio
+- Android 
 - Android端末
 
 Android Studioは以下より入手してください。
@@ -18,9 +18,16 @@ Android Studioは以下より入手してください。
 
 1. Android Studioを起動し、本ディレクトリを読み込みます。
 
-Android Studioは起動画面。
-![img](start.png)
+Android Studio起動画面。
+![img](./img/start.png]
 
-2. 
+ディレクトリの選択
+
+![img](./img/files.png)
 
 
+2. アプリケーションのインストール
+
+Android Studioからアプリケーションを選択すると以下のような画面になります。
+
+![img](./img/install.png)

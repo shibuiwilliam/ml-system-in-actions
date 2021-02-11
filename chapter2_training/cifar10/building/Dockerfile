@@ -1,14 +1,14 @@
 FROM mcr.microsoft.com/onnxruntime/server:latest
 
-ARG model_filename=vgg11.onnx
+ARG model_filename=cifar10_0.onnx
 ARG model_directory=./
-ARG entrypoint_path=./onnx_runtime_server_entrypoint.sh
+ARG entrypoint_path=./building/onnx_runtime_server_entrypoint.sh
 
 ENV PROJECT_DIR cifar10
 
 WORKDIR /${PROJECT_DIR}
 
-COPY ${model_directory}/${model_filename} /${PROJECT_DIR}/${model_filename}
+COPY ./${model_filename} /${PROJECT_DIR}/${model_filename}
 
 ENV MODEL_PATH /${PROJECT_DIR}/${model_filename}
 

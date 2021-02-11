@@ -17,19 +17,19 @@ pyenvで環境構築する方法は以下のとおりです。
 
 ```sh
 # 2021/02時点最新のanaconda環境を選択
-$ pyenv install anaconda3-2020.02
-Downloading Anaconda3-2020.02-MacOSX-x86_64.sh...
--> https://repo.continuum.io/archive/Anaconda3-2020.02-MacOSX-x86_64.sh
-Installing Anaconda3-2020.02-MacOSX-x86_64...
-Installed Anaconda3-2020.02-MacOSX-x86_64 to /Users/shibuiyuusuke/.pyenv/versions/anaconda3-2020.02
+$ pyenv install anaconda3-5.3.1
+Downloading Anaconda3-5.3.1-MacOSX-x86_64.sh.sh...
+-> https://repo.continuum.io/archive/Anaconda3-5.3.1-MacOSX-x86_64.sh
+Installing Anaconda3-5.3.1-MacOSX-x86_64.sh...
+Installed Anaconda3-5.3.1-MacOSX-x86_64.sh to ~/.pyenv/versions/anaconda3-5.3.1
 
 # pyenvで仮想環境にanaconda3-2020.02を選択
-$ pyenv local anaconda3-2020.02
+$ pyenv local * anaconda3-5.3.1
 
 # 仮想環境がanaconda3-2020.02になっていることを確認
 $ pyenv versions
   system
-* anaconda3-2020.02 (set by ~/ml-system-in-actions/chapter2_training/cifar10/.python-version)
+* anaconda3-5.3.1
 
 # 依存ライブラリをインストール
 $ pip install -r requirements.txt

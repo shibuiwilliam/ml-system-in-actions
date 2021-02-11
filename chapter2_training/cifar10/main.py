@@ -26,7 +26,7 @@ def main():
     parser.add_argument(
         "--preprocess_downstream",
         type=str,
-        default="/opt/cifar10/preprocess/",
+        default="./preprocess/data/preprocess",
         help="preprocess downstream directory",
     )
     parser.add_argument(
@@ -39,19 +39,19 @@ def main():
     parser.add_argument(
         "--train_upstream",
         type=str,
-        default="/opt/data/preprocess",
+        default="./preprocess/data/preprocess",
         help="upstream directory",
     )
     parser.add_argument(
         "--train_downstream",
         type=str,
-        default="/opt/cifar10/model/",
+        default="./train/data/model/",
         help="downstream directory",
     )
     parser.add_argument(
         "--train_tensorboard",
         type=str,
-        default="/opt/cifar10/tensorboard/",
+        default="./train/data/tensorboard/",
         help="tensorboard directory",
     )
     parser.add_argument(
@@ -89,26 +89,26 @@ def main():
     parser.add_argument(
         "--building_dockerfile_path",
         type=str,
-        default="/opt/data/building/Dockerfile",
+        default="./Dockerfile",
         help="building Dockerfile path",
     )
     parser.add_argument(
         "--building_model_filename",
         type=str,
-        default="vgg11.onnx",
+        default="cifar10_0.onnx",
         help="building model file name",
     )
     parser.add_argument(
         "--building_entrypoint_path",
         type=str,
-        default="/opt/data/building/onnx_runtime_server_entrypoint.sh",
+        default="./onnx_runtime_server_entrypoint.sh",
         help="building entrypoint path",
     )
 
     parser.add_argument(
         "--evaluate_downstream",
         type=str,
-        default="/opt/data/evaluate/",
+        default="./data/evaluate/",
         help="evaluate downstream directory",
     )
 
@@ -128,7 +128,7 @@ def main():
         )
         preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
 
-        dataset = os.path.join("/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory")
+        dataset = os.path.join("./mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory")
 
         train_run = mlflow.run(
             uri="./train",
@@ -155,8 +155,9 @@ def main():
                 "dockerfile_path": args.building_dockerfile_path,
                 "model_filename": args.building_model_filename,
                 "model_directory": os.path.join(
-                    "./mlruns/0",
+                    "mlruns/0",
                     train_run.info.run_id,
+                    # "7bd827fdb3d848f287ba4ed4f2a027e4",
                     "artifacts",
                 ),
                 "entrypoint_path": args.building_entrypoint_path,
@@ -171,13 +172,17 @@ def main():
             backend="local",
             parameters={
                 "upstream": os.path.join(
-                    "/tmp/mlruns/0",
+                    "../mlruns/0",
                     train_run.info.run_id,
+                    # "7bd827fdb3d848f287ba4ed4f2a027e4",
                     "artifacts",
                 ),
                 "downstream": args.evaluate_downstream,
                 "test_data_directory": os.path.join(
-                    "/tmp/mlruns/0", preprocess_run.info.run_id, "artifacts/downstream_directory/test"
+                    "../mlruns/0",
+                    preprocess_run.info.run_id,
+                    # "38b47c5490ef4de4a6929c98b65eb76a",
+                    "artifacts/downstream_directory/test",
                 ),
                 "dockerimage": f"shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_{mlflow_experiment_id}",
                 "container_name": f"training_pattern_cifar10_evaluate_{mlflow_experiment_id}",

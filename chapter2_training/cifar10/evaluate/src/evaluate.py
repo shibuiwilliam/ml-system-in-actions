@@ -147,21 +147,19 @@ def evaluate(
     for c in directory_list:
         c_path = os.path.join(test_data_directory, c)
         c_list = os.listdir(c_path)
-        images = {}
+
         for f in c_list:
             image_path = os.path.join(c_path, f)
             image = Image.open(image_path)
-            images[image_path] = image
-        for p, i in images.items():
             start = time.time()
-            x = classifier.predict_label(i)
+            x = classifier.predict_label(image)
             end = time.time()
             duration = end - start
             predicted.append(x)
             labels.append(int(c))
             durations.append(duration)
-            predictions[p] = {"label": c, "prediction": x}
-            logger.info(f"{p} label: {c} predicted: {x} duration: {duration} seconds")
+            predictions[image_path] = {"label": c, "prediction": x}
+            logger.info(f"{image_path} label: {c} predicted: {x} duration: {duration} seconds")
     total_time = sum(durations)
     total_tested = len(predicted)
     average_duration_second = total_time / total_tested
