@@ -2,7 +2,7 @@ name: cifar10_initial
 
 docker_env:
   image: shibui/ml-system-in-actions:training_pattern_cifar10_0.0.1
-  volumes: ["$(pwd)/data:/opt/data", "/Users/shibuiyuusuke/book/ml-system-in-actions/chapter2_training/cifar10/mlruns:/tmp/mlruns"]
+  volumes: ["$(pwd)/data:/opt/data", "~/ml-system-in-actions/chapter2_training/cifar10/mlruns:/tmp/mlruns"]
 
 entry_points:
   train:
