@@ -8,7 +8,7 @@ entry_points:
       upstream: {type: string, default: ""}
       downstream: {type: string, default: /opt/data/evaluate/}
       test_data_directory: {type: string, default: /opt/data/preprocess/test}
-      dockerimage: {type: string, default: shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0.0.1}
+      dockerimage: {type: string, default: "shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0.0.1"}
       container_name: {type: string, default: test}
     command: |
       docker run \

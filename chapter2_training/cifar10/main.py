@@ -129,7 +129,7 @@ def main():
         preprocess_run = mlflow.tracking.MlflowClient().get_run(preprocess_run.run_id)
 
         dataset = os.path.join(
-            "./mlruns/",
+            "/tmp/mlruns/",
             str(mlflow_experiment_id),
             preprocess_run.info.run_id,
             "artifacts/downstream_directory",

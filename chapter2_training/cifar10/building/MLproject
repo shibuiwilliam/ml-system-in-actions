@@ -5,11 +5,11 @@ conda_env: conda.yml
 entry_points:
   building:
     parameters:
-      dockerfile_path: {type: string, default:./Dockerfile}
+      dockerfile_path: {type: string, default: ./Dockerfile}
       model_filename: {type: string, default: cifar10_0.onnx}
       model_directory: {type: string, default: ./mlruns/0/abc/artifaces/downstream_directory}
       entrypoint_path: {type: string, default: ./onnx_runtime_server_entrypoint.sh}
-      dockerimage: {type: string, default: shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0.0.1}
+      dockerimage: {type: string, default: "shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0.0.1"}
     command: |
       cp ../{model_directory}/{model_filename} ./ && \
       docker build \
