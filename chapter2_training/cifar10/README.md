@@ -24,7 +24,7 @@ Installing Anaconda3-5.3.1-MacOSX-x86_64.sh...
 Installed Anaconda3-5.3.1-MacOSX-x86_64.sh to ~/.pyenv/versions/anaconda3-5.3.1
 
 # pyenvで仮想環境にanaconda3-2020.02を選択
-$ pyenv local * anaconda3-5.3.1
+$ pyenv local anaconda3-5.3.1
 
 # 仮想環境がanaconda3-2020.02になっていることを確認
 $ pyenv versions
