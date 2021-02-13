@@ -7,6 +7,6 @@ ADD requirements.txt /${PROJECT_DIR}/
 
 RUN apt-get -y update && \
     apt-get -y install apt-utils gcc curl && \
-    pip install  --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /${CODE_DIR}

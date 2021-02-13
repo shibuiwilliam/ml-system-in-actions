@@ -33,6 +33,9 @@ $ pyenv versions
 
 # 依存ライブラリをインストール
 $ pip install -r requirements.txt
+
+# mlflowをインストール
+$ pip install mlflow
 ```
 
 本プログラムは `/tmp/ml-system-in-actions/chapter2_training/cifar10/` ディレクトリで実行することを想定して書かれています。
