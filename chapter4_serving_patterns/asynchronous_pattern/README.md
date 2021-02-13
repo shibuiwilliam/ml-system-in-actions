@@ -134,12 +134,15 @@ $ curl localhost:8000/predict/test
 
 
 # 画像をリクエスト
-$ (echo -n '{"image_data": "'; base64 imagenet_inception_v3/data/cat.jpg; echo '"}') | \
-    curl \
-        -X POST \
-        -H "Content-Type: application/json" \
-        -d @- \
-        localhost:8000/predict
+$ (echo \
+    -n '{"image_data": "'; \
+    base64 imagenet_inception_v3/data/cat.jpg; \
+    echo '"}') | \
+   curl \
+    -X POST \
+    -H "Content-Type: application/json" \
+    -d @- \
+    localhost:8000/predict
 # 出力
 # {
 #   "job_id":"2f49aa"
