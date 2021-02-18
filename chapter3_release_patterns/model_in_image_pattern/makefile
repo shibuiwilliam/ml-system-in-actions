@@ -7,7 +7,6 @@ IMAGE_VERSION := 0.0.1
 
 MODEL_IN_IMAGE_PATTERN := model_in_image_pattern
 MODEL_IN_IMAGE_PATTERN_PORT := 8000
-MANIFESTS := manifests
 
 .PHONY: build
 build:
@@ -28,8 +27,8 @@ push_all: push
 
 .PHONY: deploy
 deploy:
-	kubectl apply -f $(MANIFESTS)/namespace.yml
-	kubectl apply -f $(MANIFESTS)/deployment.yml
+	kubectl apply -f manifests/namespace.yml
+	kubectl apply -f manifests/deployment.yml
 
 .PHONY: delete
 delete:
