@@ -3,20 +3,28 @@ import click
 from distutils.dir_util import copy_tree
 import yaml
 from typing import Dict
-from jinja2 import Template, Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader
 
 
 TEMPLATE_DIRECTORY = "./template"
 TEMPLATE_FILES_DIRECTORY = "./template_files"
 
 
-def load_variable(variable_file: str) -> Dict:
+def load_variable(
+    variable_file: str,
+) -> Dict:
     with open(variable_file, "r") as f:
-        variables = yaml.load(f, Loader=yaml.SafeLoader)
+        variables = yaml.load(
+            f,
+            Loader=yaml.SafeLoader,
+        )
     return variables
 
 
-def format_path(correspond_file_paths: Dict, name: str) -> Dict:
+def format_path(
+    correspond_file_paths: Dict,
+    name: str,
+) -> Dict:
     formatted_correspond_file_paths: Dict = {}
     for k, v in correspond_file_paths.items():
         formatted_correspond_file_paths[k] = v.format(name)
@@ -27,10 +35,21 @@ def copy_directory(name: str):
     copy_tree(TEMPLATE_DIRECTORY, name)
 
 
-def build(template_file_name: str, output_file_path: str, variables: Dict):
-    env = Environment(loader=FileSystemLoader("./", encoding="utf8"))
+def build(
+    template_file_name: str,
+    output_file_path: str,
+    variables: Dict,
+):
+    env = Environment(
+        loader=FileSystemLoader("./", encoding="utf8"),
+    )
 
-    tmpl = env.get_template(os.path.join(TEMPLATE_FILES_DIRECTORY, template_file_name))
+    tmpl = env.get_template(
+        os.path.join(
+            TEMPLATE_FILES_DIRECTORY,
+            template_file_name,
+        ),
+    )
 
     file = tmpl.render(**variables)
 
@@ -64,8 +83,12 @@ def main(
     variable_file: str,
     correspond_file_path: str,
 ):
-    variables = load_variable(variable_file=variable_file)
-    correspond_file_paths = load_variable(variable_file=correspond_file_path)
+    variables = load_variable(
+        variable_file=variable_file,
+    )
+    correspond_file_paths = load_variable(
+        variable_file=correspond_file_path,
+    )
     formatted_correspond_file_paths = format_path(
         correspond_file_paths=correspond_file_paths,
         name=name,

@@ -32,23 +32,33 @@ class Classifier(object):
 
     def load_model(self):
         logger.info(f"load model in {self.model_filepath}")
-        self.classifier = rt.InferenceSession(self.model_filepath)
+        self.classifier = rt.InferenceSession(
+            self.model_filepath,
+        )
         self.input_name = self.classifier.get_inputs()[0].name
         self.output_name = self.classifier.get_outputs()[0].name
         logger.info(f"initialized model")
 
     def load_label(self):
-        logger.info(f"load label in {self.label_filepath}")
+        logger.info(
+            f"load label in {self.label_filepath}",
+        )
         with open(self.label_filepath, "r") as f:
             self.label = json.load(f)
         logger.info(f"label: {self.label}")
 
     def predict(self, data: List[List[int]]) -> np.ndarray:
-        np_data = np.array(data).astype(np.float32)
-        prediction = self.classifier.run(None, {self.input_name: np_data})
-        output = np.array(list(prediction[1][0].values()))
-        logger.info(f"predict proba {output}")
-        return output
+        pass
+        ### NEEDS IMPLEMENTATION ###
+        # np_data = np.array(data).astype(np.float32)
+        # prediction = self.classifier.run(
+        #     None, 
+        #     {self.input_name: np_data},
+        # )
+        # output = np.array(list(prediction[1][0].values()))
+        # logger.info(f"predict proba {output}")
+        # return output
+        ### NEEDS IMPLEMENTATION ###
 
     def predict_label(self, data: List[List[int]]) -> str:
         prediction = self.predict(data=data)

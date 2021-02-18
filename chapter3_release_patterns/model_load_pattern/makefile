@@ -43,3 +43,6 @@ deploy:
 	kubectl apply -f manifests/namespace.yml
 	kubectl apply -f manifests/deployment.yml
 
+.PHONY: delete
+delete:
+	kubectl delete ns model-load

@@ -13,12 +13,6 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-services = {
-    "setosa": os.getenv("SERVICE_SETOSA"),
-    "versicolor": os.getenv("SERVICE_VERSICOLOR"),
-    "virginica": os.getenv("SERVICE_VIRGINICA"),
-}
-
 
 class Data(BaseModel):
     data: List[List[float]] = [[5.1, 3.5, 1.4, 0.2]]
