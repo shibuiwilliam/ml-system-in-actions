@@ -156,7 +156,7 @@ $ (echo -n '{"image_data": "'; base64 iris.jpg; echo '"}') | \
 	curl \
 	-X POST \
 	-H "Content-Type: application/json" \
-	-H "target: plant" \
+	-H "target: mountain" \
 	-d @- \
 	proxy.condition-based-serving.svc.cluster.local:8000/predict
 # 出力
@@ -168,7 +168,7 @@ $ (echo -n '{"image_data": "'; base64 iris.jpg; echo '"}') | \
 	curl \
 	-X POST \
 	-H "Content-Type: application/json" \
-	-H "target: plant" \
+	-H "target: mountain" \
 	-d @- \
 	proxy.condition-based-serving.svc.cluster.local:8000/predict
 # 出力

@@ -151,7 +151,7 @@ spec:
     - match:
         - headers:
             target:
-              exact: plant
+              exact: mountain
       route:
         - destination:
             host: proxy
