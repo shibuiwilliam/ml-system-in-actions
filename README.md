@@ -29,9 +29,24 @@ machine learning system examples
 ### Pythonの実行環境
 
 本レポジトリで用いるPythonのライブラリは`pipenv`で指定しています。以下の手順でpipenvとともにライブラリをインストールしてください。
+サンプルコードはPython3.8以上で実行を検証しています。実行環境のPythonバージョンが合わない場合、[pyenv](https://github.com/pyenv/pyenv)等で実行環境を整えてください。
 
 ```sh
+# Pythonのバージョン
+$ python -V
+# 出力
+Python 3.8.5
+
+# pyenvバージョン
+$ pyenv versions
+# 出力
+  system
+* 3.8.5
+
+# pipenvのインストール
 $ pip install pipenv
+
+# ライブラリのインストール
 $ pipenv install
 ```
 
