@@ -26,6 +26,17 @@ machine learning system examples
 - [istioctl](https://istio.io/latest/docs/setup/getting-started/)
 - [Android Studio](https://developer.android.com/studio/install)
 
+### Pythonの実行環境
+
+本レポジトリで用いるPythonのライブラリは`pipenv`で指定しています。以下の手順でpipenvとともにライブラリをインストールしてください。
+
+```sh
+$ pip install pipenv
+$ pipenv install
+```
+
+ただし、一部のサンプルコードでは他のライブラリを使用することがあります。当該サンプルコードのディレクトリでREADMEを参照してください。
+
 ## コード一覧
 
 本レポジトリが提供するプログラムは以下に示す各プログラムのディレクトリで実行されることを想定して開発されています。

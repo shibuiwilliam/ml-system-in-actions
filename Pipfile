@@ -4,19 +4,23 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-black = "*"
-isort = "*"
 mypy = "*"
-jinja2 = "*"
+isort = "*"
+black = "==20.8b1"
+numpy = "*"
+click = "*"
+requests = "*"
+tensorflow = "*"
+tensorflow-serving-api = "*"
+grpcio = "*"
+mlflow = "*"
+onnx = "*"
+onnxruntime = "*"
+scikit-learn = "*"
+torch = "*"
+torchvision = "*"
+
+[dev-packages]
 
 [requires]
 python_version = "3.8"
-
-[scripts]
-lint = "black --check --diff --line-length 120 ."
-fmt = "black --line-length 120 ."
-sort = "isort ."
-vet = "mypy src/"
-
-[pipenv]
-allow_prereleases = true
