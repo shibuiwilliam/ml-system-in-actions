@@ -19,8 +19,21 @@ onnxruntime = "*"
 scikit-learn = "*"
 torch = "*"
 torchvision = "*"
+httpx = "*"
+tensorboard = "*"
+boto3 = "*"
+gunicorn = "*"
+fastapi = "*"
+pyyaml = "*"
+pydantic = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+lint = "black --check --diff --line-length 120 ."
+sort = "sh -c 'isort .'"
+fmt = "sh -c 'black --line-length 120 .'"
+vet = "mypy ."

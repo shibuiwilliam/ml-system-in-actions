@@ -6,7 +6,7 @@
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
 - Docker compose
 
@@ -19,7 +19,7 @@ $ pwd
 ~/ml-system-in-actions/chapter4_serving_patterns/horizontal_microservice_pattern
 ```
 
-1. Dockerイメージをビルド
+1. Docker イメージをビルド
 
 ```sh
 $ make build_all
@@ -42,7 +42,7 @@ $ make build_all
 #     .
 ```
 
-2. Docker composeで各サービスを起動
+2. Docker compose で各サービスを起動
 
 ```sh
 $ make c_up
@@ -52,7 +52,7 @@ $ make c_up
 #     up -d
 ```
 
-3. 起動したAPIにリクエスト
+3. 起動した API にリクエスト
 
 ```sh
 # proxyにヘルスチェック
@@ -61,7 +61,7 @@ $ curl localhost:9000/health
 # {"health":"ok"}
 
 # 推論器にヘルスチェック
-$ curl localhost:9000/health/all 
+$ curl localhost:9000/health/all
 # 出力
 # {
 #   "setosa": {
@@ -161,7 +161,7 @@ $ curl \
     -X POST \
     -H "Content-Type: application/json" \
     -d '{"data": [[1.0, 2.0, 3.0, 4.0]]}' \
-    localhost:9000/predict 
+    localhost:9000/predict
 # 出力
 # {
 #   "setosa": {
@@ -189,7 +189,7 @@ $ curl \
     -X POST \
     -H "Content-Type: application/json" \
     -d '{"data": [[1.0, 2.0, 3.0, 4.0]]}' \
-    localhost:9000/predict/label 
+    localhost:9000/predict/label
 # 出力
 # {
 #   "prediction": {
@@ -200,7 +200,7 @@ $ curl \
 
 ```
 
-4. Docker composeを停止
+4. Docker compose を停止
 
 ```sh
 $ make c_down

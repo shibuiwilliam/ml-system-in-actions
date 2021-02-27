@@ -1,12 +1,12 @@
-# Irisデータセットのランダムフォレスト分類モデル学習パイプライン
+# Iris データセットのランダムフォレスト分類モデル学習パイプライン
 
 ## 目的
 
-MLFlowを用いたIrisデータセットのランダムフォレスト分類モデル学習パイプラインです。
+MLFlow を用いた Iris データセットのランダムフォレスト分類モデル学習パイプラインです。
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
 - MLFlow
 
@@ -20,7 +20,7 @@ $ pwd
 ```
 
 1. ライブラリインストール
-本プログラムで仕様するライブラリは[requirements.txt](./requirements.txt)に示すとおりです。
+   本プログラムで仕様するライブラリは[requirements.txt](./requirements.txt)に示すとおりです。
 
 ```sh
 $ make dev
@@ -29,8 +29,8 @@ $ make dev
 # 出力は省略
 ```
 
-2. 学習用Dockerイメージのビルド
-学習で使用するDockerイメージをビルドします。
+2. 学習用 Docker イメージのビルド
+   学習で使用する Docker イメージをビルドします。
 
 ```sh
 $ make d_build
@@ -43,7 +43,7 @@ $ make d_build
 ```
 
 3. 学習パイプラインの実行
-mlflowで学習パイプラインを実行します。
+   mlflow で学習パイプラインを実行します。
 
 ```sh
 $ make train

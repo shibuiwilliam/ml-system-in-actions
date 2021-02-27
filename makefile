@@ -1,5 +1,13 @@
 _absolute_path := $(shell pwd)
 
+.PHONY: install_prettier
+install_prettier:
+	npm install
+
+.PHONY: format_md
+format_md: 
+	npx prettier --write .
+
 .PHONY: dev_sync
 dev_sync:
 	pipenv sync --dev
@@ -15,10 +23,9 @@ sync:
 	pipenv sync
 
 .PHONY: fmt
-fmt:
+fmt: format_md
 	pipenv run sort
 	pipenv run fmt
-	npx prettier --write .
 
 .PHONY: lint
 lint:
@@ -28,3 +35,4 @@ lint:
 .PHONY: vet
 vet:
 	pipenv run vet
+

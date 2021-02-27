@@ -8,14 +8,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from src.constants import MODEL_ENUM
-from src.model import (
-    VGG11,
-    VGG16,
-    Cifar10Dataset,
-    SimpleModel,
-    evaluate,
-    train,
-)
+from src.model import VGG11, VGG16, Cifar10Dataset, SimpleModel, evaluate, train
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms

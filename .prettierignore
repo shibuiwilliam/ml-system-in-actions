@@ -1,7 +1,10 @@
 
 build
 coverage
-.mypy_cache/*
+*/.mypy_cache/*
+*/site-packages/*
+*/.pytest_cache/*
 package-lock.json
 .prettierrc.json
 .venv/*
+*/.venv/*

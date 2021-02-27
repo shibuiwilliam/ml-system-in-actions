@@ -6,7 +6,7 @@
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
 - Docker compose
 
@@ -19,7 +19,7 @@ $ pwd
 ~/ml-system-in-actions/chapter4_serving_patterns/batch_pattern
 ```
 
-1. Dockerイメージをビルド
+1. Docker イメージをビルド
 
 ```sh
 $ make build_all
@@ -34,7 +34,7 @@ $ make build_all
 #     .
 ```
 
-2. Docker composeで各サービスを起動
+2. Docker compose で各サービスを起動
 
 ```sh
 $ make c_up
@@ -70,7 +70,7 @@ $ docker logs job -f
 # 2021-01-30 12:42:52,808    DEBUG prediction log: 4009 [6, 3.9, 5.3, 5.7] [0.35905859 0.25630024 0.3846412 ]
 ```
 
-4. Docker composeを停止
+4. Docker compose を停止
 
 ```sh
 $ make c_down
@@ -79,4 +79,3 @@ $ make c_down
 #     -f ./docker-compose.yml \
 #     down
 ```
-

@@ -1,19 +1,19 @@
-# Cifar10学習パイプライン
+# Cifar10 学習パイプライン
 
 ## 目的
 
-MLFlowを用いたCifar10データセットの学習パイプラインです。
+MLFlow を用いた Cifar10 データセットの学習パイプラインです。
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
 - MLFlow
 - Anaconda
 
-本プログラムではcondaコマンドを使用するため、Anaconda/minicondaを使います。
-Anaconda/minicondaの実行環境はpyenv等仮想環境で用意することを推奨します。
-pyenvで環境構築する方法は以下のとおりです。
+本プログラムでは conda コマンドを使用するため、Anaconda/miniconda を使います。
+Anaconda/miniconda の実行環境は pyenv 等仮想環境で用意することを推奨します。
+pyenv で環境構築する方法は以下のとおりです。
 
 ```sh
 # 2021/02時点最新のanaconda環境を選択
@@ -52,7 +52,7 @@ $ make dev
 # 出力は省略
 ```
 
-2. 学習用Dockerイメージのビルド
+2. 学習用 Docker イメージのビルド
 
 ```sh
 $ make d_build
@@ -417,7 +417,6 @@ INFO:__main__:../mlruns/0/d2ec649ed0254e99a9713e75da3dced9/artifacts/downstream_
 ```
 
 </div></details>
-
 
 4. 推論用コンテナの削除
 

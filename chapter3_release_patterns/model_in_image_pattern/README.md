@@ -6,15 +6,15 @@
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
-- Kubernetesクラスターまたはminikube
+- Kubernetes クラスターまたは minikube
 
-本プログラムではKubernetesクラスターまたはminikubeが必要になります。
-Kubernetesクラスターは独自に構築するか、各クラウドのマネージドサービス（GCP GKE、AWS EKS、MS Azure AKS等）をご利用ください。
-なお、作者はGCP GKEクラスターで稼働確認を取っております。
+本プログラムでは Kubernetes クラスターまたは minikube が必要になります。
+Kubernetes クラスターは独自に構築するか、各クラウドのマネージドサービス（GCP GKE、AWS EKS、MS Azure AKS 等）をご利用ください。
+なお、作者は GCP GKE クラスターで稼働確認を取っております。
 
-- [Kubernetesクラスター構築](https://kubernetes.io/ja/docs/setup/)
+- [Kubernetes クラスター構築](https://kubernetes.io/ja/docs/setup/)
 - [minikube](https://kubernetes.io/ja/docs/setup/learning-environment/minikube/)
 
 ## 使い方
@@ -26,8 +26,8 @@ $ pwd
 ~/ml-system-in-actions/chapter3_release_patterns/model_in_image_pattern
 ```
 
-1. 推論用Dockerイメージのビルド
-   
+1. 推論用 Docker イメージのビルド
+
 ```sh
 $ make build_all
 # 実行されるコマンド
@@ -37,7 +37,7 @@ $ make build_all
 #     .
 ```
 
-2. 推論器をKubernetesクラスターにデプロイ
+2. 推論器を Kubernetes クラスターにデプロイ
 
 ```sh
 $ make deploy
@@ -60,7 +60,7 @@ $ kubectl -n model-in-image get pods,deploy,svc
 # service/model-in-image   ClusterIP   10.84.9.167   <none>        8000/TCP   28s
 ```
 
-3. Kubernetesのmodel-in-imageを削除
+3. Kubernetes の model-in-image を削除
 
 ```sh
 $ make delete

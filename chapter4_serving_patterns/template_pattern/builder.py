@@ -1,10 +1,10 @@
 import os
-import click
 from distutils.dir_util import copy_tree
-import yaml
 from typing import Dict
-from jinja2 import Environment, FileSystemLoader
 
+import click
+import yaml
+from jinja2 import Environment, FileSystemLoader
 
 TEMPLATE_DIRECTORY = "./template"
 TEMPLATE_FILES_DIRECTORY = "./template_files"

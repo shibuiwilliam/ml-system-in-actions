@@ -6,17 +6,16 @@
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
-- Kubernetesクラスターまたはminikube
+- Kubernetes クラスターまたは minikube
 
-本プログラムではKubernetesクラスターまたはminikubeが必要になります。
-Kubernetesクラスターは独自に構築するか、各クラウドのマネージドサービス（GCP GKE、AWS EKS、MS Azure AKS等）をご利用ください。
-なお、作者はGCP GKEクラスターで稼働確認を取っております。
+本プログラムでは Kubernetes クラスターまたは minikube が必要になります。
+Kubernetes クラスターは独自に構築するか、各クラウドのマネージドサービス（GCP GKE、AWS EKS、MS Azure AKS 等）をご利用ください。
+なお、作者は GCP GKE クラスターで稼働確認を取っております。
 
-- [Kubernetesクラスター構築](https://kubernetes.io/ja/docs/setup/)
+- [Kubernetes クラスター構築](https://kubernetes.io/ja/docs/setup/)
 - [minikube](https://kubernetes.io/ja/docs/setup/learning-environment/minikube/)
-
 
 ## 使い方
 
@@ -27,7 +26,7 @@ $ pwd
 ~/ml-system-in-actions/chapter6_operation_management/paramater_based_pattern
 ```
 
-1. Dockerイメージをビルド
+1. Docker イメージをビルド
 
 ```sh
 $ make build_all
@@ -54,7 +53,7 @@ $ make build_all
 # 	.
 ```
 
-2. Kubernetesでサービスを起動
+2. Kubernetes でサービスを起動
 
 ```sh
 $ make deploy
@@ -99,7 +98,7 @@ $ kubectl -n parameter-based get all
 # replicaset.apps/proxy-78d645844d             3         3         3       37s
 ```
 
-3. 起動したAPIにリクエスト
+3. 起動した API にリクエスト
 
 ```sh
 # クライアントに接続
@@ -121,7 +120,7 @@ $ curl \
     -X POST \
     -H "Content-Type: application/json" \
     -d '{"data": [[50.0, 30.1, 111.4, 110.2]]}' \
-    proxy.parameter-based.svc.cluster.local:9000/predict 
+    proxy.parameter-based.svc.cluster.local:9000/predict
 # 出力
 # {
 #   "setosa": 0,
@@ -129,7 +128,7 @@ $ curl \
 # }
 ```
 
-4. Kubernetesからサービスを削除
+4. Kubernetes からサービスを削除
 
 ```sh
 $ kubectl delete ns parameter-based

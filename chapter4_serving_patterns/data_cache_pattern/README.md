@@ -6,7 +6,7 @@
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
 - Docker compose
 
@@ -19,7 +19,7 @@ $ pwd
 ~/ml-system-in-actions/chapter4_serving_patterns/data_cache_pattern
 ```
 
-1. Dockerイメージをビルド
+1. Docker イメージをビルド
 
 ```sh
 $ make build_all
@@ -32,7 +32,7 @@ $ make build_all
 #     -f ./Dockerfile.pred .
 ```
 
-2. Docker composeで各サービスを起動
+2. Docker compose で各サービスを起動
 
 ```sh
 $ make c_up
@@ -42,7 +42,7 @@ $ make c_up
 #     up -d
 ```
 
-3. 起動したAPIにリクエスト
+3. 起動した API にリクエスト
 
 ```sh
 # ヘルスチェック
@@ -65,7 +65,7 @@ $ curl localhost:8000/metadata
 # }
 
 # ラベル一覧
-$ curl localhost:8000/label 
+$ curl localhost:8000/label
 # 出力
 # [
 #   "background",
@@ -98,7 +98,7 @@ $ curl \
 # }
 ```
 
-4. Docker composeを停止
+4. Docker compose を停止
 
 ```sh
 $ make c_down

@@ -52,7 +52,7 @@ class Classifier(object):
         ### NEEDS IMPLEMENTATION ###
         # np_data = np.array(data).astype(np.float32)
         # prediction = self.classifier.run(
-        #     None, 
+        #     None,
         #     {self.input_name: np_data},
         # )
         # output = np.array(list(prediction[1][0].values()))

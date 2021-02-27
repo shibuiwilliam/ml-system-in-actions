@@ -2,21 +2,20 @@
 
 ## 目的
 
-シャドウでA/Bテストを実施します。
+シャドウで A/B テストを実施します。
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
-- Kubernetesクラスターまたはminikube
+- Kubernetes クラスターまたは minikube
 
-本プログラムではKubernetesクラスターまたはminikubeが必要になります。
-Kubernetesクラスターは独自に構築するか、各クラウドのマネージドサービス（GCP GKE、AWS EKS、MS Azure AKS等）をご利用ください。
-なお、作者はGCP GKEクラスターで稼働確認を取っております。
+本プログラムでは Kubernetes クラスターまたは minikube が必要になります。
+Kubernetes クラスターは独自に構築するか、各クラウドのマネージドサービス（GCP GKE、AWS EKS、MS Azure AKS 等）をご利用ください。
+なお、作者は GCP GKE クラスターで稼働確認を取っております。
 
-- [Kubernetesクラスター構築](https://kubernetes.io/ja/docs/setup/)
+- [Kubernetes クラスター構築](https://kubernetes.io/ja/docs/setup/)
 - [minikube](https://kubernetes.io/ja/docs/setup/learning-environment/minikube/)
-
 
 ## 使い方
 
@@ -27,7 +26,7 @@ $ pwd
 ~/ml-system-in-actions/chapter6_operation_management/shadow_ab_pattern
 ```
 
-1. Dockerイメージをビルド
+1. Docker イメージをビルド
 
 ```sh
 $ make build_all
@@ -46,7 +45,7 @@ $ make build_all
 # 	.
 ```
 
-2. Kubernetesでサービスを起動
+2. Kubernetes でサービスを起動
 
 ```sh
 $ make deploy
@@ -79,7 +78,7 @@ $ kubectl -n shadow-ab get all
 # horizontalpodautoscaler.autoscaling/iris-svc   Deployment/iris-svc   <unknown>/70%   3         10        3          43s
 ```
 
-3. 起動したAPIにリクエスト
+3. 起動した API にリクエスト
 
 ```sh
 # クライアントに接続
@@ -113,7 +112,7 @@ $ kubectl -n shadow-ab logs pod/iris-svc-74dc7654b8-xthmh iris-svc
 # [2021-02-06 09:51:35] [INFO] [8] [uvicorn.access] [send] [458] 127.0.0.1:48148 - "GET /predict-test/000000 HTTP/1.1" 200
 ```
 
-4. Kubernetesからサービスを削除
+4. Kubernetes からサービスを削除
 
 ```sh
 $ kubectl delete ns shadow-ab

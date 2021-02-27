@@ -1,35 +1,36 @@
 # ml-system-in-actions
+
 machine learning system examples
 
 ## tl;dr
 
-- 本レポジトリは2021年XX月翔泳社出版『機械学習システムデザインパターン』のサンプルコード集です。
+- 本レポジトリは 2021 年 XX 月翔泳社出版『機械学習システムデザインパターン』のサンプルコード集です。
 - 本レポジトリでは機械学習のモデル学習、リリース、推論器の稼働、運用のためのコードおよび実行環境を用例ごとに提供します。
 
 ## 実行環境
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
 - Docker-compose
-- （一部）Kubernetesまたはminikube
+- （一部）Kubernetes または minikube
 - （一部）Android Studio
 
-本レポジトリではプログラムの実行環境としてDocker、Docker-compose、（一部）Kubernetes/minikube、（一部）Android Studioを使用します。
+本レポジトリではプログラムの実行環境として Docker、Docker-compose、（一部）Kubernetes/minikube、（一部）Android Studio を使用します。
 また、コマンドラインとして `kubectl`、`istioctl` を使用します。
 各種ミドルウェア、開発環境、コマンドラインは以下公式ドキュメントを参考にインストールしてください。
 
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker-compose](https://docs.docker.jp/compose/toc.html)
-- [Kubernetesクラスター構築](https://kubernetes.io/ja/docs/setup/)
+- [Kubernetes クラスター構築](https://kubernetes.io/ja/docs/setup/)
 - [minikube](https://kubernetes.io/ja/docs/setup/learning-environment/minikube/)
 - [kubectl](https://kubernetes.io/ja/docs/tasks/tools/install-kubectl/)
 - [istioctl](https://istio.io/latest/docs/setup/getting-started/)
 - [Android Studio](https://developer.android.com/studio/install)
 
-### Pythonの実行環境
+### Python の実行環境
 
-本レポジトリで用いるPythonのライブラリは`pipenv`で指定しています。以下の手順でpipenvとともにライブラリをインストールしてください。
-サンプルコードはPython3.8以上で実行を検証しています。実行環境のPythonバージョンが合わない場合、[pyenv](https://github.com/pyenv/pyenv)等で実行環境を整えてください。
+本レポジトリで用いる Python のライブラリは`pipenv`で指定しています。以下の手順で pipenv とともにライブラリをインストールしてください。
+サンプルコードは Python3.8 以上で実行を検証しています。実行環境の Python バージョンが合わない場合、[pyenv](https://github.com/pyenv/pyenv)等で実行環境を整えてください。
 
 ```sh
 # Pythonのバージョン
@@ -73,18 +74,21 @@ $ make dev
 # Virtualenv location: ~/book/ml-system-in-actions/.venv
 # Launching subshell in virtual environment...
 #  . ~/book/ml-system-in-actions/.venv/bin/activate
+# [21-02-27 10:03:37] your_name@your_namenoMacBook-Pro:~/book/ml-system-in-actions
+# $  . ~/book/ml-system-in-actions/.venv/bin/activate
+# (ml-system-in-actions) [21-02-27 10:03:37] your_name@your_namenoMacBook-Pro:~/book/ml-system-in-actions
 
 # pipenv venvを終了
 $ exit
 ```
 
-ただし、一部のサンプルコードでは他のライブラリを使用することがあります。当該サンプルコードのディレクトリでREADMEを参照してください。
+ただし、一部のサンプルコードでは他のライブラリを使用することがあります。当該サンプルコードのディレクトリで README を参照してください。
 
 ## コード一覧
 
 本レポジトリが提供するプログラムは以下に示す各プログラムのディレクトリで実行されることを想定して開発されています。
 各プログラムを実行する際は目的のディレクトリに移動してください。
-各プログラムの実行方法は各プログラムディレクトリ配下のREADMEに示してあります。
+各プログラムの実行方法は各プログラムディレクトリ配下の README に示してあります。
 
 .</br>
 ├── [chapter2_training](./chapter2_training/)</br>
@@ -112,11 +116,9 @@ $ exit
 │   ├── [prediction_log_pattern](./chapter5_operations/prediction_log_pattern)</br>
 │   └── [prediction_monitoring_pattern](./chapter5_operations/prediction_monitoring_pattern)</br>
 └── [chapter6_operation_management](./chapter6_operation_management/)</br>
-    ├── [circuit_breaker_pattern](./chapter6_operation_management/circuit_breaker_pattern)</br>
-    ├── [condition_based_pattern](./chapter6_operation_management/condition_based_pattern)</br>
-    ├── [load_test_pattern](./chapter6_operation_management/load_test_pattern)</br>
-    ├── [online_ab_pattern](./chapter6_operation_management/online_ab_pattern)</br>
-    ├── [paramater_based_pattern](./chapter6_operation_management/paramater_based_pattern)</br>
-    └── [shadow_ab_pattern](./chapter6_operation_management/shadow_ab_pattern)</br>
-
-
+   ├── [circuit_breaker_pattern](./chapter6_operation_management/circuit_breaker_pattern)</br>
+   ├── [condition_based_pattern](./chapter6_operation_management/condition_based_pattern)</br>
+   ├── [load_test_pattern](./chapter6_operation_management/load_test_pattern)</br>
+   ├── [online_ab_pattern](./chapter6_operation_management/online_ab_pattern)</br>
+   ├── [paramater_based_pattern](./chapter6_operation_management/paramater_based_pattern)</br>
+   └── [shadow_ab_pattern](./chapter6_operation_management/shadow_ab_pattern)</br>

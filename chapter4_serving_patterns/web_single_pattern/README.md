@@ -2,11 +2,11 @@
 
 ## 目的
 
-Web APIとして推論器を公開します。
+Web API として推論器を公開します。
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
 
 ## 使い方
@@ -18,7 +18,7 @@ $ pwd
 ~/ml-system-in-actions/chapter4_serving_patterns/web_single_pattern
 ```
 
-1. Dockerイメージをビルド
+1. Docker イメージをビルド
 
 ```sh
 $ make build_all
@@ -29,7 +29,7 @@ $ make build_all
 #     .
 ```
 
-2. Dockerでサービスを起動
+2. Docker でサービスを起動
 
 ```sh
 $ make run
@@ -41,7 +41,7 @@ $ make run
 #     shibui/ml-system-in-actions:web_single_pattern_0.0.1
 ```
 
-3. 起動したAPIにクライアントからリクエスト
+3. 起動した API にクライアントからリクエスト
 
 ```sh
 # ヘルスチェック
@@ -102,7 +102,7 @@ $ curl \
     -X POST \
     -H "Content-Type: application/json" \
     -d '{"data": [[1.0, 2.0, 3.0, 4.0]]}' \
-    localhost:8000/predict 
+    localhost:8000/predict
 # 出力
 # {
 #   "prediction": [
@@ -113,7 +113,7 @@ $ curl \
 # }
 ```
 
-4. Dockerコンテナを停止
+4. Docker コンテナを停止
 
 ```sh
 $ make stop

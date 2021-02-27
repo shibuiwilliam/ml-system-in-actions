@@ -2,11 +2,11 @@
 
 ## 目的
 
-推論器に必要なリソースをディレクトリ構成とjinja2テンプレートで提供します。
+推論器に必要なリソースをディレクトリ構成と jinja2 テンプレートで提供します。
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 
 ## 使い方
 
@@ -29,7 +29,7 @@ $ pip install -r requirements.txt
 
 - template: テンプレートとなるディレクトリ
 - template_files: 変数の変換が必要なファイル一式
-- correspond_file_path.yaml: template_files配下のファイルを変換後に配置するファイルパスを指定
+- correspond_file_path.yaml: template_files 配下のファイルを変換後に配置するファイルパスを指定
 - vars.yaml: 変数
 - builder.py: テンプレートから推論器プロジェクトを作成するスクリプト
 

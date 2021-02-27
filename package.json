@@ -1,0 +1,24 @@
+{
+  "dependencies": {},
+  "name": "ml-system-in-actions",
+  "description": "machine learning system examples",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shibuiwilliam/ml-system-in-actions.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shibuiwilliam/ml-system-in-actions/issues"
+  },
+  "homepage": "https://github.com/shibuiwilliam/ml-system-in-actions#readme"
+}

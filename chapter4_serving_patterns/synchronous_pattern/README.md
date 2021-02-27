@@ -6,7 +6,7 @@
 
 ## 前提
 
-- Python 3.8以上
+- Python 3.8 以上
 - Docker
 
 ## 使い方
@@ -18,7 +18,7 @@ $ pwd
 ~/ml-system-in-actions/chapter4_serving_patterns/synchronous_pattern
 ```
 
-1. Dockerイメージをビルド
+1. Docker イメージをビルド
 
 ```sh
 $ make build_all
@@ -28,7 +28,7 @@ $ make build_all
 #     -f imagenet_inception_v3/Dockerfile .
 ```
 
-2. Dockerコンテナでサービスを起動
+2. Docker コンテナでサービスを起動
 
 ```sh
 $ make run
@@ -41,7 +41,7 @@ $ make run
 #     shibui/ml-system-in-actions:synchronous_pattern_imagenet_inception_v3_0.0.1
 ```
 
-3. 起動したAPIにクライアントからリクエスト
+3. 起動した API にクライアントからリクエスト
 
 ```sh
 # メタデータ
@@ -123,7 +123,7 @@ $ python \
 # Siamese cat
 ```
 
-4. Dockerコンテナを停止
+4. Docker コンテナを停止
 
 ```sh
 $ make stop
