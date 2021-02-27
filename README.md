@@ -43,11 +43,39 @@ $ pyenv versions
   system
 * 3.8.5
 
-# pipenvのインストール
-$ pip install pipenv
+# pipenvと依存ライブラリをインストールし、シェルをpipenv venvに変更
+$ make dev
+# 出力例
+# pip install pipenv
+# Requirement already satisfied: pipenv in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (2020.11.15)
+# Requirement already satisfied: virtualenv-clone>=0.2.5 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from pipenv) (0.5.4)
+# Requirement already satisfied: certifi in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from pipenv) (2020.12.5)
+# Requirement already satisfied: pip>=18.0 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from pipenv) (20.1.1)
+# Requirement already satisfied: virtualenv in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from pipenv) (20.4.2)
+# Requirement already satisfied: setuptools>=36.2.1 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from pipenv) (47.1.0)
+# Requirement already satisfied: distlib<1,>=0.3.1 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from virtualenv->pipenv) (0.3.1)
+# Requirement already satisfied: appdirs<2,>=1.4.3 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from virtualenv->pipenv) (1.4.4)
+# Requirement already satisfied: filelock<4,>=3.0.0 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from virtualenv->pipenv) (3.0.12)
+# Requirement already satisfied: six<2,>=1.9.0 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from virtualenv->pipenv) (1.15.0)
+# WARNING: You are using pip version 20.1.1; however, version 21.0.1 is available.
+# You should consider upgrading via the '~/.pyenv/versions/3.8.5/bin/python3.8 -m pip install --upgrade pip' command.
+# PIPENV_VENV_IN_PROJECT=true pipenv shell
+# Creating a virtualenv for this project...
+# Pipfile: ~/book/ml-system-in-actions/Pipfile
+# Using ~/.pyenv/versions/3.8.5/bin/python3.8 (3.8.5) to create virtualenv...
+# ⠧ Creating virtual environment...created virtual environment CPython3.8.5.final.0-64 in 433ms
+#   creator CPython3Posix(dest=~/book/ml-system-in-actions/.venv, clear=False, no_vcs_ignore=False, global=False)
+#   seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=~/Library/Application Support/virtualenv)
+#     added seed packages: pip==21.0.1, setuptools==52.0.0, wheel==0.36.2
+#   activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator
 
-# ライブラリのインストール
-$ pipenv install
+# ✔ Successfully created virtual environment!
+# Virtualenv location: ~/book/ml-system-in-actions/.venv
+# Launching subshell in virtual environment...
+#  . ~/book/ml-system-in-actions/.venv/bin/activate
+
+# pipenv venvを終了
+$ exit
 ```
 
 ただし、一部のサンプルコードでは他のライブラリを使用することがあります。当該サンプルコードのディレクトリでREADMEを参照してください。
