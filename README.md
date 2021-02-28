@@ -44,19 +44,12 @@ $ pyenv versions
   system
 * 3.8.5
 
-# pipenvと依存ライブラリをインストールし、シェルをpipenv venvに変更
+# pipenvをインストールし、シェルをpipenv venvに変更
 $ make dev
 # 出力例
 # pip install pipenv
 # Requirement already satisfied: pipenv in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (2020.11.15)
-# Requirement already satisfied: virtualenv-clone>=0.2.5 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from pipenv) (0.5.4)
-# Requirement already satisfied: certifi in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from pipenv) (2020.12.5)
-# Requirement already satisfied: pip>=18.0 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from pipenv) (20.1.1)
-# Requirement already satisfied: virtualenv in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from pipenv) (20.4.2)
-# Requirement already satisfied: setuptools>=36.2.1 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from pipenv) (47.1.0)
-# Requirement already satisfied: distlib<1,>=0.3.1 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from virtualenv->pipenv) (0.3.1)
-# Requirement already satisfied: appdirs<2,>=1.4.3 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from virtualenv->pipenv) (1.4.4)
-# Requirement already satisfied: filelock<4,>=3.0.0 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from virtualenv->pipenv) (3.0.12)
+# (中略)
 # Requirement already satisfied: six<2,>=1.9.0 in ~/.pyenv/versions/3.8.5/lib/python3.8/site-packages (from virtualenv->pipenv) (1.15.0)
 # WARNING: You are using pip version 20.1.1; however, version 21.0.1 is available.
 # You should consider upgrading via the '~/.pyenv/versions/3.8.5/bin/python3.8 -m pip install --upgrade pip' command.
@@ -78,7 +71,15 @@ $ make dev
 # $  . ~/book/ml-system-in-actions/.venv/bin/activate
 # (ml-system-in-actions) [21-02-27 10:03:37] your_name@your_namenoMacBook-Pro:~/book/ml-system-in-actions
 
-# pipenv venvを終了
+# 依存ライブラリをインストール
+$ make dev_sync
+# 出力例
+# pipenv sync --dev
+# Installing dependencies from Pipfile.lock (a2c081)...
+#   🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 93/93 — 00:02:36
+# All dependencies are now up-to-date!
+
+# pipenv venvシェルを終了
 $ exit
 ```
 

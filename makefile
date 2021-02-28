@@ -16,7 +16,6 @@ dev_sync:
 dev:
 	pip install pipenv
 	PIPENV_VENV_IN_PROJECT=true pipenv shell
-	$(dev_sync)
 
 .PHONY: sync
 sync:
