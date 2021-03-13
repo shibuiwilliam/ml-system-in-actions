@@ -6,7 +6,7 @@ metadata:
   labels:
     app: mobilenet-v2
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: mobilenet-v2
@@ -34,10 +34,10 @@ spec:
             - containerPort: 8501
           resources:
             limits:
-              cpu: 1000m
+              cpu: 800m
               memory: "300Mi"
             requests:
-              cpu: 1000m
+              cpu: 800m
               memory: "300Mi"
 
 ---

@@ -6,7 +6,7 @@ metadata:
   labels:
     app: mobilenet-v2-proxy
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: proxy
@@ -44,10 +44,10 @@ spec:
             - containerPort: 8000
           resources:
             limits:
-              cpu: 600m
+              cpu: 300m
               memory: "300Mi"
             requests:
-              cpu: 600m
+              cpu: 300m
               memory: "300Mi"
 
 ---
@@ -59,7 +59,7 @@ metadata:
   labels:
     app: plant-proxy
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: proxy
@@ -97,11 +97,11 @@ spec:
             - containerPort: 8000
           resources:
             limits:
-              cpu: 800m
-              memory: "500Mi"
+              cpu: 300m
+              memory: "300Mi"
             requests:
-              cpu: 800m
-              memory: "500Mi"
+              cpu: 300m
+              memory: "300Mi"
 
 ---
 apiVersion: v1

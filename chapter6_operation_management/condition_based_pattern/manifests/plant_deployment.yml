@@ -6,7 +6,7 @@ metadata:
   labels:
     app: plant
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: plant
@@ -34,11 +34,11 @@ spec:
             - containerPort: 9501
           resources:
             limits:
-              cpu: 1000m
-              memory: "600Mi"
+              cpu: 800m
+              memory: "500Mi"
             requests:
-              cpu: 1000m
-              memory: "600Mi"
+              cpu: 800m
+              memory: "500Mi"
 
 ---
 apiVersion: v1
