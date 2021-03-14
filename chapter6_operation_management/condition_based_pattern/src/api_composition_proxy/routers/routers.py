@@ -73,7 +73,7 @@ def predict_test() -> Dict[str, Any]:
         image=bytes_io.read(),
         model_spec_name=ModelConfigurations.model_spec_name,
         signature_name=ModelConfigurations.signature_name,
-        timeout_second=5,
+        timeout_second=ModelConfigurations.timeout_second,
     )
     logger.info(f"{job_id} prediction: {r}")
     return r
@@ -93,7 +93,7 @@ def predict(data: Data) -> Dict[str, Any]:
         image=bytes_io.read(),
         model_spec_name=ModelConfigurations.model_spec_name,
         signature_name=ModelConfigurations.signature_name,
-        timeout_second=5,
+        timeout_second=ModelConfigurations.timeout_second,
     )
     logger.info(f"{job_id} prediction: {r}")
     return r

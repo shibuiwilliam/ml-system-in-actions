@@ -156,7 +156,9 @@ spec:
         - destination:
             host: proxy
             subset: plant
+      timeout: 10s
     - route:
         - destination:
             host: proxy
             subset: mobilenet-v2
+      timeout: 10s
