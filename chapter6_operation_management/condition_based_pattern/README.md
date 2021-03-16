@@ -172,6 +172,16 @@ $ (echo -n '{"image_data": "'; base64 iris.jpg; echo '"}') | \
 	proxy.condition-based-serving.svc.cluster.local:8000/predict
 # 出力
 # "background"
+
+# アヤメ画像をImageNet推論器にリクエストすると、beeと分類される
+(echo -n '{"image_data": "'; base64 iris.jpg; echo '"}') | \
+	curl \
+	-X POST \
+	-H "Content-Type: application/json" \
+	-d @- \
+	proxy.condition-based-serving.svc.cluster.local:8000/predict
+# 出力
+# "bee"
 ```
 
 4. Kubernetes からサービスを削除

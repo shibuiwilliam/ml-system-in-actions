@@ -44,6 +44,8 @@ class ModelConfigurations:
     label_path = os.getenv("LABEL_PATH", "./data/image_net_labels.json")
     labels = get_label(json_path=label_path)
 
+    timeout_second = int(os.getenv("TIMEOUT_SECOND", 10))
+
     sample_image_path = os.getenv("SAMPLE_IMAGE_PATH", "./data/cat.jpg")
     sample_image = read_image(image_file=sample_image_path)
 

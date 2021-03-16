@@ -139,3 +139,5 @@ dvc.lock
 savedmodel
  
 .vscode/*
+
+.DS_Store
