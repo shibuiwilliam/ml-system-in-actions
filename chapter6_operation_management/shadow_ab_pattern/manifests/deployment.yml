@@ -19,7 +19,7 @@ spec:
         sidecar.istio.io/inject: "true"
         sidecar.istio.io/proxyCPU: "128m"
         sidecar.istio.io/proxyMemory: "128Mi"
-        proxy.istio.io/config: "{'concurrency':'4'}"
+        proxy.istio.io/config: "{'concurrency':''}"
     spec:
       containers:
         - name: iris-svc
@@ -85,7 +85,7 @@ spec:
         sidecar.istio.io/inject: "true"
         sidecar.istio.io/proxyCPU: "128m"
         sidecar.istio.io/proxyMemory: "128Mi"
-        proxy.istio.io/config: "{'concurrency':'4'}"
+        proxy.istio.io/config: "{'concurrency':'16'}"
     spec:
       containers:
         - name: iris-rf
