@@ -6,7 +6,7 @@ metadata:
   labels:
     app: iris-svc
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: iris
@@ -29,10 +29,10 @@ spec:
             - containerPort: 8000
           resources:
             limits:
-              cpu: 500m
+              cpu: 300m
               memory: "300Mi"
             requests:
-              cpu: 500m
+              cpu: 300m
               memory: "300Mi"
           volumeMounts:
             - name: workdir
@@ -72,7 +72,7 @@ metadata:
   labels:
     app: iris-rf
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: iris
@@ -95,10 +95,10 @@ spec:
             - containerPort: 8000
           resources:
             limits:
-              cpu: 500m
+              cpu: 300m
               memory: "300Mi"
             requests:
-              cpu: 500m
+              cpu: 300m
               memory: "300Mi"
           volumeMounts:
             - name: workdir

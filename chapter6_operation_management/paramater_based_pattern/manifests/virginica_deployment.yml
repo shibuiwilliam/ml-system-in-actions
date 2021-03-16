@@ -6,7 +6,7 @@ metadata:
   labels:
     app: iris-virginica
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: iris-virginica
@@ -23,10 +23,10 @@ spec:
             - containerPort: 8002
           resources:
             limits:
-              cpu: 500m
+              cpu: 300m
               memory: "300Mi"
             requests:
-              cpu: 500m
+              cpu: 300m
               memory: "300Mi"
           env:
             - name: PORT
