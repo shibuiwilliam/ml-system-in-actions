@@ -19,7 +19,7 @@ spec:
         sidecar.istio.io/inject: "true"
         sidecar.istio.io/proxyCPU: "128m"
         sidecar.istio.io/proxyMemory: "128Mi"
-        proxy.istio.io/config: "{'concurrency':''}"
+        proxy.istio.io/config: "{'concurrency':'16'}"
     spec:
       containers:
         - name: iris-svc
@@ -143,7 +143,7 @@ spec:
     kind: Deployment
     name: iris-svc
   minReplicas: 1
-  maxReplicas: 10
+  maxReplicas: 2
   metrics:
     - type: Resource
       resource:
@@ -166,7 +166,7 @@ spec:
     kind: Deployment
     name: iris-rf
   minReplicas: 1
-  maxReplicas: 10
+  maxReplicas: 2
   metrics:
     - type: Resource
       resource:

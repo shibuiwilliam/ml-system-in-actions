@@ -142,8 +142,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: iris-svc
-  minReplicas: 3
-  maxReplicas: 10
+  minReplicas: 1
+  maxReplicas: 2
   metrics:
     - type: Resource
       resource:
@@ -165,8 +165,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: iris-rf
-  minReplicas: 3
-  maxReplicas: 10
+  minReplicas: 1
+  maxReplicas: 2
   metrics:
     - type: Resource
       resource:
