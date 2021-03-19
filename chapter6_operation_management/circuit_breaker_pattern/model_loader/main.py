@@ -20,7 +20,7 @@ def main(gcs_bucket: str, gcs_model_blob: str, model_filepath: str):
     dirname = os.path.dirname(model_filepath)
     os.makedirs(dirname, exist_ok=True)
 
-    client = storage.Client()
+    client = storage.Client.create_anonymous_client()
     bucket = client.get_bucket(gcs_bucket)
     blob = bucket.blob(gcs_model_blob)
     blob.download_to_filename(model_filepath)
