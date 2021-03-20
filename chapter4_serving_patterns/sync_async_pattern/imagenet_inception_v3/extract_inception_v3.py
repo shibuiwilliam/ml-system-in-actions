@@ -37,9 +37,9 @@ class InceptionV3Model(tf.keras.Model):
         img = tf.map_fn(_base64_to_array, input_img, dtype=tf.float32)
         predictions = self.model(img)
 
-        def _convert_to_label(candidates):
-            max_prob = tf.math.reduce_max(candidates)
-            idx = tf.where(tf.equal(candidates, max_prob))
+        def _convert_to_label(predictions):
+            max_prob = tf.math.reduce_max(predictions)
+            idx = tf.where(tf.equal(predictions, max_prob))
             label = tf.squeeze(tf.gather(self.labels, idx))
             return label
 

@@ -38,9 +38,9 @@ class InceptionV3Model(tf.keras.Model):
         img = tf.map_fn(_base64_to_array, input_img, dtype=tf.float32)
         predictions = self.model(img)
 
-        def _convert_to_label(candidates):
-            max_prob = tf.math.reduce_max(candidates)  # Softmaxの結果から最も確率の高いクラスを取得
-            idx = tf.where(tf.equal(candidates, max_prob))  # クラスのインデックスを取得
+        def _convert_to_label(predictions):
+            max_prob = tf.math.reduce_max(predictions)  # Softmaxの結果から最も確率の高いクラスを取得
+            idx = tf.where(tf.equal(predictions, max_prob))  # クラスのインデックスを取得
             label = tf.squeeze(tf.gather(self.labels, idx))  # ラベル一覧からラベルを取得
             return label
 
