@@ -1,4 +1,4 @@
-# data cache pattern
+# prediction cache pattern
 
 ## 目的
 
