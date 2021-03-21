@@ -78,7 +78,7 @@ $ curl localhost:8000/label
 
 
 # テストデータで推論リクエスト
-$ curl localhost:8000/predict/test
+$ curl localhost:8000/predict/test/label
 # 出力
 # {
 #   "prediction": "Siamese cat"
