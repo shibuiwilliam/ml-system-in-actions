@@ -76,7 +76,7 @@ $ kubectl -n load-test get all
 
 ```sh
 # クライアントに接続
-$ kubectl -n condition-based-serving exec -it pod/client bash
+$ kubectl -n load-test exec -it pod/client bash
 
 # 負荷テストを実行
 $ vegeta attack -duration=60s -rate=100 -targets=vegeta/post-target | vegeta report -type=text
