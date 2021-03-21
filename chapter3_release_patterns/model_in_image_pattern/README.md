@@ -1,4 +1,4 @@
-# model load pattern
+# model in image pattern
 
 ## 目的
 
