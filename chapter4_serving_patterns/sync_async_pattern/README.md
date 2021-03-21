@@ -68,8 +68,7 @@ $ curl localhost:8000/health/all
 
 
 # メタデータ
-$ make metadata
-curl localhost:8000/metadata
+$ curl localhost:8000/metadata
 # 出力
 # {
 #   "data_type": "str",
