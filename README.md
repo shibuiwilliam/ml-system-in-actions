@@ -10,7 +10,7 @@ machine learning system examples
   - https://www.amazon.co.jp/dp/B08YNMRH4J/
   - https://github.com/mercari/ml-system-design-pattern
 
-![img]([https://m.media-amazon.com/images/I/41fkrpme1CL.jpg)]
+![img](./hyoshi.jpg)
 
 ## 実行環境
 
