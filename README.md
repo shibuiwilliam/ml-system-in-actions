@@ -4,11 +4,11 @@ machine learning system examples
 
 ## tl;dr
 
-- 本レポジトリは 2021 年 5 月翔泳社出版『機械学習システムデザインパターン』のサンプルコード集です。
+- 本レポジトリは 2021 年 5 月翔泳社出版『AIエンジニアのための機械学習システムデザインパターン』のサンプルコード集です。
 - 本レポジトリでは機械学習のモデル学習、リリース、推論器の稼働、運用のためのコードおよび実行環境を用例ごとに提供します。
 - 「機械学習システムデザインパターン」の詳細は本書およびmercari/ml-system-design-patternをご参照ください。
-  - https://www.amazon.co.jp/dp/B08YNMRH4J/
-  - https://github.com/mercari/ml-system-design-pattern
+  - [AIエンジニアのための機械学習システムデザインパターン](https://www.amazon.co.jp/dp/B08YNMRH4J/)
+  - [mercari/ml-system-design-pattern](https://github.com/mercari/ml-system-design-pattern)
 
 ![img](./hyoshi.jpg)
 
