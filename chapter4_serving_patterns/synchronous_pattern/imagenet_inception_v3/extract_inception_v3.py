@@ -1,9 +1,8 @@
 import json
-from typing import Dict, List
+from typing import List
 
 import tensorflow as tf
 import tensorflow_hub as hub
-from tensorflow import keras
 
 
 def get_label(json_path: str = "./image_net_labels.json") -> List[str]:
