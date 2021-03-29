@@ -52,8 +52,16 @@ async def health_all() -> Dict[str, Any]:
             return service, response
 
         tasks = [
-            req(ac, ServiceConfigurations.mobilenet_v2, ServiceConfigurations.rest_mobilenet_v2),
-            req(ac, ServiceConfigurations.inception_v3, ServiceConfigurations.rest_inception_v3),
+            req(
+                ac,
+                ServiceConfigurations.mobilenet_v2,
+                ServiceConfigurations.rest_mobilenet_v2,
+            ),
+            req(
+                ac,
+                ServiceConfigurations.inception_v3,
+                ServiceConfigurations.rest_inception_v3,
+            ),
         ]
 
         responses = await asyncio.gather(*tasks)

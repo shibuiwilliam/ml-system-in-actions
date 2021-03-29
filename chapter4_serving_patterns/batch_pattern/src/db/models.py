@@ -14,10 +14,24 @@ from src.db.database import Base
 class Item(Base):
     __tablename__ = "items"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    values = Column(JSON, nullable=False)
-    prediction = Column(JSON, nullable=True)
-    created_datetime = Column(TIMESTAMP, server_default=current_timestamp(), nullable=False)
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+    )
+    values = Column(
+        JSON,
+        nullable=False,
+    )
+    prediction = Column(
+        JSON,
+        nullable=True,
+    )
+    created_datetime = Column(
+        TIMESTAMP,
+        server_default=current_timestamp(),
+        nullable=False,
+    )
     updated_datetime = Column(
         TIMESTAMP,
         server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"),
