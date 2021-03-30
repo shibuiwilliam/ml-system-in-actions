@@ -38,7 +38,12 @@ def select_outlier_log_between(
     )
 
 
-def add_prediction_log(db: Session, log_id: str, log: Dict, commit: bool = True) -> schemas.PredictionLog:
+def add_prediction_log(
+    db: Session,
+    log_id: str,
+    log: Dict,
+    commit: bool = True,
+) -> schemas.PredictionLog:
     data = models.PredictionLog(
         log_id=log_id,
         log=log,
@@ -50,7 +55,12 @@ def add_prediction_log(db: Session, log_id: str, log: Dict, commit: bool = True)
     return data
 
 
-def add_outlier_log(db: Session, log_id: str, log: Dict, commit: bool = True) -> schemas.OutlierLog:
+def add_outlier_log(
+    db: Session,
+    log_id: str,
+    log: Dict,
+    commit: bool = True,
+) -> schemas.OutlierLog:
     data = models.OutlierLog(
         log_id=log_id,
         log=log,
