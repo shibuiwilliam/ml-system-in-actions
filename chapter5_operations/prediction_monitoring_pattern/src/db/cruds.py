@@ -8,7 +8,7 @@ def select_prediction_log_all(db: Session) -> List[schemas.PredictionLog]:
     return db.query(models.PredictionLog).all()
 
 
-def select_prediction_log_betwenn(
+def select_prediction_log_between(
     db: Session,
     time_before: str,
     time_later: str,
@@ -25,7 +25,7 @@ def select_outlier_log_all(db: Session) -> List[schemas.OutlierLog]:
     return db.query(models.OutlierLog).all()
 
 
-def select_outlier_log_betwenn(
+def select_outlier_log_between(
     db: Session,
     time_before: str,
     time_later: str,

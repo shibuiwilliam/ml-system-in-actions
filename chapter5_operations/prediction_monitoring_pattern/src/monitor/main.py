@@ -103,8 +103,8 @@ def main(
         time_before = interval_ago.strftime("%Y-%m-%d %H:%M:%S")
         logger.info(f"time between {time_before} and {time_later}")
         with get_context_db() as db:
-            prediction_logs = cruds.select_prediction_log_betwenn(db=db, time_before=time_before, time_later=time_later)
-            outlier_logs = cruds.select_outlier_log_betwenn(db=db, time_before=time_before, time_later=time_later)
+            prediction_logs = cruds.select_prediction_log_between(db=db, time_before=time_before, time_later=time_later)
+            outlier_logs = cruds.select_outlier_log_between(db=db, time_before=time_before, time_later=time_later)
         logger.info(f"prediction_logs between {time_before} and {time_later}: {len(prediction_logs)}")
         logger.info(f"outlier_logs between {time_before} and {time_later}: {len(outlier_logs)}")
         if len(prediction_logs) > 0:
