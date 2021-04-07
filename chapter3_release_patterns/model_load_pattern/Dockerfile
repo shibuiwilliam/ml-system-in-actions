@@ -10,9 +10,8 @@ RUN apt-get -y update && \
     pip install --no-cache-dir -r requirements.txt
 
 COPY ./src/ /${PROJECT_DIR}/src/
-COPY ./models/ /${PROJECT_DIR}/models/
+COPY ./models/label.json /${PROJECT_DIR}/models/label.json
 
-ENV MODEL_FILEPATH /${PROJECT_DIR}/models/iris_svc.onnx
 ENV LABEL_FILEPATH /${PROJECT_DIR}/models/label.json
 ENV LOG_LEVEL DEBUG
 ENV LOG_FORMAT TEXT
