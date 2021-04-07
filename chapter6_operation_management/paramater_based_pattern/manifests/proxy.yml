@@ -24,14 +24,14 @@ spec:
               value: src.api_composition_proxy.app.proxy:app
             - name: PORT
               value: "9000"
+            - name: WORKERS
+              value: "8"
             - name: SERVICE_SETOSA
               value: iris-setosa.parameter-based.svc.cluster.local:8000
             - name: SERVICE_VERSICOLOR
               value: iris-versicolor.parameter-based.svc.cluster.local:8001
             - name: SERVICE_VIRGINICA
               value: iris-virginica.parameter-based.svc.cluster.local:8002
-            - name: WORKERS
-              value: "8"
             - name: THRESHOLD_SETOSA
               value: "0.90"
             - name: THRESHOLD_VERSICOLOR
