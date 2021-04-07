@@ -80,7 +80,7 @@ async def predict_get_test() -> Dict[str, Any]:
             if not ServiceConfigurations.activates[service]:
                 continue
             proba = response.json()["prediction"][0]
-            if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
+            if proba >= ServiceConfigurations.thresholds.get(service, ServiceConfigurations.default_threshold):
                 results[service] = 1
             else:
                 results[service] = 0
@@ -108,7 +108,7 @@ async def predict_post_test() -> Dict[str, Any]:
             if not ServiceConfigurations.activates[service]:
                 continue
             proba = response.json()["prediction"][0]
-            if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
+            if proba >= ServiceConfigurations.thresholds.get(service, ServiceConfigurations.default_threshold):
                 results[service] = 1
             else:
                 results[service] = 0
@@ -136,7 +136,7 @@ async def predict(data: Data) -> Dict[str, Any]:
             if not ServiceConfigurations.activates[service]:
                 continue
             proba = response.json()["prediction"][0]
-            if proba >= ServiceConfigurations.thresholds.get(service, "0.95"):
+            if proba >= ServiceConfigurations.thresholds.get(service, ServiceConfigurations.default_threshold):
                 results[service] = 1
             else:
                 results[service] = 0

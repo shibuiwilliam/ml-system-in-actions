@@ -8,6 +8,12 @@ logger = getLogger(__name__)
 class ServiceConfigurations:
     services: Dict[str, str] = {}
     thresholds: Dict[str, float] = {}
+    default_threshold: float = float(
+        os.getenv(
+            "DEFAULT_THRESHOLD",
+            0.95,
+        )
+    )
     activates: Dict[str, bool] = {}
     for environ in os.environ.keys():
         if environ.startswith("SERVICE_"):
