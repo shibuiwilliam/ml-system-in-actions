@@ -163,7 +163,7 @@ $ (echo -n '{"image_data": "'; base64 iris.jpg; echo '"}') | \
 
 
 # ネコ画像を植物推論器にリクエストすると、backgroundと分類される
-(echo -n '{"image_data": "'; base64 cat.jpg; echo '"}') | \
+$ (echo -n '{"image_data": "'; base64 cat.jpg; echo '"}') | \
 	curl \
 	-X POST \
 	-H "Content-Type: application/json" \
@@ -174,7 +174,7 @@ $ (echo -n '{"image_data": "'; base64 iris.jpg; echo '"}') | \
 # "background"
 
 # アヤメ画像をImageNet推論器にリクエストすると、beeと分類される
-(echo -n '{"image_data": "'; base64 iris.jpg; echo '"}') | \
+$ (echo -n '{"image_data": "'; base64 iris.jpg; echo '"}') | \
 	curl \
 	-X POST \
 	-H "Content-Type: application/json" \
