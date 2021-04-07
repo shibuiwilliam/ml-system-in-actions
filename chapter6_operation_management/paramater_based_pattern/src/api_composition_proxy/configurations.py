@@ -1,8 +1,8 @@
-import logging
+from logging import getLogger
 import os
 from typing import Dict
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class ServiceConfigurations:
