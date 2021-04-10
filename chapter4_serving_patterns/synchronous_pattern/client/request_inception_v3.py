@@ -6,10 +6,7 @@ import grpc
 import numpy as np
 import requests
 import tensorflow as tf
-from tensorflow_serving.apis import (
-    predict_pb2,
-    prediction_service_pb2_grpc,
-)
+from tensorflow_serving.apis import predict_pb2, prediction_service_pb2_grpc
 
 
 def read_image(image_file: str = "./cat.jpg") -> bytes:
