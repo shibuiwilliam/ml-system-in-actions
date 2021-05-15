@@ -1,32 +1,32 @@
 [[source]]
+name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
-name = "pypi"
 
 [packages]
-mypy = "*"
-isort = "*"
 black = "==20.8b1"
-numpy = "*"
+boto3 = ">=1.16.43"
 click = "*"
-requests = "*"
-tensorflow = "*"
-tensorflow-serving-api = "*"
-grpcio = "*"
-mlflow = "*"
-onnx = "*"
-onnxruntime = "*"
-scikit-learn = "*"
-torch = "*"
-torchvision = "*"
-httpx = "*"
-tensorboard = "*"
-boto3 = "*"
-gunicorn = "*"
 fastapi = "*"
-pyyaml = "*"
-pydantic = "*"
+grpcio = "*"
+gunicorn = "*"
+httpx = "*"
+isort = "*"
+mlflow = ">=1.16.0"
+mypy = "*"
+numpy = ">=1.18.5"
+onnx = ">=1.7.0"
+onnxruntime = ">=1.4.0"
 pillow = "*"
+pydantic = ">=1.8.2"
+pyyaml = "*"
+requests = "*"
+scikit-learn = ">=0.24.1"
+tensorboard = ">=2.4.1"
+tensorflow = ">=2.4.1"
+tensorflow-serving-api = "*"
+torch = ">=1.7.1"
+torchvision = ">=0.8.1"
 
 [dev-packages]
 
@@ -34,7 +34,10 @@ pillow = "*"
 python_version = "3.8"
 
 [scripts]
+fmt = "sh -c 'black --line-length 120 .'"
 lint = "black --check --diff --line-length 120 ."
 sort = "sh -c 'isort .'"
-fmt = "sh -c 'black --line-length 120 .'"
 vet = "mypy ."
+
+[pipenv]
+allow_prereleases = true
