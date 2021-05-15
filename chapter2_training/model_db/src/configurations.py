@@ -8,7 +8,7 @@ class DBConfigurations:
     postgres_db = os.getenv("POSTGRES_DB")
     postgres_server = os.getenv("POSTGRES_SERVER")
     sql_alchemy_database_url = (
-        f"postgres://{postgres_username}:{postgres_password}@{postgres_server}:{postgres_port}/{postgres_db}"
+        f"postgresql://{postgres_username}:{postgres_password}@{postgres_server}:{postgres_port}/{postgres_db}"
     )
 
 
