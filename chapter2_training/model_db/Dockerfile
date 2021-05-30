@@ -6,9 +6,17 @@ ADD requirements.txt /${PROJECT_DIR}/
 RUN apt-get -y update && \
     apt-get -y install \
     apt-utils \
-    gcc && \
+    gcc \
+    libpq-dev \
+    python-dev \
+    git \
+    build-essential \
+    libtool \
+    automake && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
+    pip install Cython && \
+    pip install git+https://github.com/MagicStack/uvloop && \
     pip install --no-cache-dir -r requirements.txt
 
 COPY src/ /${PROJECT_DIR}/src/
