@@ -1,4 +1,4 @@
-fastapi==0.63.0
+fastapi>=0.65.2
 gunicorn==20.0.4
 h11==0.12.0
 joblib==1.0.0
