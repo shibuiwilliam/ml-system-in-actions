@@ -35,3 +35,7 @@ lint:
 vet:
 	pipenv run vet
 
+.PHONY: build_all
+build_all:
+	@cd chapter2_training/model_db && make build_all
+
