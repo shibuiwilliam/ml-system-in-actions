@@ -38,4 +38,5 @@ vet:
 .PHONY: build_all
 build_all:
 	@cd chapter2_training/model_db && make build_all
+	@cd chapter3_release_patterns/model_in_image_pattern && make build_all
 
