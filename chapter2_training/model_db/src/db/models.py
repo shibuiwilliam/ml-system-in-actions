@@ -69,16 +69,16 @@ class Experiment(Base):
         primary_key=True,
         comment="主キー",
     )
-    model_version_id = Column(
-        String(255),
-        nullable=False,
-        comment="モデルの実験バージョンID",
-    )
     model_id = Column(
         String(255),
         ForeignKey("models.model_id"),
         nullable=False,
         comment="外部キー",
+    )
+    model_version_id = Column(
+        String(255),
+        nullable=False,
+        comment="モデルの実験バージョンID",
     )
     parameters = Column(
         JSON,

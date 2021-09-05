@@ -27,6 +27,7 @@ services:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=model_db
+      - WORKERS=2
     entrypoint: ["./run.sh"]
     ports:
       - "8000:8000"
