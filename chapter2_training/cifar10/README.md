@@ -16,20 +16,20 @@ Anaconda/miniconda の実行環境は pyenv 等仮想環境で用意すること
 pyenv で環境構築する方法は以下のとおりです。
 
 ```sh
-# 2021/02時点最新のanaconda環境を選択
-$ pyenv install anaconda3-5.3.1
-Downloading Anaconda3-5.3.1-MacOSX-x86_64.sh.sh...
--> https://repo.continuum.io/archive/Anaconda3-5.3.1-MacOSX-x86_64.sh
-Installing Anaconda3-5.3.1-MacOSX-x86_64.sh...
-Installed Anaconda3-5.3.1-MacOSX-x86_64.sh to ~/.pyenv/versions/anaconda3-5.3.1
+# 2021/10時点最新のanaconda環境を選択
+$ pyenv install anaconda3-2021.05
+Downloading Anaconda3-2021.05-MacOSX-x86_64.sh...
+-> https://repo.continuum.io/archive/Anaconda3-2021.05-MacOSX-x86_64.sh
+Installing Anaconda3-2021.05-MacOSX-x86_64...
+Installed Anaconda3-2021.05-MacOSX-x86_64 to /Users/shibuiyuusuke/.pyenv/versions/anaconda3-2021.05
 
-# pyenvで仮想環境にanaconda3-2020.02を選択
-$ pyenv local anaconda3-5.3.1
+# pyenvで仮想環境にanaconda3-2021.05を選択
+$ pyenv local anaconda3-2021.05
 
-# 仮想環境がanaconda3-2020.02になっていることを確認
+# 仮想環境がanaconda3-2020.05になっていることを確認
 $ pyenv versions
   system
-* anaconda3-5.3.1
+* anaconda3-2021.05
 
 # 依存ライブラリをインストール
 $ pip install -r requirements.txt
@@ -81,8 +81,8 @@ $ make train
 ```sh
 $ make train
 mlflow run . --no-conda
-2021/02/11 07:07:41 INFO mlflow.projects.utils: === Created directory /tmp/tmpwp6xeymy for downloading remote URIs passed to arguments of type 'path' ===
-2021/02/11 07:07:41 INFO mlflow.projects.backend.local: === Running command 'python -m main \
+2021/10/09 16:00:32 INFO mlflow.projects.utils: === Created directory /var/folders/v8/bvkzgn8j1ws6y76t4z5nt6280000gn/T/tmp_sq3me5q for downloading remote URIs passed to arguments of type 'path' ===
+2021/10/09 16:00:32 INFO mlflow.projects.backend.local: === Running command 'python -m main \
   --preprocess_data cifar10 \
   --preprocess_downstream /opt/data/preprocess/ \
   --preprocess_cached_data_id '' \
@@ -97,21 +97,23 @@ mlflow run . --no-conda
   --building_model_filename cifar10_0.onnx \
   --building_entrypoint_path ./onnx_runtime_server_entrypoint.sh \
   --evaluate_downstream ./evaluate/
-' in run with ID '16ca2fc7a707438fb999ffcc2ca0cc5f' ===
-2021/02/11 07:08:27 INFO mlflow.projects.docker: === Building docker image cifar10_initial:2d89748 ===
-2021/02/11 07:08:54 INFO mlflow.projects.utils: === Created directory /tmp/tmpqrouv_eh for downloading remote URIs passed to arguments of type 'path' ===
-2021/02/11 07:08:54 INFO mlflow.projects.backend.local: === Running command 'docker run --rm -v /tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns:/mlflow/tmp/mlruns -v /tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns/0/d2ec649ed0254e99a9713e75da3dced9/artifacts:/tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns/0/d2ec649ed0254e99a9713e75da3dced9/artifacts -v $(pwd)/data:/opt/data -v /tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns:/tmp/mlruns -e MLFLOW_RUN_ID=d2ec649ed0254e99a9713e75da3dced9 -e MLFLOW_TRACKING_URI=file:///mlflow/tmp/mlruns -e MLFLOW_EXPERIMENT_ID=0 cifar10_initial:2d89748 python -m src.preprocess \
+' in run with ID '4966d91cb81040dda0291f1840484c06' ===
+2021/10/09 16:00:34 INFO mlflow.projects.docker: === Building docker image cifar10_initial:4fb1b3e ===
+2021/10/09 16:00:35 INFO mlflow.projects.utils: === Created directory /var/folders/v8/bvkzgn8j1ws6y76t4z5nt6280000gn/T/tmp23vlfjfu for downloading remote URIs passed to arguments of type 'path' ===
+2021/10/09 16:00:35 INFO mlflow.projects.backend.local: === Running command 'docker run --rm -v /private/tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns:/mlflow/tmp/mlruns -v /private/tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns/0/a581fe06ecad4d4cb596db74e4cd2a57/artifacts:/private/tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns/0/a581fe06ecad4d4cb596db74e4cd2a57/artifacts -v $(pwd)/data:/opt/data -v /tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns:/tmp/mlruns -e MLFLOW_RUN_ID=a581fe06ecad4d4cb596db74e4cd2a57 -e MLFLOW_TRACKING_URI=file:///mlflow/tmp/mlruns -e MLFLOW_EXPERIMENT_ID=0 cifar10_initial:4fb1b3e python -m src.preprocess \
   --data cifar10 \
   --downstream /opt/data/preprocess/ \
   --cached_data_id ''
-' in run with ID 'd2ec649ed0254e99a9713e75da3dced9' ===
+' in run with ID 'a581fe06ecad4d4cb596db74e4cd2a57' ===
+100.0%Downloading https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz to /opt/data/preprocess/cifar-10-python.tar.gz
+Extracting /opt/data/preprocess/cifar-10-python.tar.gz to /opt/data/preprocess/
 Files already downloaded and verified
-Files already downloaded and verified
-2021/02/11 07:09:38 INFO mlflow.projects: === Run (ID 'd2ec649ed0254e99a9713e75da3dced9') succeeded ===
-2021/02/11 07:09:49 INFO mlflow.projects.docker: === Building docker image cifar10_initial:2d89748 ===
-2021/02/11 07:09:55 INFO mlflow.projects.utils: === Created directory /tmp/tmp4z7k8vf_ for downloading remote URIs passed to arguments of type 'path' ===
-2021/02/11 07:09:55 INFO mlflow.projects.backend.local: === Running command 'docker run --rm -v /tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns:/mlflow/tmp/mlruns -v /tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns/0/597633d3c4f5494898559b4b1889d457/artifacts:/tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns/0/597633d3c4f5494898559b4b1889d457/artifacts -v $(pwd)/data:/opt/data -v /tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns:/tmp/mlruns -e MLFLOW_RUN_ID=597633d3c4f5494898559b4b1889d457 -e MLFLOW_TRACKING_URI=file:///mlflow/tmp/mlruns -e MLFLOW_EXPERIMENT_ID=0 cifar10_initial:2d89748 python -m src.train \
-  --upstream /tmp/mlruns/0/d2ec649ed0254e99a9713e75da3dced9/artifacts/downstream_directory \
+
+2021/10/09 16:14:34 INFO mlflow.projects: === Run (ID 'a581fe06ecad4d4cb596db74e4cd2a57') succeeded ===
+2021/10/09 16:14:35 INFO mlflow.projects.docker: === Building docker image cifar10_initial:4fb1b3e ===
+2021/10/09 16:14:35 INFO mlflow.projects.utils: === Created directory /var/folders/v8/bvkzgn8j1ws6y76t4z5nt6280000gn/T/tmpmp17bac5 for downloading remote URIs passed to arguments of type 'path' ===
+2021/10/09 16:14:35 INFO mlflow.projects.backend.local: === Running command 'docker run --rm -v /private/tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns:/mlflow/tmp/mlruns -v /private/tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns/0/bd9f50269f6f40d2a4c5cf832f892384/artifacts:/private/tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns/0/bd9f50269f6f40d2a4c5cf832f892384/artifacts -v $(pwd)/data:/opt/data -v /tmp/ml-system-in-actions/chapter2_training/cifar10/mlruns:/tmp/mlruns -e MLFLOW_RUN_ID=bd9f50269f6f40d2a4c5cf832f892384 -e MLFLOW_TRACKING_URI=file:///mlflow/tmp/mlruns -e MLFLOW_EXPERIMENT_ID=0 cifar10_initial:4fb1b3e python -m src.train \
+  --upstream /tmp/mlruns/0/a581fe06ecad4d4cb596db74e4cd2a57/artifacts/downstream_directory \
   --downstream /opt/data/model/ \
   --tensorboard /opt/data/tensorboard/ \
   --epochs 1 \
@@ -119,142 +121,270 @@ Files already downloaded and verified
   --num_workers 4 \
   --learning_rate 0.001 \
   --model_type vgg11
-' in run with ID '597633d3c4f5494898559b4b1889d457' ===
-/usr/local/lib/python3.8/site-packages/torch/cuda/__init__.py:52: UserWarning: CUDA initialization: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver from http://www.nvidia.com/Download/index.aspx (Triggered internally at  /pytorch/c10/cuda/CUDAFunctions.cpp:100.)
-  return torch._C._cuda_getDeviceCount() > 0
+' in run with ID 'bd9f50269f6f40d2a4c5cf832f892384' ===
 INFO:src.model:loaded: 50000 data
 INFO:src.model:loaded: 10000 data
 INFO:src.model:start training...
 INFO:src.model:starting epoch: 0
-INFO:src.model:[0, 199] loss: 2.312226449251175 duration: 54.222291231155396
-INFO:src.model:[0, 399] loss: 2.3037538850307464 duration: 54.138527393341064
-INFO:src.model:[0, 599] loss: 2.30290598988533 duration: 54.571797609329224
-INFO:src.model:[0, 799] loss: 2.3030105102062226 duration: 61.33693838119507
-INFO:src.model:[0, 999] loss: 2.303100422620773 duration: 61.62240767478943
-INFO:src.model:[0, 1199] loss: 2.3030186557769774 duration: 60.76185894012451
-INFO:src.model:[0, 1399] loss: 2.302838541269302 duration: 60.42561101913452
-INFO:src.model:[0] duration in seconds: 456.4304406642914
-INFO:src.model:Accuracy: 10.0, Loss: 0.07207702845335007
-INFO:src.model:save checkpoints: /opt/data/model/epoch_0_loss_0.07207702845335007.pth
-INFO:src.model:Accuracy: 10.0, Loss: 0.07207702845335007
-INFO:__main__:Latest performance: Accuracy: 10.0, Loss: 0.07207702845335007
-graph(%input : Float(1:3072, 3:1024, 32:32, 32:1, requires_grad=0, device=cpu),
-      %classifier.0.weight : Float(512:512, 512:1, requires_grad=1, device=cpu),
-      %classifier.0.bias : Float(512:1, requires_grad=1, device=cpu),
-      %classifier.3.weight : Float(32:512, 512:1, requires_grad=1, device=cpu),
-      %classifier.3.bias : Float(32:1, requires_grad=1, device=cpu),
-      %classifier.6.weight : Float(10:32, 32:1, requires_grad=1, device=cpu),
-      %classifier.6.bias : Float(10:1, requires_grad=1, device=cpu),
-      %106 : Float(64:27, 3:9, 3:3, 3:1, requires_grad=0, device=cpu),
-      %107 : Float(64:1, requires_grad=0, device=cpu),
-      %109 : Float(128:576, 64:9, 3:3, 3:1, requires_grad=0, device=cpu),
-      %110 : Float(128:1, requires_grad=0, device=cpu),
-      %112 : Float(256:1152, 128:9, 3:3, 3:1, requires_grad=0, device=cpu),
-      %113 : Float(256:1, requires_grad=0, device=cpu),
-      %115 : Float(256:2304, 256:9, 3:3, 3:1, requires_grad=0, device=cpu),
-      %116 : Float(256:1, requires_grad=0, device=cpu),
-      %118 : Float(512:2304, 256:9, 3:3, 3:1, requires_grad=0, device=cpu),
-      %119 : Float(512:1, requires_grad=0, device=cpu),
-      %121 : Float(512:4608, 512:9, 3:3, 3:1, requires_grad=0, device=cpu),
-      %122 : Float(512:1, requires_grad=0, device=cpu),
-      %124 : Float(512:4608, 512:9, 3:3, 3:1, requires_grad=0, device=cpu),
-      %125 : Float(512:1, requires_grad=0, device=cpu),
-      %127 : Float(512:4608, 512:9, 3:3, 3:1, requires_grad=0, device=cpu),
-      %128 : Float(512:1, requires_grad=0, device=cpu),
-      %129 : Long(1:1, requires_grad=0, device=cpu)):
-  %105 : Float(1:65536, 64:1024, 32:32, 32:1, requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%input, %106, %107)
-  %65 : Float(1:65536, 64:1024, 32:32, 32:1, requires_grad=1, device=cpu) = onnx::Relu(%105) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1134:0
-  %66 : Float(1:16384, 64:256, 16:16, 16:1, requires_grad=1, device=cpu) = onnx::MaxPool[kernel_shape=[2, 2], pads=[0, 0, 0, 0], strides=[2, 2]](%65) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:585:0
-  %108 : Float(1:32768, 128:256, 16:16, 16:1, requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%66, %109, %110)
-  %69 : Float(1:32768, 128:256, 16:16, 16:1, requires_grad=1, device=cpu) = onnx::Relu(%108) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1134:0
-  %70 : Float(1:8192, 128:64, 8:8, 8:1, requires_grad=1, device=cpu) = onnx::MaxPool[kernel_shape=[2, 2], pads=[0, 0, 0, 0], strides=[2, 2]](%69) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:585:0
-  %111 : Float(1:16384, 256:64, 8:8, 8:1, requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%70, %112, %113)
-  %73 : Float(1:16384, 256:64, 8:8, 8:1, requires_grad=1, device=cpu) = onnx::Relu(%111) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1134:0
-  %114 : Float(1:16384, 256:64, 8:8, 8:1, requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%73, %115, %116)
-  %76 : Float(1:16384, 256:64, 8:8, 8:1, requires_grad=1, device=cpu) = onnx::Relu(%114) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1134:0
-  %77 : Float(1:4096, 256:16, 4:4, 4:1, requires_grad=1, device=cpu) = onnx::MaxPool[kernel_shape=[2, 2], pads=[0, 0, 0, 0], strides=[2, 2]](%76) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:585:0
-  %117 : Float(1:8192, 512:16, 4:4, 4:1, requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%77, %118, %119)
-  %80 : Float(1:8192, 512:16, 4:4, 4:1, requires_grad=1, device=cpu) = onnx::Relu(%117) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1134:0
-  %120 : Float(1:8192, 512:16, 4:4, 4:1, requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%80, %121, %122)
-  %83 : Float(1:8192, 512:16, 4:4, 4:1, requires_grad=1, device=cpu) = onnx::Relu(%120) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1134:0
-  %84 : Float(1:2048, 512:4, 2:2, 2:1, requires_grad=1, device=cpu) = onnx::MaxPool[kernel_shape=[2, 2], pads=[0, 0, 0, 0], strides=[2, 2]](%83) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:585:0
-  %123 : Float(1:2048, 512:4, 2:2, 2:1, requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%84, %124, %125)
-  %87 : Float(1:2048, 512:4, 2:2, 2:1, requires_grad=1, device=cpu) = onnx::Relu(%123) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1134:0
-  %126 : Float(1:2048, 512:4, 2:2, 2:1, requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%87, %127, %128)
-  %90 : Float(1:2048, 512:4, 2:2, 2:1, requires_grad=1, device=cpu) = onnx::Relu(%126) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1134:0
-  %91 : Float(1:512, 512:1, 1:1, 1:1, requires_grad=1, device=cpu) = onnx::MaxPool[kernel_shape=[2, 2], pads=[0, 0, 0, 0], strides=[2, 2]](%90) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:585:0
-  %92 : Tensor = onnx::Shape(%91)
-  %93 : Tensor = onnx::Constant[value={0}]()
+INFO:src.model:[0, 199] loss: 2.273090735077858 duration: 91.27972292900085
+INFO:src.model:[0, 399] loss: 1.963498272895813 duration: 57.59314465522766
+INFO:src.model:[0, 599] loss: 1.9160682064294816 duration: 55.94656205177307
+INFO:src.model:[0, 799] loss: 1.8396001029014588 duration: 60.194833278656006
+INFO:src.model:[0, 999] loss: 1.7468485635519029 duration: 58.08973455429077
+INFO:src.model:[0, 1199] loss: 1.7104253977537156 duration: 56.7458815574646
+INFO:src.model:[0, 1399] loss: 1.6527180963754653 duration: 87.19056677818298
+INFO:src.model:[0] duration in seconds: 516.8108649253845
+INFO:src.model:Accuracy: 37.169999999999995, Loss: 0.048952482640743256
+INFO:src.model:save checkpoints: /opt/data/model/epoch_0_loss_0.048952482640743256.pth
+INFO:src.model:Accuracy: 37.169999999999995, Loss: 0.048952482640743256
+INFO:__main__:Latest performance: Accuracy: 37.169999999999995, Loss: 0.048952482640743256
+graph(%input : Float(1, 3, 32, 32, strides=[3072, 1024, 32, 1], requires_grad=0, device=cpu),
+      %classifier.0.weight : Float(512, 512, strides=[512, 1], requires_grad=1, device=cpu),
+      %classifier.0.bias : Float(512, strides=[1], requires_grad=1, device=cpu),
+      %classifier.3.weight : Float(32, 512, strides=[512, 1], requires_grad=1, device=cpu),
+      %classifier.3.bias : Float(32, strides=[1], requires_grad=1, device=cpu),
+      %classifier.6.weight : Float(10, 32, strides=[32, 1], requires_grad=1, device=cpu),
+      %classifier.6.bias : Float(10, strides=[1], requires_grad=1, device=cpu),
+      %106 : Float(64, 3, 3, 3, strides=[27, 9, 3, 1], requires_grad=0, device=cpu),
+      %107 : Float(64, strides=[1], requires_grad=0, device=cpu),
+      %109 : Float(128, 64, 3, 3, strides=[576, 9, 3, 1], requires_grad=0, device=cpu),
+      %110 : Float(128, strides=[1], requires_grad=0, device=cpu),
+      %112 : Float(256, 128, 3, 3, strides=[1152, 9, 3, 1], requires_grad=0, device=cpu),
+      %113 : Float(256, strides=[1], requires_grad=0, device=cpu),
+      %115 : Float(256, 256, 3, 3, strides=[2304, 9, 3, 1], requires_grad=0, device=cpu),
+      %116 : Float(256, strides=[1], requires_grad=0, device=cpu),
+      %118 : Float(512, 256, 3, 3, strides=[2304, 9, 3, 1], requires_grad=0, device=cpu),
+      %119 : Float(512, strides=[1], requires_grad=0, device=cpu),
+      %121 : Float(512, 512, 3, 3, strides=[4608, 9, 3, 1], requires_grad=0, device=cpu),
+      %122 : Float(512, strides=[1], requires_grad=0, device=cpu),
+      %124 : Float(512, 512, 3, 3, strides=[4608, 9, 3, 1], requires_grad=0, device=cpu),
+      %125 : Float(512, strides=[1], requires_grad=0, device=cpu),
+      %127 : Float(512, 512, 3, 3, strides=[4608, 9, 3, 1], requires_grad=0, device=cpu),
+      %128 : Float(512, strides=[1], requires_grad=0, device=cpu),
+      %129 : Long(1, strides=[1], requires_grad=0, device=cpu)):
+  %105 : Float(1, 64, 32, 32, strides=[65536, 1024, 32, 1], requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%input, %106, %107)
+  %65 : Float(1, 64, 32, 32, strides=[65536, 1024, 32, 1], requires_grad=1, device=cpu) = onnx::Relu(%105) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1296:0
+  %66 : Float(1, 64, 16, 16, strides=[16384, 256, 16, 1], requires_grad=1, device=cpu) = onnx::MaxPool[kernel_shape=[2, 2], pads=[0, 0, 0, 0], strides=[2, 2]](%65) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:718:0
+  %108 : Float(1, 128, 16, 16, strides=[32768, 256, 16, 1], requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%66, %109, %110)
+  %69 : Float(1, 128, 16, 16, strides=[32768, 256, 16, 1], requires_grad=1, device=cpu) = onnx::Relu(%108) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1296:0
+  %70 : Float(1, 128, 8, 8, strides=[8192, 64, 8, 1], requires_grad=1, device=cpu) = onnx::MaxPool[kernel_shape=[2, 2], pads=[0, 0, 0, 0], strides=[2, 2]](%69) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:718:0
+  %111 : Float(1, 256, 8, 8, strides=[16384, 64, 8, 1], requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%70, %112, %113)
+  %73 : Float(1, 256, 8, 8, strides=[16384, 64, 8, 1], requires_grad=1, device=cpu) = onnx::Relu(%111) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1296:0
+  %114 : Float(1, 256, 8, 8, strides=[16384, 64, 8, 1], requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%73, %115, %116)
+  %76 : Float(1, 256, 8, 8, strides=[16384, 64, 8, 1], requires_grad=1, device=cpu) = onnx::Relu(%114) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1296:0
+  %77 : Float(1, 256, 4, 4, strides=[4096, 16, 4, 1], requires_grad=1, device=cpu) = onnx::MaxPool[kernel_shape=[2, 2], pads=[0, 0, 0, 0], strides=[2, 2]](%76) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:718:0
+  %117 : Float(1, 512, 4, 4, strides=[8192, 16, 4, 1], requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%77, %118, %119)
+  %80 : Float(1, 512, 4, 4, strides=[8192, 16, 4, 1], requires_grad=1, device=cpu) = onnx::Relu(%117) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1296:0
+  %120 : Float(1, 512, 4, 4, strides=[8192, 16, 4, 1], requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%80, %121, %122)
+  %83 : Float(1, 512, 4, 4, strides=[8192, 16, 4, 1], requires_grad=1, device=cpu) = onnx::Relu(%120) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1296:0
+  %84 : Float(1, 512, 2, 2, strides=[2048, 4, 2, 1], requires_grad=1, device=cpu) = onnx::MaxPool[kernel_shape=[2, 2], pads=[0, 0, 0, 0], strides=[2, 2]](%83) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:718:0
+  %123 : Float(1, 512, 2, 2, strides=[2048, 4, 2, 1], requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%84, %124, %125)
+  %87 : Float(1, 512, 2, 2, strides=[2048, 4, 2, 1], requires_grad=1, device=cpu) = onnx::Relu(%123) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1296:0
+  %126 : Float(1, 512, 2, 2, strides=[2048, 4, 2, 1], requires_grad=1, device=cpu) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1]](%87, %127, %128)
+  %90 : Float(1, 512, 2, 2, strides=[2048, 4, 2, 1], requires_grad=1, device=cpu) = onnx::Relu(%126) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1296:0
+  %91 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cpu) = onnx::MaxPool[kernel_shape=[2, 2], pads=[0, 0, 0, 0], strides=[2, 2]](%90) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:718:0
+  %92 : Long(4, strides=[1], device=cpu) = onnx::Shape(%91)
+  %93 : Long(device=cpu) = onnx::Constant[value={0}]()
   %94 : Long(device=cpu) = onnx::Gather[axis=0](%92, %93) # /mlflow/projects/code/src/model.py:137:0
-  %96 : Tensor = onnx::Unsqueeze[axes=[0]](%94)
-  %98 : Tensor = onnx::Concat[axis=0](%96, %129)
-  %99 : Float(1:512, 512:1, requires_grad=1, device=cpu) = onnx::Reshape(%91, %98) # /mlflow/projects/code/src/model.py:137:0
-  %100 : Float(1:512, 512:1, requires_grad=1, device=cpu) = onnx::Gemm[alpha=1., beta=1., transB=1](%99, %classifier.0.weight, %classifier.0.bias) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1690:0
-  %101 : Float(1:512, 512:1, requires_grad=1, device=cpu) = onnx::Relu(%100) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:983:0
-  %102 : Float(1:32, 32:1, requires_grad=1, device=cpu) = onnx::Gemm[alpha=1., beta=1., transB=1](%101, %classifier.3.weight, %classifier.3.bias) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1690:0
-  %103 : Float(1:32, 32:1, requires_grad=1, device=cpu) = onnx::Relu(%102) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:983:0
-  %output : Float(1:10, 10:1, requires_grad=1, device=cpu) = onnx::Gemm[alpha=1., beta=1., transB=1](%103, %classifier.6.weight, %classifier.6.bias) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1690:0
+  %96 : Long(1, strides=[1], device=cpu) = onnx::Unsqueeze[axes=[0]](%94)
+  %98 : Long(2, strides=[1], device=cpu) = onnx::Concat[axis=0](%96, %129)
+  %99 : Float(1, 512, strides=[512, 1], requires_grad=1, device=cpu) = onnx::Reshape(%91, %98) # /mlflow/projects/code/src/model.py:137:0
+  %100 : Float(1, 512, strides=[512, 1], requires_grad=1, device=cpu) = onnx::Gemm[alpha=1., beta=1., transB=1](%99, %classifier.0.weight, %classifier.0.bias) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1847:0
+  %101 : Float(1, 512, strides=[512, 1], requires_grad=1, device=cpu) = onnx::Relu(%100) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1168:0
+  %102 : Float(1, 32, strides=[32, 1], requires_grad=1, device=cpu) = onnx::Gemm[alpha=1., beta=1., transB=1](%101, %classifier.3.weight, %classifier.3.bias) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1847:0
+  %103 : Float(1, 32, strides=[32, 1], requires_grad=1, device=cpu) = onnx::Relu(%102) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1168:0
+  %output : Float(1, 10, strides=[10, 1], requires_grad=1, device=cpu) = onnx::Gemm[alpha=1., beta=1., transB=1](%103, %classifier.6.weight, %classifier.6.bias) # /usr/local/lib/python3.8/site-packages/torch/nn/functional.py:1847:0
   return (%output)
 
-2021/02/11 07:18:39 INFO mlflow.projects: === Run (ID '597633d3c4f5494898559b4b1889d457') succeeded ===
-2021/02/11 07:18:40 INFO mlflow.projects.utils: === Created directory /tmp/tmpza722aed for downloading remote URIs passed to arguments of type 'path' ===
-2021/02/11 07:18:40 INFO mlflow.projects.backend.local: === Running command 'source activate mlflow-896ad7ba51492e700af933e0b293ec0fc9aface0 1>&2 && cp ../mlruns/0/597633d3c4f5494898559b4b1889d457/artifacts/cifar10_0.onnx ./ && \
-docker build \
-  -t shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0 \
-  -f ./Dockerfile \
-  --build-arg model_filename=cifar10_0.onnx \
-  --build-arg model_directory=mlruns/0/597633d3c4f5494898559b4b1889d457/artifacts \
-  --build-arg entrypoint_path=./onnx_runtime_server_entrypoint.sh \
-  .
-' in run with ID '6272918d214242f48e7c85c71b82a883' ===
-Sending build context to Docker daemon  38.01MB
-Step 1/12 : FROM mcr.microsoft.com/onnxruntime/server:latest
- ---> 0556947b2a78
-Step 2/12 : ARG model_filename=cifar10_0.onnx
- ---> Using cache
- ---> 071d7f5e1856
-Step 3/12 : ARG model_directory=./
- ---> Using cache
- ---> 57525f62cf29
-Step 4/12 : ARG entrypoint_path=./building/onnx_runtime_server_entrypoint.sh
- ---> Using cache
- ---> fca089050d44
-Step 5/12 : ENV PROJECT_DIR cifar10
- ---> Using cache
- ---> 9ee2694b77ca
-Step 6/12 : WORKDIR /${PROJECT_DIR}
- ---> Using cache
- ---> 951c3b34d3f2
-Step 7/12 : COPY ./${model_filename} /${PROJECT_DIR}/${model_filename}
- ---> bf6e03ba9587
-Step 8/12 : ENV MODEL_PATH /${PROJECT_DIR}/${model_filename}
- ---> Running in 74f18b7d2300
-Removing intermediate container 74f18b7d2300
- ---> 8ae5eaaf33e0
-Step 9/12 : WORKDIR /onnxruntime/server/
- ---> Running in 5271c610f35f
-Removing intermediate container 5271c610f35f
- ---> 72280ba14a1d
-Step 10/12 : COPY ./${entrypoint_path} ./onnx_runtime_server_entrypoint.sh
- ---> acfe6f939227
-Step 11/12 : RUN chmod +x onnx_runtime_server_entrypoint.sh
- ---> Running in 644202b28f1b
-Removing intermediate container 644202b28f1b
- ---> 17a01ac73e80
-Step 12/12 : ENTRYPOINT ["./onnx_runtime_server_entrypoint.sh"]
- ---> Running in bad1e2601f2a
-Removing intermediate container bad1e2601f2a
- ---> ad282fcbcfe9
-Successfully built ad282fcbcfe9
-Successfully tagged shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0
-2021/02/11 07:18:42 INFO mlflow.projects: === Run (ID '6272918d214242f48e7c85c71b82a883') succeeded ===
-2021/02/11 07:18:44 INFO mlflow.utils.conda: === Creating conda environment mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e ===
+2021/10/09 16:27:24 INFO mlflow.projects: === Run (ID 'bd9f50269f6f40d2a4c5cf832f892384') succeeded ===
+2021/10/09 16:27:29 INFO mlflow.utils.conda: === Creating conda environment mlflow-896ad7ba51492e700af933e0b293ec0fc9aface0 ===
+Collecting package metadata (repodata.json): done
 Solving environment: done
 
 
 ==> WARNING: A newer version of conda exists. <==
-  current version: 4.5.11
-  latest version: 4.9.2
+  current version: 4.10.1
+  latest version: 4.10.3
+
+Please update conda by running
+
+    $ conda update -n base -c defaults conda
+
+
+
+Downloading and Extracting Packages
+openssl-1.1.1l       | 2.2 MB    | ##################################################################################### | 100%
+certifi-2021.5.30    | 139 KB    | ##################################################################################### | 100%
+ca-certificates-2021 | 116 KB    | ##################################################################################### | 100%
+tk-8.6.11            | 3.0 MB    | ##################################################################################### | 100%
+setuptools-58.0.4    | 791 KB    | ##################################################################################### | 100%
+pip-21.2.4           | 1.8 MB    | ##################################################################################### | 100%
+wheel-0.37.0         | 33 KB     | ##################################################################################### | 100%
+sqlite-3.36.0        | 1.1 MB    | ##################################################################################### | 100%
+libcxx-12.0.0        | 805 KB    | ##################################################################################### | 100%
+python-3.8.11        | 10.3 MB   | ##################################################################################### | 100%
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+Installing pip dependencies: - Ran pip subprocess with arguments:
+['/Users/shibuiyuusuke/.pyenv/versions/anaconda3-2021.05/envs/mlflow-896ad7ba51492e700af933e0b293ec0fc9aface0/bin/python', '-m', 'pip', 'install', '-U', '-r', '/private/tmp/ml-system-in-actions/chapter2_training/cifar10/building/condaenv.snzeiirk.requirements.txt']
+Pip subprocess output:
+Collecting mlflow
+  Using cached mlflow-1.20.2-py3-none-any.whl (14.6 MB)
+Collecting sqlalchemy
+  Downloading SQLAlchemy-1.4.25-cp38-cp38-macosx_10_14_x86_64.whl (1.5 MB)
+Collecting click>=7.0
+  Using cached click-8.0.2-py3-none-any.whl (97 kB)
+Collecting alembic<=1.4.1
+  Using cached alembic-1.4.1-py2.py3-none-any.whl
+Collecting protobuf>=3.7.0
+  Using cached protobuf-3.18.1-cp38-cp38-macosx_10_9_x86_64.whl (1.0 MB)
+Collecting Flask
+  Downloading Flask-2.0.2-py3-none-any.whl (95 kB)
+Collecting prometheus-flask-exporter
+  Using cached prometheus_flask_exporter-0.18.3-py3-none-any.whl (17 kB)
+Collecting docker>=4.0.0
+  Using cached docker-5.0.3-py2.py3-none-any.whl (146 kB)
+Collecting entrypoints
+  Using cached entrypoints-0.3-py2.py3-none-any.whl (11 kB)
+Collecting numpy
+  Downloading numpy-1.21.2-cp38-cp38-macosx_10_9_x86_64.whl (16.9 MB)
+Collecting pandas
+  Downloading pandas-1.3.3-cp38-cp38-macosx_10_9_x86_64.whl (11.4 MB)
+Collecting pytz
+  Downloading pytz-2021.3-py2.py3-none-any.whl (503 kB)
+Collecting gitpython>=2.1.0
+  Using cached GitPython-3.1.24-py3-none-any.whl (180 kB)
+Collecting sqlparse>=0.3.1
+  Using cached sqlparse-0.4.2-py3-none-any.whl (42 kB)
+Collecting cloudpickle
+  Downloading cloudpickle-2.0.0-py3-none-any.whl (25 kB)
+Collecting requests>=2.17.3
+  Using cached requests-2.26.0-py2.py3-none-any.whl (62 kB)
+Collecting gunicorn
+  Using cached gunicorn-20.1.0-py3-none-any.whl (79 kB)
+Collecting querystring-parser
+  Using cached querystring_parser-1.2.4-py2.py3-none-any.whl (7.9 kB)
+Collecting databricks-cli>=0.8.7
+  Using cached databricks_cli-0.15.0-py3-none-any.whl
+Collecting importlib-metadata!=4.7.0,>=3.7.0
+  Using cached importlib_metadata-4.8.1-py3-none-any.whl (17 kB)
+Collecting packaging
+  Using cached packaging-21.0-py3-none-any.whl (40 kB)
+Collecting pyyaml>=5.1
+  Using cached PyYAML-5.4.1-cp38-cp38-macosx_10_9_x86_64.whl (253 kB)
+Collecting Mako
+  Using cached Mako-1.1.5-py2.py3-none-any.whl (75 kB)
+Collecting python-editor>=0.3
+  Using cached python_editor-1.0.4-py3-none-any.whl (4.9 kB)
+Collecting python-dateutil
+  Using cached python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting tabulate>=0.7.7
+  Using cached tabulate-0.8.9-py3-none-any.whl (25 kB)
+Collecting six>=1.10.0
+  Using cached six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting websocket-client>=0.32.0
+  Using cached websocket_client-1.2.1-py2.py3-none-any.whl (52 kB)
+Collecting gitdb<5,>=4.0.1
+  Using cached gitdb-4.0.7-py3-none-any.whl (63 kB)
+Collecting typing-extensions>=3.7.4.3
+  Using cached typing_extensions-3.10.0.2-py3-none-any.whl (26 kB)
+Collecting smmap<5,>=3.0.1
+  Using cached smmap-4.0.0-py2.py3-none-any.whl (24 kB)
+Collecting zipp>=0.5
+  Using cached zipp-3.6.0-py3-none-any.whl (5.3 kB)
+Collecting charset-normalizer~=2.0.0
+  Using cached charset_normalizer-2.0.6-py3-none-any.whl (37 kB)
+Collecting idna<4,>=2.5
+  Using cached idna-3.2-py3-none-any.whl (59 kB)
+Collecting urllib3<1.27,>=1.21.1
+  Downloading urllib3-1.26.7-py2.py3-none-any.whl (138 kB)
+Requirement already satisfied: certifi>=2017.4.17 in /Users/shibuiyuusuke/.pyenv/versions/anaconda3-2021.05/envs/mlflow-896ad7ba51492e700af933e0b293ec0fc9aface0/lib/python3.8/site-packages (from requests>=2.17.3->mlflow->-r /private/tmp/ml-system-in-actions/chapter2_training/cifar10/building/condaenv.snzeiirk.requirements.txt (line 1)) (2021.5.30)
+Collecting greenlet!=0.4.17
+  Downloading greenlet-1.1.2-cp38-cp38-macosx_10_14_x86_64.whl (92 kB)
+Collecting Jinja2>=3.0
+  Downloading Jinja2-3.0.2-py3-none-any.whl (133 kB)
+Collecting Werkzeug>=2.0
+  Downloading Werkzeug-2.0.2-py3-none-any.whl (288 kB)
+Collecting itsdangerous>=2.0
+  Using cached itsdangerous-2.0.1-py3-none-any.whl (18 kB)
+Collecting MarkupSafe>=2.0
+  Using cached MarkupSafe-2.0.1-cp38-cp38-macosx_10_9_x86_64.whl (13 kB)
+Requirement already satisfied: setuptools>=3.0 in /Users/shibuiyuusuke/.pyenv/versions/anaconda3-2021.05/envs/mlflow-896ad7ba51492e700af933e0b293ec0fc9aface0/lib/python3.8/site-packages (from gunicorn->mlflow->-r /private/tmp/ml-system-in-actions/chapter2_training/cifar10/building/condaenv.snzeiirk.requirements.txt (line 1)) (58.0.4)
+Collecting pyparsing>=2.0.2
+  Using cached pyparsing-2.4.7-py2.py3-none-any.whl (67 kB)
+Collecting prometheus-client
+  Using cached prometheus_client-0.11.0-py2.py3-none-any.whl (56 kB)
+Installing collected packages: MarkupSafe, Werkzeug, urllib3, smmap, six, Jinja2, itsdangerous, idna, greenlet, click, charset-normalizer, zipp, websocket-client, typing-extensions, tabulate, sqlalchemy, requests, pytz, python-editor, python-dateutil, pyparsing, prometheus-client, numpy, Mako, gitdb, Flask, sqlparse, querystring-parser, pyyaml, protobuf, prometheus-flask-exporter, pandas, packaging, importlib-metadata, gunicorn, gitpython, entrypoints, docker, databricks-cli, cloudpickle, alembic, mlflow
+Successfully installed Flask-2.0.2 Jinja2-3.0.2 Mako-1.1.5 MarkupSafe-2.0.1 Werkzeug-2.0.2 alembic-1.4.1 charset-normalizer-2.0.6 click-8.0.2 cloudpickle-2.0.0 databricks-cli-0.15.0 docker-5.0.3 entrypoints-0.3 gitdb-4.0.7 gitpython-3.1.24 greenlet-1.1.2 gunicorn-20.1.0 idna-3.2 importlib-metadata-4.8.1 itsdangerous-2.0.1 mlflow-1.20.2 numpy-1.21.2 packaging-21.0 pandas-1.3.3 prometheus-client-0.11.0 prometheus-flask-exporter-0.18.3 protobuf-3.18.1 pyparsing-2.4.7 python-dateutil-2.8.2 python-editor-1.0.4 pytz-2021.3 pyyaml-5.4.1 querystring-parser-1.2.4 requests-2.26.0 six-1.16.0 smmap-4.0.0 sqlalchemy-1.4.25 sqlparse-0.4.2 tabulate-0.8.9 typing-extensions-3.10.0.2 urllib3-1.26.7 websocket-client-1.2.1 zipp-3.6.0
+
+done
+#
+# To activate this environment, use
+#
+#     $ conda activate mlflow-896ad7ba51492e700af933e0b293ec0fc9aface0
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+2021/10/09 16:28:53 INFO mlflow.projects.utils: === Created directory /var/folders/v8/bvkzgn8j1ws6y76t4z5nt6280000gn/T/tmpt1ru89c1 for downloading remote URIs passed to arguments of type 'path' ===
+2021/10/09 16:28:53 INFO mlflow.projects.backend.local: === Running command 'source /Users/shibuiyuusuke/.pyenv/versions/anaconda3-2021.05/bin/../etc/profile.d/conda.sh && conda activate mlflow-896ad7ba51492e700af933e0b293ec0fc9aface0 1>&2 && cp ../mlruns/0/bd9f50269f6f40d2a4c5cf832f892384/artifacts/cifar10_0.onnx ./ && \
+docker build \
+  -t shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0 \
+  -f ./Dockerfile \
+  --build-arg model_filename=cifar10_0.onnx \
+  --build-arg model_directory=mlruns/0/bd9f50269f6f40d2a4c5cf832f892384/artifacts \
+  --build-arg entrypoint_path=./onnx_runtime_server_entrypoint.sh \
+  .' in run with ID '3379a87628b94369af71d5e27cf16389' ===
+[+] Building 12.9s (11/11) FINISHED
+ => [internal] load build definition from Dockerfile                                                                       0.0s
+ => => transferring dockerfile: 564B                                                                                       0.0s
+ => [internal] load .dockerignore                                                                                          0.0s
+ => => transferring context: 2B                                                                                            0.0s
+ => [internal] load metadata for mcr.microsoft.com/onnxruntime/server:latest                                               0.9s
+ => [1/6] FROM mcr.microsoft.com/onnxruntime/server:latest@sha256:a23da0977bbc4aca4d3de56ad648ebde86031e61d7a3b7cbe1daae  11.0s
+ => => resolve mcr.microsoft.com/onnxruntime/server:latest@sha256:a23da0977bbc4aca4d3de56ad648ebde86031e61d7a3b7cbe1daaeb  0.0s
+ => => sha256:0556947b2a78463ec9e30b0da9c52d315074116e376d3e348b333ef854b83cd8 4.77kB / 4.77kB                             0.0s
+ => => sha256:04a3282d9c4be54603a46a0828ff0d7a992a72289c242c2301e704f658f00717 531B / 531B                                 0.4s
+ => => sha256:a23da0977bbc4aca4d3de56ad648ebde86031e61d7a3b7cbe1daaebbc7f6ad3d 1.99kB / 1.99kB                             0.0s
+ => => sha256:a1298f4ce99037bf3099adffe30b6a0096c592788fb611f1a2be2f8a494b8572 44.11MB / 44.11MB                           6.3s
+ => => sha256:9b0d3db6dc039e138ede35bcf3a318c5b14545265d8fc6b55da49c5b57ffc32c 840B / 840B                                 0.4s
+ => => sha256:8269c605f3f1f60eacd23c11d08771ee696182b7523ed09793980f5d9020ff7c 170B / 170B                                 0.6s
+ => => sha256:682bfba003ea35f8102c4d444279a16ca72b8ee93cabf628982edc550cc023cd 123B / 123B                                 0.6s
+ => => sha256:800b34ff9c7db72abee7e58387971dfa06cfc81986a2fe983600eeae14d6875b 2.58MB / 2.58MB                             1.7s
+ => => sha256:4257e5c2fefd21baaf6c23d4516e3542391b646bf80300fd42d9a0b5ea3986c0 4.09MB / 4.09MB                             1.6s
+ => => sha256:273ae94580cc52b890c6ddd9142aac95403d13db72ff2cd08680d931b53985cf 19.01MB / 19.01MB                           5.2s
+ => => extracting sha256:a1298f4ce99037bf3099adffe30b6a0096c592788fb611f1a2be2f8a494b8572                                  2.8s
+ => => extracting sha256:04a3282d9c4be54603a46a0828ff0d7a992a72289c242c2301e704f658f00717                                  0.0s
+ => => extracting sha256:9b0d3db6dc039e138ede35bcf3a318c5b14545265d8fc6b55da49c5b57ffc32c                                  0.0s
+ => => extracting sha256:8269c605f3f1f60eacd23c11d08771ee696182b7523ed09793980f5d9020ff7c                                  0.0s
+ => => extracting sha256:682bfba003ea35f8102c4d444279a16ca72b8ee93cabf628982edc550cc023cd                                  0.0s
+ => => extracting sha256:800b34ff9c7db72abee7e58387971dfa06cfc81986a2fe983600eeae14d6875b                                  0.2s
+ => => extracting sha256:4257e5c2fefd21baaf6c23d4516e3542391b646bf80300fd42d9a0b5ea3986c0                                  0.2s
+ => => extracting sha256:273ae94580cc52b890c6ddd9142aac95403d13db72ff2cd08680d931b53985cf                                  0.7s
+ => [internal] load build context                                                                                          0.7s
+ => => transferring context: 38.01MB                                                                                       0.7s
+ => [2/6] WORKDIR /cifar10                                                                                                 0.2s
+ => [3/6] COPY ./cifar10_0.onnx /cifar10/cifar10_0.onnx                                                                    0.1s
+ => [4/6] WORKDIR /onnxruntime/server/                                                                                     0.0s
+ => [5/6] COPY ././onnx_runtime_server_entrypoint.sh ./onnx_runtime_server_entrypoint.sh                                   0.0s
+ => [6/6] RUN chmod +x onnx_runtime_server_entrypoint.sh                                                                   0.3s
+ => exporting to image                                                                                                     0.3s
+ => => exporting layers                                                                                                    0.3s
+ => => writing image sha256:52b7f63dc167ce71631d669545ef3ff5eebf850b1f197b1b68e769182e4ae7d8                               0.0s
+ => => naming to docker.io/shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0                                 0.0s
+
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+2021/10/09 16:29:07 INFO mlflow.projects: === Run (ID '3379a87628b94369af71d5e27cf16389') succeeded ===
+2021/10/09 16:29:09 INFO mlflow.utils.conda: === Creating conda environment mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e ===
+Collecting package metadata (repodata.json): done
+Solving environment: done
+
+
+==> WARNING: A newer version of conda exists. <==
+  current version: 4.10.1
+  latest version: 4.10.3
 
 Please update conda by running
 
@@ -264,156 +394,148 @@ Please update conda by running
 Preparing transaction: done
 Verifying transaction: done
 Executing transaction: done
-Collecting grpcio
-  Downloading grpcio-1.35.0-cp38-cp38-manylinux2014_x86_64.whl (4.1 MB)
-     |████████████████████████████████| 4.1 MB 23.9 MB/s
-Collecting six>=1.5.2
-  Using cached six-1.15.0-py2.py3-none-any.whl (10 kB)
+Installing pip dependencies: | Ran pip subprocess with arguments:
+['/Users/shibuiyuusuke/.pyenv/versions/anaconda3-2021.05/envs/mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e/bin/python', '-m', 'pip', 'install', '-U', '-r', '/private/tmp/ml-system-in-actions/chapter2_training/cifar10/evaluate/condaenv.abrmof73.requirements.txt']
+Pip subprocess output:
 Collecting mlflow
-  Using cached mlflow-1.13.1-py3-none-any.whl (14.1 MB)
+  Using cached mlflow-1.20.2-py3-none-any.whl (14.6 MB)
+Collecting grpcio
+  Using cached grpcio-1.41.0-cp38-cp38-macosx_10_10_x86_64.whl (3.9 MB)
+Collecting Pillow
+  Downloading Pillow-8.3.2-cp38-cp38-macosx_10_10_x86_64.whl (3.0 MB)
+Collecting scikit-learn
+  Downloading scikit_learn-1.0-cp38-cp38-macosx_10_13_x86_64.whl (7.9 MB)
+Collecting numpy
+  Using cached numpy-1.21.2-cp38-cp38-macosx_10_9_x86_64.whl (16.9 MB)
 Collecting alembic<=1.4.1
   Using cached alembic-1.4.1-py2.py3-none-any.whl
-Collecting azure-storage-blob>=12.0.0
-  Using cached azure_storage_blob-12.7.1-py2.py3-none-any.whl (339 kB)
-Collecting azure-core<2.0.0,>=1.10.0
-  Using cached azure_core-1.11.0-py2.py3-none-any.whl (127 kB)
+Collecting Flask
+  Using cached Flask-2.0.2-py3-none-any.whl (95 kB)
+Collecting importlib-metadata!=4.7.0,>=3.7.0
+  Using cached importlib_metadata-4.8.1-py3-none-any.whl (17 kB)
 Collecting click>=7.0
-  Using cached click-7.1.2-py2.py3-none-any.whl (82 kB)
-Collecting cryptography>=2.1.4
-  Using cached cryptography-3.4.4-cp36-abi3-manylinux2014_x86_64.whl (3.2 MB)
-Collecting cffi>=1.12
-  Using cached cffi-1.14.4-cp38-cp38-manylinux1_x86_64.whl (411 kB)
-Collecting databricks-cli>=0.8.7
-  Using cached databricks_cli-0.14.1-py3-none-any.whl
-Collecting docker>=4.0.0
-  Using cached docker-4.4.1-py2.py3-none-any.whl (146 kB)
-Collecting gitpython>=2.1.0
-  Using cached GitPython-3.1.13-py3-none-any.whl (159 kB)
-Collecting gitdb<5,>=4.0.1
-  Using cached gitdb-4.0.5-py3-none-any.whl (63 kB)
-Collecting msrest>=0.6.18
-  Using cached msrest-0.6.21-py2.py3-none-any.whl (85 kB)
-Requirement already satisfied: certifi>=2017.4.17 in /root/.pyenv/versions/anaconda3-5.3.1/envs/mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e/lib/python3.8/site-packages (from msrest>=0.6.18->azure-storage-blob>=12.0.0->mlflow->-r /tmp/ml-system-in-actions/chapter2_training/cifar10/evaluate/condaenv.xd7xzphu.requirements.txt (line 1)) (2020.12.5)
-Collecting isodate>=0.6.0
-  Using cached isodate-0.6.0-py2.py3-none-any.whl (45 kB)
-Collecting protobuf>=3.6.0
-  Using cached protobuf-3.14.0-cp38-cp38-manylinux1_x86_64.whl (1.0 MB)
-Collecting python-editor>=0.3
-  Using cached python_editor-1.0.4-py3-none-any.whl (4.9 kB)
-Collecting requests>=2.17.3
-  Using cached requests-2.25.1-py2.py3-none-any.whl (61 kB)
-Collecting chardet<5,>=3.0.2
-  Using cached chardet-4.0.0-py2.py3-none-any.whl (178 kB)
-Collecting idna<3,>=2.5
-  Using cached idna-2.10-py2.py3-none-any.whl (58 kB)
-Collecting requests-oauthlib>=0.5.0
-  Using cached requests_oauthlib-1.3.0-py2.py3-none-any.whl (23 kB)
-Collecting oauthlib>=3.0.0
-  Using cached oauthlib-3.1.0-py2.py3-none-any.whl (147 kB)
-Collecting smmap<4,>=3.0.1
-  Using cached smmap-3.0.5-py2.py3-none-any.whl (25 kB)
+  Using cached click-8.0.2-py3-none-any.whl (97 kB)
+Collecting prometheus-flask-exporter
+  Using cached prometheus_flask_exporter-0.18.3-py3-none-any.whl (17 kB)
 Collecting sqlalchemy
-  Using cached SQLAlchemy-1.3.23-cp38-cp38-manylinux2010_x86_64.whl (1.3 MB)
-Collecting sqlparse>=0.3.1
-  Using cached sqlparse-0.4.1-py3-none-any.whl (42 kB)
-Collecting tabulate>=0.7.7
-  Using cached tabulate-0.8.7-py3-none-any.whl (24 kB)
-Collecting urllib3<1.27,>=1.21.1
-  Using cached urllib3-1.26.3-py2.py3-none-any.whl (137 kB)
-Collecting websocket-client>=0.32.0
-  Using cached websocket_client-0.57.0-py2.py3-none-any.whl (200 kB)
-Collecting numpy
-  Using cached numpy-1.20.1-cp38-cp38-manylinux2010_x86_64.whl (15.4 MB)
-Collecting Pillow
-  Downloading Pillow-8.1.0-cp38-cp38-manylinux1_x86_64.whl (2.2 MB)
-     |████████████████████████████████| 2.2 MB 56.5 MB/s
-Collecting scikit-learn
-  Downloading scikit_learn-0.24.1-cp38-cp38-manylinux2010_x86_64.whl (24.9 MB)
-     |████████████████████████████████| 24.9 MB 60.2 MB/s
-Collecting joblib>=0.11
-  Downloading joblib-1.0.1-py3-none-any.whl (303 kB)
-     |████████████████████████████████| 303 kB 62.6 MB/s
-Collecting scipy>=0.19.1
-  Downloading scipy-1.6.0-cp38-cp38-manylinux1_x86_64.whl (27.2 MB)
-     |████████████████████████████████| 27.2 MB 57.9 MB/s
-Collecting threadpoolctl>=2.0.0
-  Downloading threadpoolctl-2.1.0-py3-none-any.whl (12 kB)
-Collecting cloudpickle
-  Using cached cloudpickle-1.6.0-py3-none-any.whl (23 kB)
+  Using cached SQLAlchemy-1.4.25-cp38-cp38-macosx_10_14_x86_64.whl (1.5 MB)
+Collecting gitpython>=2.1.0
+  Using cached GitPython-3.1.24-py3-none-any.whl (180 kB)
+Collecting protobuf>=3.7.0
+  Using cached protobuf-3.18.1-cp38-cp38-macosx_10_9_x86_64.whl (1.0 MB)
+Collecting pandas
+  Using cached pandas-1.3.3-cp38-cp38-macosx_10_9_x86_64.whl (11.4 MB)
+Collecting packaging
+  Using cached packaging-21.0-py3-none-any.whl (40 kB)
+Collecting gunicorn
+  Using cached gunicorn-20.1.0-py3-none-any.whl (79 kB)
+Collecting requests>=2.17.3
+  Using cached requests-2.26.0-py2.py3-none-any.whl (62 kB)
 Collecting entrypoints
   Using cached entrypoints-0.3-py2.py3-none-any.whl (11 kB)
-Collecting Flask
-  Using cached Flask-1.1.2-py2.py3-none-any.whl (94 kB)
-Collecting itsdangerous>=0.24
-  Using cached itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
-Collecting Jinja2>=2.10.1
-  Using cached Jinja2-2.11.3-py2.py3-none-any.whl (125 kB)
-Collecting MarkupSafe>=0.23
-  Using cached MarkupSafe-1.1.1-cp38-cp38-manylinux2010_x86_64.whl (32 kB)
-Collecting Werkzeug>=0.15
-  Using cached Werkzeug-1.0.1-py2.py3-none-any.whl (298 kB)
-Collecting gunicorn
-  Using cached gunicorn-20.0.4-py2.py3-none-any.whl (77 kB)
-Requirement already satisfied: setuptools>=3.0 in /root/.pyenv/versions/anaconda3-5.3.1/envs/mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e/lib/python3.8/site-packages (from gunicorn->mlflow->-r /tmp/ml-system-in-actions/chapter2_training/cifar10/evaluate/condaenv.xd7xzphu.requirements.txt (line 1)) (52.0.0.post20210125)
-Collecting Mako
-  Using cached Mako-1.1.4-py2.py3-none-any.whl
-Collecting pandas
-  Using cached pandas-1.2.2-cp38-cp38-manylinux1_x86_64.whl (9.7 MB)
-Collecting python-dateutil
-  Using cached python_dateutil-2.8.1-py2.py3-none-any.whl (227 kB)
-Collecting pytz>=2017.3
-  Using cached pytz-2021.1-py2.py3-none-any.whl (510 kB)
-Collecting prometheus-flask-exporter
-  Using cached prometheus_flask_exporter-0.18.1-py3-none-any.whl
-Collecting prometheus-client
-  Using cached prometheus_client-0.9.0-py2.py3-none-any.whl (53 kB)
-Collecting pycparser
-  Using cached pycparser-2.20-py2.py3-none-any.whl (112 kB)
-Collecting pyyaml
-  Using cached PyYAML-5.4.1-cp38-cp38-manylinux1_x86_64.whl (662 kB)
+Collecting pytz
+  Using cached pytz-2021.3-py2.py3-none-any.whl (503 kB)
+Collecting docker>=4.0.0
+  Using cached docker-5.0.3-py2.py3-none-any.whl (146 kB)
+Collecting cloudpickle
+  Using cached cloudpickle-2.0.0-py3-none-any.whl (25 kB)
+Collecting databricks-cli>=0.8.7
+  Using cached databricks_cli-0.15.0-py3-none-any.whl
+Collecting pyyaml>=5.1
+  Using cached PyYAML-5.4.1-cp38-cp38-macosx_10_9_x86_64.whl (253 kB)
 Collecting querystring-parser
   Using cached querystring_parser-1.2.4-py2.py3-none-any.whl (7.9 kB)
-Installing collected packages: urllib3, idna, chardet, six, requests, pycparser, oauthlib, MarkupSafe, Werkzeug, smmap, requests-oauthlib, Jinja2, itsdangerous, isodate, click, cffi, websocket-client, tabulate, sqlalchemy, pytz, python-editor, python-dateutil, prometheus-client, numpy, msrest, Mako, gitdb, Flask, cryptography, azure-core, threadpoolctl, sqlparse, scipy, querystring-parser, pyyaml, protobuf, prometheus-flask-exporter, pandas, joblib, gunicorn, gitpython, entrypoints, docker, databricks-cli, cloudpickle, azure-storage-blob, alembic, scikit-learn, Pillow, mlflow, grpcio
-Successfully installed Flask-1.1.2 Jinja2-2.11.3 Mako-1.1.4 MarkupSafe-1.1.1 Pillow-8.1.0 Werkzeug-1.0.1 alembic-1.4.1 azure-core-1.11.0 azure-storage-blob-12.7.1 cffi-1.14.4 chardet-4.0.0 click-7.1.2 cloudpickle-1.6.0 cryptography-3.4.4 databricks-cli-0.14.1 docker-4.4.1 entrypoints-0.3 gitdb-4.0.5 gitpython-3.1.13 grpcio-1.35.0 gunicorn-20.0.4 idna-2.10 isodate-0.6.0 itsdangerous-1.1.0 joblib-1.0.1 mlflow-1.13.1 msrest-0.6.21 numpy-1.20.1 oauthlib-3.1.0 pandas-1.2.2 prometheus-client-0.9.0 prometheus-flask-exporter-0.18.1 protobuf-3.14.0 pycparser-2.20 python-dateutil-2.8.1 python-editor-1.0.4 pytz-2021.1 pyyaml-5.4.1 querystring-parser-1.2.4 requests-2.25.1 requests-oauthlib-1.3.0 scikit-learn-0.24.1 scipy-1.6.0 six-1.15.0 smmap-3.0.5 sqlalchemy-1.3.23 sqlparse-0.4.1 tabulate-0.8.7 threadpoolctl-2.1.0 urllib3-1.26.3 websocket-client-0.57.0
-#
-# To activate this environment, use:
-# > source activate mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e
-#
-# To deactivate an active environment, use:
-# > source deactivate
-#
+Collecting sqlparse>=0.3.1
+  Using cached sqlparse-0.4.2-py3-none-any.whl (42 kB)
+Collecting six>=1.5.2
+  Using cached six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting scipy>=1.1.0
+  Downloading scipy-1.7.1-cp38-cp38-macosx_10_9_x86_64.whl (32.6 MB)
+Collecting joblib>=0.11
+  Using cached joblib-1.1.0-py2.py3-none-any.whl (306 kB)
+Collecting threadpoolctl>=2.0.0
+  Using cached threadpoolctl-3.0.0-py3-none-any.whl (14 kB)
+Collecting python-editor>=0.3
+  Using cached python_editor-1.0.4-py3-none-any.whl (4.9 kB)
+Collecting python-dateutil
+  Using cached python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting Mako
+  Using cached Mako-1.1.5-py2.py3-none-any.whl (75 kB)
+Collecting tabulate>=0.7.7
+  Using cached tabulate-0.8.9-py3-none-any.whl (25 kB)
+Collecting websocket-client>=0.32.0
+  Using cached websocket_client-1.2.1-py2.py3-none-any.whl (52 kB)
+Collecting typing-extensions>=3.7.4.3
+  Using cached typing_extensions-3.10.0.2-py3-none-any.whl (26 kB)
+Collecting gitdb<5,>=4.0.1
+  Using cached gitdb-4.0.7-py3-none-any.whl (63 kB)
+Collecting smmap<5,>=3.0.1
+  Using cached smmap-4.0.0-py2.py3-none-any.whl (24 kB)
+Collecting zipp>=0.5
+  Using cached zipp-3.6.0-py3-none-any.whl (5.3 kB)
+Collecting charset-normalizer~=2.0.0
+  Using cached charset_normalizer-2.0.6-py3-none-any.whl (37 kB)
+Requirement already satisfied: certifi>=2017.4.17 in /Users/shibuiyuusuke/.pyenv/versions/anaconda3-2021.05/envs/mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e/lib/python3.8/site-packages (from requests>=2.17.3->mlflow->-r /private/tmp/ml-system-in-actions/chapter2_training/cifar10/evaluate/condaenv.abrmof73.requirements.txt (line 1)) (2021.5.30)
+Collecting urllib3<1.27,>=1.21.1
+  Using cached urllib3-1.26.7-py2.py3-none-any.whl (138 kB)
+Collecting idna<4,>=2.5
+  Using cached idna-3.2-py3-none-any.whl (59 kB)
+Collecting greenlet!=0.4.17
+  Using cached greenlet-1.1.2-cp38-cp38-macosx_10_14_x86_64.whl (92 kB)
+Collecting Werkzeug>=2.0
+  Using cached Werkzeug-2.0.2-py3-none-any.whl (288 kB)
+Collecting itsdangerous>=2.0
+  Using cached itsdangerous-2.0.1-py3-none-any.whl (18 kB)
+Collecting Jinja2>=3.0
+  Using cached Jinja2-3.0.2-py3-none-any.whl (133 kB)
+Collecting MarkupSafe>=2.0
+  Using cached MarkupSafe-2.0.1-cp38-cp38-macosx_10_9_x86_64.whl (13 kB)
+Requirement already satisfied: setuptools>=3.0 in /Users/shibuiyuusuke/.pyenv/versions/anaconda3-2021.05/envs/mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e/lib/python3.8/site-packages (from gunicorn->mlflow->-r /private/tmp/ml-system-in-actions/chapter2_training/cifar10/evaluate/condaenv.abrmof73.requirements.txt (line 1)) (58.0.4)
+Collecting pyparsing>=2.0.2
+  Using cached pyparsing-2.4.7-py2.py3-none-any.whl (67 kB)
+Collecting prometheus-client
+  Using cached prometheus_client-0.11.0-py2.py3-none-any.whl (56 kB)
+Installing collected packages: MarkupSafe, Werkzeug, urllib3, smmap, six, Jinja2, itsdangerous, idna, greenlet, click, charset-normalizer, zipp, websocket-client, typing-extensions, tabulate, sqlalchemy, requests, pytz, python-editor, python-dateutil, pyparsing, prometheus-client, numpy, Mako, gitdb, Flask, threadpoolctl, sqlparse, scipy, querystring-parser, pyyaml, protobuf, prometheus-flask-exporter, pandas, packaging, joblib, importlib-metadata, gunicorn, gitpython, entrypoints, docker, databricks-cli, cloudpickle, alembic, scikit-learn, Pillow, mlflow, grpcio
+Successfully installed Flask-2.0.2 Jinja2-3.0.2 Mako-1.1.5 MarkupSafe-2.0.1 Pillow-8.3.2 Werkzeug-2.0.2 alembic-1.4.1 charset-normalizer-2.0.6 click-8.0.2 cloudpickle-2.0.0 databricks-cli-0.15.0 docker-5.0.3 entrypoints-0.3 gitdb-4.0.7 gitpython-3.1.24 greenlet-1.1.2 grpcio-1.41.0 gunicorn-20.1.0 idna-3.2 importlib-metadata-4.8.1 itsdangerous-2.0.1 joblib-1.1.0 mlflow-1.20.2 numpy-1.21.2 packaging-21.0 pandas-1.3.3 prometheus-client-0.11.0 prometheus-flask-exporter-0.18.3 protobuf-3.18.1 pyparsing-2.4.7 python-dateutil-2.8.2 python-editor-1.0.4 pytz-2021.3 pyyaml-5.4.1 querystring-parser-1.2.4 requests-2.26.0 scikit-learn-1.0 scipy-1.7.1 six-1.16.0 smmap-4.0.0 sqlalchemy-1.4.25 sqlparse-0.4.2 tabulate-0.8.9 threadpoolctl-3.0.0 typing-extensions-3.10.0.2 urllib3-1.26.7 websocket-client-1.2.1 zipp-3.6.0
 
-2021/02/11 07:19:36 INFO mlflow.projects.utils: === Created directory /tmp/tmp9mqcz7ye for downloading remote URIs passed to arguments of type 'path' ===
-2021/02/11 07:19:36 INFO mlflow.projects.backend.local: === Running command 'source activate mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e 1>&2 && docker run \
+done
+#
+# To activate this environment, use
+#
+#     $ conda activate mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+2021/10/09 16:30:05 INFO mlflow.projects.utils: === Created directory /var/folders/v8/bvkzgn8j1ws6y76t4z5nt6280000gn/T/tmpsdxheliz for downloading remote URIs passed to arguments of type 'path' ===
+2021/10/09 16:30:05 INFO mlflow.projects.backend.local: === Running command 'source /Users/shibuiyuusuke/.pyenv/versions/anaconda3-2021.05/bin/../etc/profile.d/conda.sh && conda activate mlflow-a5f0c06b2ecebc7d20239baa7c71ce611a46259e 1>&2 && docker run \
   -it -d \
   --name training_pattern_cifar10_evaluate_0 \
   -p 50051:50051 shibui/ml-system-in-actions:training_pattern_cifar10_evaluate_0 && \
 python -m src.evaluate \
-  --upstream ../mlruns/0/597633d3c4f5494898559b4b1889d457/artifacts \
+  --upstream ../mlruns/0/bd9f50269f6f40d2a4c5cf832f892384/artifacts \
   --downstream ./evaluate/ \
-  --test_data_directory ../mlruns/0/d2ec649ed0254e99a9713e75da3dced9/artifacts/downstream_directory/test
-
-' in run with ID '9e5f8813e150424fba85d66ad7aea1d9' ===
-bac2ff7cc319ab9ba19f5ca639a0eedfbbb9e5d96e31c30bd11afe4d8c73e01f
-INFO:__main__:predict proba [[0.09882650524377823, 0.09837666898965836, 0.10054934769868851, 0.10118967294692993, 0.10194174945354462, 0.10157361626625061, 0.10137040168046951, 0.0949874073266983, 0.10158077627420425, 0.09960377961397171]]
-INFO:__main__:predict label 4
-INFO:__main__:../mlruns/0/d2ec649ed0254e99a9713e75da3dced9/artifacts/downstream_directory/test/9/tipper_s_001370.png label: 9 predicted: 4 duration: 0.020441532135009766 seconds
-INFO:__main__:predict proba [[0.09882650524377823, 0.09837666898965836, 0.10054934769868851, 0.10118967294692993, 0.10194174945354462, 0.10157361626625061, 0.10137040168046951, 0.0949874073266983, 0.10158077627420425, 0.09960377961397171]]
-INFO:__main__:predict label 4
-INFO:__main__:../mlruns/0/d2ec649ed0254e99a9713e75da3dced9/artifacts/downstream_directory/test/9/trailer_truck_s_000002.png label: 9 predicted: 4 duration: 0.0063266754150390625 seconds
-INFO:__main__:predict proba [[0.09882650524377823, 0.09837666898965836, 0.10054934769868851, 0.10118967294692993, 0.10194174945354462, 0.10157361626625061, 0.10137040168046951, 0.0949874073266983, 0.10158077627420425, 0.09960377961397171]]
+  --test_data_directory ../mlruns/0/a581fe06ecad4d4cb596db74e4cd2a57/artifacts/downstream_directory/test
+  ' in run with ID '801df0a55ee945518f884a08f398d740' ===
+782de7a6f1c67b40275afe91312dd5f18befcf50400a53b841e76753579473b8
+INFO:__main__:predict proba [[0.29046037793159485, 0.07903019338846207, 0.05096588656306267, 0.021699633449316025, 0.031009187921881676, 0.013215476647019386, 0.012070787139236927, 0.03407438471913338, 0.3405143618583679, 0.12695972621440887]]
+INFO:__main__:predict label 8
+INFO:__main__:../mlruns/0/a581fe06ecad4d4cb596db74e4cd2a57/artifacts/downstream_directory/test/9/tipper_truck_s_000048.png label: 9 predicted: 8 duration: 0.015868186950683594 seconds
+INFO:__main__:predict proba [[0.015559987165033817, 0.5181851983070374, 0.002052417490631342, 0.0005123076261952519, 0.0001863305369624868, 0.0003374455845914781, 0.002682535210624337, 0.00034050876274704933, 0.020900070667266846, 0.4392431974411011]]
+INFO:__main__:predict label 1
 
 ###########
 ### 中略 ###
 ###########
 
 
-INFO:__main__:../mlruns/0/d2ec649ed0254e99a9713e75da3dced9/artifacts/downstream_directory/test/5/puppy_s_002220.png label: 5 predicted: 4 duration: 0.005832672119140625 seconds
-INFO:__main__:predict proba [[0.09882650524377823, 0.09837666898965836, 0.10054934769868851, 0.10118967294692993, 0.10194174945354462, 0.10157361626625061, 0.10137040168046951, 0.0949874073266983, 0.10158077627420425, 0.09960377961397171]]
+INFO:__main__:../mlruns/0/a581fe06ecad4d4cb596db74e4cd2a57/artifacts/downstream_directory/test/5/toy_dog_s_000013.png label: 5 predicted: 4 duration: 0.011266946792602539 seconds
+INFO:__main__:predict proba [[0.005290620028972626, 0.0010339220752939582, 0.20407144725322723, 0.12005537748336792, 0.21151918172836304, 0.16939151287078857, 0.18023692071437836, 0.10347509384155273, 0.0013741046423092484, 0.0035517578944563866]]
 INFO:__main__:predict label 4
-INFO:__main__:../mlruns/0/d2ec649ed0254e99a9713e75da3dced9/artifacts/downstream_directory/test/5/toy_spaniel_s_001503.png label: 5 predicted: 4 duration: 0.0055751800537109375 seconds
-2021/02/11 07:20:40 INFO mlflow.projects: === Run (ID '9e5f8813e150424fba85d66ad7aea1d9') succeeded ===
-2021/02/11 07:20:41 INFO mlflow.projects: === Run (ID '16ca2fc7a707438fb999ffcc2ca0cc5f') succeeded ===
+INFO:__main__:../mlruns/0/a581fe06ecad4d4cb596db74e4cd2a57/artifacts/downstream_directory/test/5/maltese_s_000126.png label: 5 predicted: 4 duration: 0.011644124984741211 seconds
+2021/10/09 16:31:58 INFO mlflow.projects: === Run (ID '801df0a55ee945518f884a08f398d740') succeeded ===
+2021/10/09 16:31:58 INFO mlflow.projects: === Run (ID '4966d91cb81040dda0291f1840484c06') succeeded ===
 ```
 
 </div></details>
