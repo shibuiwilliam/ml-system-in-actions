@@ -228,4 +228,5 @@ spec:
       mirror:
         host: iris
         subset: rf
-      mirror_percent: 100
+      mirrorPercentage:
+        value: 100.0

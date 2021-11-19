@@ -77,9 +77,8 @@ $ kubectl -n circuit-breaker get all
 
 ```sh
 # 負荷テストクライアントに接続
-$ kubectl -n circuit-breaker exec -it pod/client bash
+$ kubectl -n circuit-breaker exec -it pod/client -- bash
 # 出力
-# kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.
 # Defaulting container name to client.
 # Use 'kubectl describe pod/client -n circuit-breaker' to see all of the containers in this pod.
 

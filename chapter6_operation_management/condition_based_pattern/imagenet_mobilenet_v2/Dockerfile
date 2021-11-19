@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.5.1 as builder
+FROM tensorflow/tensorflow:2.6.1 as builder
 
 ARG SERVER_DIR=imagenet_mobilenet_v2
 ENV PROJECT_DIR imagenet_mobilenet_v2
@@ -17,7 +17,7 @@ RUN apt-get -y update && \
     python -m extract_mobilenet_v2
 
 
-FROM tensorflow/serving:2.5.2
+FROM tensorflow/serving:2.6.1
 
 ARG SERVER_DIR=imagenet_mobilenet_v2
 ENV PROJECT_DIR imagenet_mobilenet_v2

@@ -91,7 +91,7 @@ $ curl localhost:8000/metadata
 #               "name": "StatefulPartitionedCall:0"
 #             }
 #           },
-#           "method_name": "tensorflow/serving/predict"
+#           "method_name": "tensorflow/serving:2.6.1/predict"
 #         },
 #         "__saved_model_init_op": {
 #           "inputs": {},

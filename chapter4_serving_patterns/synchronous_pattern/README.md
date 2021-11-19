@@ -82,7 +82,7 @@ $ curl localhost:8501/v1/models/inception_v3/versions/0/metadata
 #               "name": "StatefulPartitionedCall:0"
 #             }
 #           },
-#           "method_name": "tensorflow/serving/predict"
+#           "method_name": "tensorflow/serving:2.6.1/predict"
 #         },
 #         "__saved_model_init_op": {
 #           "inputs": {},

@@ -4,5 +4,5 @@ Pillow>=8.3.2
 psutil>=5.7.0
 typing>=3.7.4.1
 click>=7.1.2
-tensorflow>=2.5.1
-tensorflow-serving-api>=2.5.2
+tensorflow>=2.6.1
+tensorflow-serving-api>=2.6.1
