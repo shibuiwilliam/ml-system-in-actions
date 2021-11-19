@@ -19,5 +19,5 @@ python-json-logger>=2.0.1
 loguru>=0.5.3
 requests>=2.25.1
 httpx>=0.16.1
-tensorflow>=2.5.1
-tensorflow-serving-api>=2.5.2
+tensorflow>=2.6.1
+tensorflow-serving-api>=2.6.1

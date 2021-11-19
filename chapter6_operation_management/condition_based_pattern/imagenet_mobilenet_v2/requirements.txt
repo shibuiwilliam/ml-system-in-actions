@@ -5,7 +5,7 @@ Pillow>=8.3.2
 psutil==5.7.0
 pydantic>=1.8.2
 PyYAML>=5.3.1
-tensorflow-serving-api>=2.5.2
-tensorflow>=2.5.1
-tensorflow-hub>=0.10.0
+tensorflow-serving-api>=2.6.1
+tensorflow>=2.6.1
+tensorflow-hub>=0.12.0
 typing>=3.7.4.1
