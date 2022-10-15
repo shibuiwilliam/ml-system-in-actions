@@ -7,7 +7,7 @@ machine learning system examples
 - 本レポジトリは 2021 年 5 月翔泳社出版『AI エンジニアのための機械学習システムデザインパターン』のサンプルコード集です。
 - 本レポジトリでは機械学習のモデル学習、リリース、推論器の稼働、運用のためのコードおよび実行環境を用例ごとに提供します。
 - 「機械学習システムデザインパターン」の詳細は本書および mercari/ml-system-design-pattern をご参照ください。
-  - [AI エンジニアのための機械学習システムデザインパターン]([https://www.amazon.co.jp/dp/B08YNMRH4J/](https://www.amazon.co.jp/AI%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3-%E6%BE%81%E4%BA%95%E9%9B%84%E4%BB%8B-ebook/dp/B08YNMRH4J?crid=387XA7DART8JA&keywords=%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0&qid=1665798135&qu=eyJxc2MiOiIyLjU0IiwicXNhIjoiMi40OCIsInFzcCI6IjIuNDQifQ%3D%3D&sprefix=%2Caps%2C160&sr=8-1&linkCode=ll1&tag=shibuiyusuke-22&linkId=5a0d07b5a18ccd16f6c2e26fab00a106&language=ja_JP&ref_=as_li_ss_tl))
+  - [AI エンジニアのための機械学習システムデザインパターン](https://www.amazon.co.jp/AI%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3-%E6%BE%81%E4%BA%95%E9%9B%84%E4%BB%8B-ebook/dp/B08YNMRH4J?crid=387XA7DART8JA&keywords=%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0&qid=1665798135&qu=eyJxc2MiOiIyLjU0IiwicXNhIjoiMi40OCIsInFzcCI6IjIuNDQifQ%3D%3D&sprefix=%2Caps%2C160&sr=8-1&linkCode=ll1&tag=shibuiyusuke-22&linkId=5a0d07b5a18ccd16f6c2e26fab00a106&language=ja_JP&ref_=as_li_ss_tl)
   - [mercari/ml-system-design-pattern](https://github.com/mercari/ml-system-design-pattern)
 
 ![img](./hyoshi.jpg)
